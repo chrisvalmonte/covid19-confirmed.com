@@ -6,11 +6,7 @@ import { PageTemplate } from './PageTemplate';
 import styles from './App.css'; // eslint-disable-line
 
 function App() {
-  return (
-    <PageTemplate>
-      <Map />
-    </PageTemplate>
-  );
+  return <Map />;
 }
 
 export default App;
