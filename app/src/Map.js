@@ -6,7 +6,7 @@ import {
   clusterCountLayer,
   clusterLayer,
   unclusteredPointLayer,
-} from './Map.layers';
+} from './Map.constants';
 
 export function Map() {
   const [viewport, setViewport] = useState({
