@@ -17,13 +17,20 @@ export function Map() {
     pitch: 0,
   });
 
+  const settings = {
+    dragRotate: false,
+  };
+
   const sourceRef = useRef();
 
   const _onViewportChange = updatedViewport => setViewport(updatedViewport);
 
   const _onClick = event => {
+    if (!(event.hasOwnProperty('features') && event.features[0])) return;
+
     const feature = event.features[0];
     const clusterId = feature.properties.cluster_id;
+
     const mapboxSource = sourceRef.current.getSource();
 
     mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
@@ -42,6 +49,7 @@ export function Map() {
   return (
     <MapGL
       {...viewport}
+      {...settings}
       height="100%"
       interactiveLayerIds={[clusterLayer.id]}
       mapStyle="mapbox://styles/mapbox/dark-v9"
