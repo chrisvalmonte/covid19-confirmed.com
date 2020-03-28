@@ -87,7 +87,7 @@ export function Map() {
     id: 'cluster-circle',
     paint: {
       'circle-color': red[500],
-      'circle-opacity': 0.2,
+      'circle-opacity': 0.3,
       'circle-radius': ['step', ['get', 'active'], 2.5, 50, 15, 375, 20],
     },
     source: 'cluster-circle',
