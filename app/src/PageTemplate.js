@@ -15,6 +15,7 @@ import yellow from '@material-ui/core/colors/yellow';
 import clsx from 'clsx';
 import moment from 'moment';
 
+import logo from './logo.svg';
 import { CountCard } from './CountCard';
 import { getTotals } from './services';
 import { usePageTemplateStyles } from './PageTemplate.styles';
@@ -132,15 +133,7 @@ export function PageTemplate({ children }) {
             </IconButton>
           </Hidden>
 
-          <Typography
-            className={classes.title}
-            color="inherit"
-            component="h1"
-            noWrap
-            variant="h6"
-          >
-            COVID-19 Confirmed
-          </Typography>
+          <img alt="COVID-19" className={classes.logo} src={logo} />
         </Toolbar>
       </AppBar>
 

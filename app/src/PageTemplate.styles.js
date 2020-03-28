@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import blueGrey from '@material-ui/core/colors/blueGrey';
 import grey from '@material-ui/core/colors/grey';
 
 const appBarHeight = '60px';
@@ -7,7 +8,9 @@ const drawerWidth = '240px';
 
 export const usePageTemplateStyles = makeStyles(theme => ({
   appBar: {
-    backgroundColor: grey[900],
+    backgroundColor: blueGrey[900],
+    display: 'flex',
+    justifyContent: 'center',
     minHeight: appBarHeight,
     transition: theme.transitions.create(['width', 'margin'], {
       duration: theme.transitions.duration.leavingScreen,
@@ -61,6 +64,13 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     fontSize: '12px',
     marginTop: '24px',
     paddingLeft: '16px',
+  },
+
+  logo: {
+    height: '24px',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 'auto',
+    },
   },
 
   menuButton: {
