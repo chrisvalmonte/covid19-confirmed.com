@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 
 const appBarHeight = '60px';
+const drawerBgColor = grey[900];
 const drawerWidth = '240px';
 
 export const usePageTemplateStyles = makeStyles(theme => ({
@@ -33,14 +34,16 @@ export const usePageTemplateStyles = makeStyles(theme => ({
   },
 
   drawer: {
+    backgroundColor: drawerBgColor,
     [theme.breakpoints.up('md')]: {
       flexShrink: 0,
-      paddingTop: `calc(${appBarHeight} + 8px)`,
+      paddingTop: appBarHeight,
       width: drawerWidth,
     },
   },
 
   drawerPaper: {
+    backgroundColor: drawerBgColor,
     position: 'relative',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -48,10 +51,13 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     }),
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    [theme.breakpoints.up('md')]: {
+      backgroundColor: 'transparent',
+    },
   },
 
   menuButton: {
-    marginRight: 36,
+    marginRight: '36px',
   },
 
   menuButtonHidden: {
