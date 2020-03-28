@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MapGL, { Layer, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import red from '@material-ui/core/colors/red';
 
 import { getGEOData } from './services';
 
@@ -61,6 +62,8 @@ export function Map() {
   const _onViewportChange = updatedViewport => setViewport(updatedViewport);
 
   const _onClick = event => {
+    if (!(event.hasOwnProperty('features') && event.features[0])) return;
+
     const feature = event.features[0];
     const clusterId = feature.properties.cluster_id;
 
@@ -83,7 +86,7 @@ export function Map() {
     filter: ['all', ['has', 'active'], ['>', 'active', 0]],
     id: 'cluster-circle',
     paint: {
-      'circle-color': '#f44336',
+      'circle-color': red[500],
       'circle-opacity': 0.2,
       'circle-radius': ['step', ['get', 'active'], 2.5, 50, 15, 375, 20],
     },

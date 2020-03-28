@@ -1,9 +1,13 @@
 import { makeStyles } from '@material-ui/core/styles';
+import grey from '@material-ui/core/colors/grey';
 
-const drawerWidth = 240; // 240px
+const appBarHeight = '60px';
+const drawerWidth = '240px';
 
 export const usePageTemplateStyles = makeStyles(theme => ({
   appBar: {
+    backgroundColor: grey[900],
+    minHeight: appBarHeight,
     transition: theme.transitions.create(['width', 'margin'], {
       duration: theme.transitions.duration.leavingScreen,
       easing: theme.transitions.easing.sharp,
@@ -17,7 +21,7 @@ export const usePageTemplateStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
       easing: theme.transitions.easing.sharp,
     }),
-    width: `calc(100% - ${drawerWidth}px)`,
+    width: `calc(100% - ${drawerWidth})`,
   },
 
   appBarSpacer: theme.mixins.toolbar,
@@ -28,6 +32,14 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     overflow: 'hidden',
   },
 
+  drawer: {
+    [theme.breakpoints.up('md')]: {
+      flexShrink: 0,
+      paddingTop: `calc(${appBarHeight} + 8px)`,
+      width: drawerWidth,
+    },
+  },
+
   drawerPaper: {
     position: 'relative',
     transition: theme.transitions.create('width', {
@@ -36,19 +48,6 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     }),
     whiteSpace: 'nowrap',
     width: drawerWidth,
-  },
-
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      duration: theme.transitions.duration.leavingScreen,
-      easing: theme.transitions.easing.sharp,
-    }),
-    width: theme.spacing(7),
-
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
   },
 
   menuButton: {
@@ -68,7 +67,7 @@ export const usePageTemplateStyles = makeStyles(theme => ({
   },
 
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24, // Keep right padding when drawer closed
   },
 
   toolbarIcon: {
