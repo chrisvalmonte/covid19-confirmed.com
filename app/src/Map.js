@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import MapGL, { Layer, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import { getCountryData, getUSAData } from './services';
+import { getGEOData } from './services';
 
 export function Map() {
   const [viewport, setViewport] = useState({
@@ -18,34 +18,8 @@ export function Map() {
   // Get GEO data when component mounts
   useEffect(() => {
     const _geoData = async () => {
-      const { data: countryData } = await getCountryData();
-      const formattedCountryData = countryData
-        .filter(({ country }) => country !== 'USA')
-        .map(
-          ({
-            cases,
-            country,
-            countryInfo: { lat, long },
-            deaths,
-            recovered,
-          }) => ({
-            geometry: {
-              coordinates: [long, lat],
-              type: 'Point',
-            },
-            properties: {
-              active: cases - deaths - recovered,
-              cases,
-              country,
-              deaths,
-              recovered,
-            },
-            type: 'Feature',
-          }),
-        );
-
-      const { data: usaData } = await getUSAData();
-      const formattedUSAData = usaData.map(
+      const { data } = await getGEOData();
+      const features = data.map(
         ({
           city,
           coordinates: { latitude, longitude },
@@ -76,7 +50,7 @@ export function Map() {
       );
 
       setClusterData({
-        features: [...formattedCountryData, ...formattedUSAData],
+        features,
         type: 'FeatureCollection',
       });
     };
