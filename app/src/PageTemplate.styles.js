@@ -56,6 +56,13 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     },
   },
 
+  lastUpdated: {
+    color: grey[100],
+    fontSize: '12px',
+    marginTop: '24px',
+    paddingLeft: '16px',
+  },
+
   menuButton: {
     marginRight: '36px',
   },

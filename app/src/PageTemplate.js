@@ -13,6 +13,7 @@ import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import clsx from 'clsx';
+import moment from 'moment';
 
 import { CountCard } from './CountCard';
 import { getTotals } from './services';
@@ -92,6 +93,21 @@ export function PageTemplate({ children }) {
     },
   ];
 
+  const drawerContent = (
+    <>
+      {renderedTotals.map(({ id, ...data }) => (
+        <CountCard key={id} {...data} />
+      ))}
+
+      {totals.updated && (
+        <Typography className={classes.lastUpdated}>
+          {`Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
+                ${moment(totals.updated).format('HH:mmA')}`}
+        </Typography>
+      )}
+    </>
+  );
+
   return (
     <article className={classes.root}>
       <CssBaseline />
@@ -139,12 +155,11 @@ export function PageTemplate({ children }) {
               keepMounted: true, // Used for better performance on mobile
             }}
             onClose={_toggleDrawer}
+            onOpen={_toggleDrawer}
             open={isDrawerOpen}
             variant="temporary"
           >
-            {renderedTotals.map(({ id, ...data }) => (
-              <CountCard {...data} />
-            ))}
+            {drawerContent}
           </SwipeableDrawer>
         </Hidden>
 
@@ -156,9 +171,7 @@ export function PageTemplate({ children }) {
             open
             variant="permanent"
           >
-            {renderedTotals.map(({ id, ...data }) => (
-              <CountCard key={id} {...data} />
-            ))}
+            {drawerContent}
           </Drawer>
         </Hidden>
       </nav>
