@@ -2,14 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import MapGL, { Layer, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import { getCountryData } from './services';
-import { clusterCountLayer, clusterLayer } from './Map.constants';
+import { getCountryData, getUSAData } from './services';
 
 export function Map() {
   const [viewport, setViewport] = useState({
     latitude: 40.67,
     longitude: -103.59,
-    zoom: 1,
+    zoom: 1.5,
     bearing: 0,
     pitch: 0,
   });
@@ -19,37 +18,67 @@ export function Map() {
   // Get GEO data when component mounts
   useEffect(() => {
     const _geoData = async () => {
-      const { data } = await getCountryData();
-      const updatedData = {
-        features: data.map(
+      const { data: countryData } = await getCountryData();
+      const formattedCountryData = countryData
+        .filter(({ country }) => country !== 'USA')
+        .map(
           ({
             cases,
             country,
             countryInfo: { lat, long },
             deaths,
             recovered,
-            todayCases,
-            todayDeaths,
           }) => ({
             geometry: {
               coordinates: [long, lat],
               type: 'Point',
             },
             properties: {
+              active: cases - deaths - recovered,
               cases,
               country,
               deaths,
               recovered,
-              todayCases,
-              todayDeaths,
             },
             type: 'Feature',
           }),
-        ),
-        type: 'FeatureCollection',
-      };
+        );
 
-      setClusterData(updatedData);
+      const { data: usaData } = await getUSAData();
+      const formattedUSAData = usaData.map(
+        ({
+          city,
+          coordinates: { latitude, longitude },
+          province,
+          stats: { confirmed, deaths, recovered },
+        }) => {
+          const cases = parseInt(confirmed);
+          const numDeaths = parseInt(deaths);
+          const numRecovered = parseInt(recovered);
+
+          return {
+            geometry: {
+              coordinates: [longitude, latitude],
+              type: 'Point',
+            },
+            properties: {
+              active: cases - deaths - recovered,
+              cases,
+              city,
+              country: 'USA',
+              deaths: numDeaths,
+              recovered: numRecovered,
+              state: province,
+            },
+            type: 'Feature',
+          };
+        },
+      );
+
+      setClusterData({
+        features: [...formattedCountryData, ...formattedUSAData],
+        type: 'FeatureCollection',
+      });
     };
 
     _geoData();
@@ -58,8 +87,6 @@ export function Map() {
   const _onViewportChange = updatedViewport => setViewport(updatedViewport);
 
   const _onClick = event => {
-    if (!(event.hasOwnProperty('features') && event.features[0])) return;
-
     const feature = event.features[0];
     const clusterId = feature.properties.cluster_id;
 
@@ -78,6 +105,18 @@ export function Map() {
     });
   };
 
+  const clusterLayer = {
+    filter: ['all', ['has', 'active'], ['>', 'active', 0]],
+    id: 'cluster-circle',
+    paint: {
+      'circle-color': '#f44336',
+      'circle-opacity': 0.2,
+      'circle-radius': ['step', ['get', 'active'], 2.5, 50, 15, 375, 20],
+    },
+    source: 'cluster-circle',
+    type: 'circle',
+  };
+
   return (
     <MapGL
       {...viewport}
@@ -90,16 +129,8 @@ export function Map() {
       onViewportChange={_onViewportChange}
       width="100%"
     >
-      <Source
-        cluster={true}
-        clusterMaxZoom={14}
-        clusterRadius={50}
-        data={clusterData}
-        ref={sourceRef}
-        type="geojson"
-      >
+      <Source data={clusterData} ref={sourceRef} type="geojson">
         <Layer {...clusterLayer} />
-        <Layer {...clusterCountLayer} />
       </Source>
     </MapGL>
   );
