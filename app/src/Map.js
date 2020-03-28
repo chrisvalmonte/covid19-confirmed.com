@@ -1,27 +1,59 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MapGL, { Layer, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import {
-  clusterCountLayer,
-  clusterLayer,
-  unclusteredPointLayer,
-} from './Map.constants';
+import { getCountryData } from './services';
+import { clusterCountLayer, clusterLayer } from './Map.constants';
 
 export function Map() {
   const [viewport, setViewport] = useState({
     latitude: 40.67,
     longitude: -103.59,
-    zoom: 3,
+    zoom: 1,
     bearing: 0,
     pitch: 0,
   });
-
-  const settings = {
-    dragRotate: false,
-  };
-
+  const [clusterData, setClusterData] = useState(null);
   const sourceRef = useRef();
+
+  // Get GEO data when component mounts
+  useEffect(() => {
+    const _geoData = async () => {
+      const { data } = await getCountryData();
+      const updatedData = {
+        features: data.map(
+          ({
+            cases,
+            country,
+            countryInfo: { lat, long },
+            deaths,
+            recovered,
+            todayCases,
+            todayDeaths,
+          }) => ({
+            geometry: {
+              coordinates: [long, lat],
+              type: 'Point',
+            },
+            properties: {
+              cases,
+              country,
+              deaths,
+              recovered,
+              todayCases,
+              todayDeaths,
+            },
+            type: 'Feature',
+          }),
+        ),
+        type: 'FeatureCollection',
+      };
+
+      setClusterData(updatedData);
+    };
+
+    _geoData();
+  }, []);
 
   const _onViewportChange = updatedViewport => setViewport(updatedViewport);
 
@@ -49,7 +81,7 @@ export function Map() {
   return (
     <MapGL
       {...viewport}
-      {...settings}
+      dragRotate={false}
       height="100%"
       interactiveLayerIds={[clusterLayer.id]}
       mapStyle="mapbox://styles/mapbox/dark-v9"
@@ -62,13 +94,12 @@ export function Map() {
         cluster={true}
         clusterMaxZoom={14}
         clusterRadius={50}
-        data="https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson" // TODO: Replace w/ COVID-19 data
+        data={clusterData}
         ref={sourceRef}
         type="geojson"
       >
         <Layer {...clusterLayer} />
         <Layer {...clusterCountLayer} />
-        <Layer {...unclusteredPointLayer} />
       </Source>
     </MapGL>
   );
