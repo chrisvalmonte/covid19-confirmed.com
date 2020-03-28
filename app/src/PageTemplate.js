@@ -103,7 +103,7 @@ export function PageTemplate({ children }) {
       {totals.updated && (
         <Typography className={classes.lastUpdated}>
           {`Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
-                ${moment(totals.updated).format('HH:mmA')}`}
+                ${moment(totals.updated).format('h:mmA')}`}
         </Typography>
       )}
     </>
