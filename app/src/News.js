@@ -14,7 +14,7 @@ import { Waypoint } from 'react-waypoint';
 import { NewsCard } from './NewsCard';
 import { getNews } from './services';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   fab: {
     backgroundColor: grey[900],
     color: grey[100],
@@ -23,6 +23,10 @@ const useStyles = makeStyles(() => ({
     right: '48px',
     '&:hover': {
       backgroundColor: grey[900],
+    },
+    [theme.breakpoints.down('sm')]: {
+      bottom: '72px',
+      right: '16px',
     },
   },
   newsAPICredit: {
