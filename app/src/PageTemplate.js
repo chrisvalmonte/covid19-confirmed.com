@@ -154,7 +154,7 @@ export function PageTemplate({ children }) {
   );
 
   return (
-    <article className={classes.root}>
+    <div className={classes.root}>
       <CssBaseline />
 
       <Hidden mdUp>
@@ -212,6 +212,6 @@ export function PageTemplate({ children }) {
       </nav>
 
       <main className={classes.content}>{children}</main>
-    </article>
+    </div>
   );
 }
