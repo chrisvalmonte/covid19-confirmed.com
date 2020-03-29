@@ -26,7 +26,7 @@ export function NewsCard({ description, title, url, urlToImage }) {
   const classes = useStyles();
 
   return (
-    <Card>
+    <Card component="section">
       <CardMedia
         className={classes.media}
         image={urlToImage || imgNotAvailable}
@@ -41,7 +41,7 @@ export function NewsCard({ description, title, url, urlToImage }) {
         </Typography>
       </CardContent>
 
-      <CardActionArea>
+      <CardActionArea component="div">
         <Link className={classes.action} color="primary" href={url}>
           <Button color="inherit" size="small">
             Read more

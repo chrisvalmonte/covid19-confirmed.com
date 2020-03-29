@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Waypoint } from 'react-waypoint';
 
 import { NewsCard } from './NewsCard';
+import { rootStyles } from './App';
 import { getNews } from './services';
 
 const useStyles = makeStyles(theme => ({
@@ -33,12 +34,8 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'right',
   },
   root: {
+    ...rootStyles,
     backgroundColor: grey[300],
-    flexGrow: 1,
-    height: '100vh',
-    overflowY: 'auto',
-    paddingBottom: '16px',
-    paddingTop: '16px',
   },
 }));
 

@@ -2,13 +2,15 @@ import axios from 'axios';
 import moment from 'moment';
 
 // https://github.com/NovelCOVID/API
+export const getCountries = async () => await axios.get('/api/countries');
 
 export const getGEOData = async () => await axios.get('/api/jhucsse');
 
 export const getTotals = async () => await axios.get('/api/all');
 
-// https://newsapi.org/
+export const getHistory = async () => await axios.get('/api/v2/historical');
 
+// https://newsapi.org
 export const getNews = async ({ page = 1 }) =>
   await axios.get('/covid-news/top-headlines', {
     params: {

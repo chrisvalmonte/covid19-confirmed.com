@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
@@ -107,6 +108,11 @@ export function PageTemplate({ children }) {
       icon: <PublicIcon className={classes.linkIcon} />,
       text: paths.map.name,
       to: paths.map.path,
+    },
+    {
+      icon: <DashboardIcon className={classes.linkIcon} />,
+      text: paths.dashboard.name,
+      to: paths.dashboard.path,
     },
     {
       icon: <MenuBookIcon className={classes.linkIcon} />,

@@ -20,6 +20,7 @@
     "react-map-gl": "^5.2.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "react-vis": "^1.11.7",
     "react-waypoint": "^9.0.2"
   },
   "scripts": {
