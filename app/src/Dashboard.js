@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -17,6 +19,12 @@ import { getCountries, getHistory } from './services';
 import { rootStyles } from './App';
 
 const useStyles = makeStyles(() => ({
+  divider: {
+    marginBottom: '16px',
+  },
+  header: {
+    marginBottom: '12px',
+  },
   root: {
     ...rootStyles,
     backgroundColor: grey[100],
@@ -88,8 +96,9 @@ export function Dashboard() {
       <Container>
         <Grid container spacing={3}>
           {/* Country overview table */}
-          {/* Country overview */}
           <Grid item xs={12}>
+            <DashboardHeader>Country Overview</DashboardHeader>
+
             <DataTable
               bodyRows={countryTableBodyRows}
               headCells={countryTableHeadCells}
@@ -99,8 +108,9 @@ export function Dashboard() {
           </Grid>
 
           {/* Today table */}
-          {/* Confirmed today */}
-          <Grid item xs={12}>
+          <Grid item xs={12} md={5} lg={4}>
+            <DashboardHeader>Confirmed Today</DashboardHeader>
+
             <DataTable
               bodyRows={todayTableBodyRows}
               headCells={todayTableHeadCells}
@@ -111,6 +121,19 @@ export function Dashboard() {
         </Grid>
       </Container>
     </article>
+  );
+}
+
+function DashboardHeader({ children }) {
+  const classes = useStyles();
+
+  return (
+    <>
+      <Typography className={classes.header} component="h2" variant="h5">
+        {children}
+      </Typography>
+      <Divider className={classes.divider} />
+    </>
   );
 }
 
