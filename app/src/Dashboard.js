@@ -27,6 +27,7 @@ export function Dashboard() {
   const classes = useStyles();
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
+  const [todayTableBodyRows, setTodayTableBodyRows] = useState([]);
   const [history, setHistory] = useState([]);
 
   // Get data for tables and charts when component mounts
@@ -45,6 +46,16 @@ export function Dashboard() {
         }),
       );
       setCountryTableBodyRows(countryTableData);
+
+      const todayTableData = data.map(
+        ({ country, todayCases, todayDeaths }) => ({
+          id: country,
+          country,
+          todayDeaths,
+          todayCases,
+        }),
+      );
+      setTodayTableBodyRows(todayTableData);
     };
 
     const _historyData = async () => {
@@ -66,17 +77,35 @@ export function Dashboard() {
     { id: 'recovered', label: 'Recovered' },
     { id: 'cases', label: 'Total Confirmed' },
   ];
+  const todayTableHeadCells = [
+    { id: 'country', label: 'Country' },
+    { id: 'todayDeaths', label: 'Deaths' },
+    { id: 'todayCases', label: 'Cases' },
+  ];
 
   return (
     <article className={classes.root}>
       <Container>
         <Grid container spacing={3}>
+          {/* Country overview table */}
+          {/* Country overview */}
           <Grid item xs={12}>
             <DataTable
               bodyRows={countryTableBodyRows}
               headCells={countryTableHeadCells}
               initialOrder="desc"
               initialOrderBy="active"
+            />
+          </Grid>
+
+          {/* Today table */}
+          {/* Confirmed today */}
+          <Grid item xs={12}>
+            <DataTable
+              bodyRows={todayTableBodyRows}
+              headCells={todayTableHeadCells}
+              initialOrder="desc"
+              initialOrderBy="todayCases"
             />
           </Grid>
         </Grid>
