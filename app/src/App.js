@@ -29,7 +29,7 @@ export const rootStyles = {
   flexGrow: 1,
   height: '100vh',
   overflowY: 'auto',
-  paddingBottom: '16px',
+  paddingBottom: '200px',
   paddingTop: '16px',
 };
 

@@ -19,9 +19,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
-  table: {
-    minWidth: 750,
-  },
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -74,7 +71,6 @@ export function DataTable({
           <Table
             aria-label="data table"
             aria-labelledby="tableTitle"
-            className={classes.table}
             size="small"
           >
             <DataTableHead
