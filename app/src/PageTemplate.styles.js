@@ -5,6 +5,7 @@ import grey from '@material-ui/core/colors/grey';
 const appBarHeight = '60px';
 const drawerBgColor = grey[900];
 const drawerWidth = '240px';
+const linkColor = grey[100];
 const logoHeight = '24px';
 
 export const usePageTemplateStyles = makeStyles(theme => ({
@@ -85,13 +86,17 @@ export const usePageTemplateStyles = makeStyles(theme => ({
   },
 
   link: {
-    color: grey[100],
+    color: linkColor,
     display: 'block',
     textDecoration: 'none',
   },
 
   linkActive: {
     backgroundColor: blueGrey[900],
+  },
+
+  linkIcon: {
+    color: linkColor,
   },
 
   links: {

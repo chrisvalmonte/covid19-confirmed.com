@@ -102,36 +102,36 @@ export function PageTemplate({ children }) {
     },
   ];
 
+  const siteLinks = [
+    {
+      icon: <PublicIcon className={classes.linkIcon} />,
+      text: paths.map.name,
+      to: paths.map.path,
+    },
+    {
+      icon: <MenuBookIcon className={classes.linkIcon} />,
+      text: paths.news.name,
+      to: paths.news.path,
+    },
+  ];
+
   const drawerContent = (
     <>
       <List className={classes.links}>
-        <NavLink
-          activeClassName={classes.linkActive}
-          className={classes.link}
-          exact
-          to={paths.map.path}
-        >
-          <ListItem button>
-            <ListItemIcon>
-              <PublicIcon style={{ color: grey[100] }} />
-            </ListItemIcon>
-            <ListItemText primary={paths.map.name} />
-          </ListItem>
-        </NavLink>
-
-        <NavLink
-          activeClassName={classes.linkActive}
-          className={classes.link}
-          exact
-          to={paths.news.path}
-        >
-          <ListItem button>
-            <ListItemIcon>
-              <MenuBookIcon style={{ color: grey[100] }} />
-            </ListItemIcon>
-            <ListItemText primary={paths.news.name} />
-          </ListItem>
-        </NavLink>
+        {siteLinks.map(({ icon, text, to }) => (
+          <NavLink
+            activeClassName={classes.linkActive}
+            className={classes.link}
+            exact
+            key={to}
+            to={to}
+          >
+            <ListItem button>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          </NavLink>
+        ))}
       </List>
 
       {renderedTotals.map(({ id, ...data }) => (

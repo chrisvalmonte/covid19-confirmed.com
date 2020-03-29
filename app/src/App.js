@@ -8,6 +8,10 @@ import { PageTemplate } from './PageTemplate';
 import styles from './App.css'; // eslint-disable-line
 
 export const paths = {
+  dashboard: {
+    name: 'Dashboard',
+    path: '/dashboard',
+  },
   map: {
     name: 'World Map',
     path: '/',
