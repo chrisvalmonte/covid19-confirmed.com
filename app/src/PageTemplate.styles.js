@@ -86,7 +86,12 @@ export const usePageTemplateStyles = makeStyles(theme => ({
 
   link: {
     color: grey[100],
+    display: 'block',
     textDecoration: 'none',
+  },
+
+  linkActive: {
+    backgroundColor: blueGrey[900],
   },
 
   links: {

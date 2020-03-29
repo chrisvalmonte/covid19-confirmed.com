@@ -24,8 +24,7 @@ function App() {
       <PageTemplate>
         <Switch>
           <Route exact path={paths.map.path}>
-            {/* TODO: Add back once app deployed. Preserving API calls */}
-            {/* <Map /> */}
+            <Map />
           </Route>
 
           <Route exact path={paths.news.path}>

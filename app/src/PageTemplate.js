@@ -105,7 +105,12 @@ export function PageTemplate({ children }) {
   const drawerContent = (
     <>
       <List className={classes.links}>
-        <NavLink className={classes.link} to={paths.map.path}>
+        <NavLink
+          activeClassName={classes.linkActive}
+          className={classes.link}
+          exact
+          to={paths.map.path}
+        >
           <ListItem button>
             <ListItemIcon>
               <PublicIcon style={{ color: grey[100] }} />
@@ -114,7 +119,12 @@ export function PageTemplate({ children }) {
           </ListItem>
         </NavLink>
 
-        <NavLink className={classes.link} to={paths.news.path}>
+        <NavLink
+          activeClassName={classes.linkActive}
+          className={classes.link}
+          exact
+          to={paths.news.path}
+        >
           <ListItem button>
             <ListItemIcon>
               <MenuBookIcon style={{ color: grey[100] }} />

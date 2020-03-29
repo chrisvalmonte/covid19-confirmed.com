@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
     textAlign: 'right',
   },
   root: {
-    backgroundColor: grey[200],
+    backgroundColor: grey[300],
     flexGrow: 1,
     height: '100vh',
     overflowY: 'auto',
