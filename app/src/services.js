@@ -10,7 +10,7 @@ export const getTotals = async () => await axios.get('/covid/all');
 // https://newsapi.org/
 
 export const getNews = async ({ page = 1 }) =>
-  await axios.get('/news/top-headlines', {
+  await axios.get('/covid-news/top-headlines', {
     params: {
       apiKey: process.env.REACT_APP_NEWS_API_TOKEN,
       from: moment().format('YYYY-MM-DD'),

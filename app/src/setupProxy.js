@@ -11,11 +11,11 @@ module.exports = function(app) {
     }),
   );
   app.use(
-    '/news',
+    '/covid-news',
     createProxyMiddleware({
       changeOrigin: true,
       pathRewrite: {
-        '^/news': '',
+        '^/covid-news': '',
       },
       target: 'http://newsapi.org/v2',
     }),
