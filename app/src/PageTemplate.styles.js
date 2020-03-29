@@ -5,6 +5,7 @@ import grey from '@material-ui/core/colors/grey';
 const appBarHeight = '60px';
 const drawerBgColor = grey[900];
 const drawerWidth = '240px';
+const logoHeight = '24px';
 
 export const usePageTemplateStyles = makeStyles(theme => ({
   appBar: {
@@ -28,7 +29,11 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     width: `calc(100% - ${drawerWidth})`,
   },
 
-  appBarSpacer: theme.mixins.toolbar,
+  appBarSpacer: {
+    [theme.breakpoints.down('sm')]: {
+      height: appBarHeight,
+    },
+  },
 
   content: {
     flexGrow: 1,
@@ -45,9 +50,13 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up('md')]: {
       flexShrink: 0,
-      paddingTop: appBarHeight,
       width: drawerWidth,
     },
+  },
+
+  drawerLogo: {
+    height: logoHeight,
+    margin: '16px 0',
   },
 
   drawerPaper: {
@@ -63,7 +72,7 @@ export const usePageTemplateStyles = makeStyles(theme => ({
       backgroundColor: 'transparent',
       display: 'flex',
       flexDirection: 'column',
-      height: `calc(100vh - ${appBarHeight})`,
+      height: '100vh',
     },
   },
 
@@ -75,15 +84,13 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     paddingLeft: '16px',
   },
 
-  links: {
-    marginBottom: 'auto',
+  link: {
+    color: grey[100],
+    textDecoration: 'none',
   },
 
-  logo: {
-    height: '24px',
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 'auto',
-    },
+  links: {
+    marginBottom: 'auto',
   },
 
   menuButton: {
@@ -100,5 +107,10 @@ export const usePageTemplateStyles = makeStyles(theme => ({
 
   toolbar: {
     paddingRight: 24, // Keep right padding when drawer closed
+  },
+
+  toolbarLogo: {
+    height: logoHeight,
+    marginLeft: 'auto',
   },
 }));

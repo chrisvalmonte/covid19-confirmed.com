@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: grey[200],
     flexGrow: 1,
-    height: `calc(100vh - 60px)`,
+    height: '100vh',
     overflowY: 'auto',
     paddingBottom: '16px',
     paddingTop: '16px',

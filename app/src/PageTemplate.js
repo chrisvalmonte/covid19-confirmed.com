@@ -105,19 +105,19 @@ export function PageTemplate({ children }) {
   const drawerContent = (
     <>
       <List className={classes.links}>
-        <NavLink to={paths.map.path}>
+        <NavLink className={classes.link} to={paths.map.path}>
           <ListItem button>
             <ListItemIcon>
-              <PublicIcon />
+              <PublicIcon style={{color: grey[100]}}/>
             </ListItemIcon>
             <ListItemText primary={paths.map.name} />
           </ListItem>
         </NavLink>
 
-        <NavLink to={paths.news.path}>
+        <NavLink className={classes.link} to={paths.news.path}>
           <ListItem button>
             <ListItemIcon>
-              <MenuBookIcon />
+              <MenuBookIcon style={{color: grey[100]}}/>
             </ListItemIcon>
             <ListItemText primary={paths.news.name} />
           </ListItem>
@@ -141,29 +141,29 @@ export function PageTemplate({ children }) {
     <article className={classes.root}>
       <CssBaseline />
 
-      <AppBar
-        className={clsx(classes.appBar, isDrawerOpen && classes.appBarShift)}
-        position="absolute"
-      >
-        <Toolbar className={classes.toolbar}>
-          <Hidden mdUp>
-            <IconButton
-              aria-label="open drawer"
-              className={clsx(
-                classes.menuButton,
-                isDrawerOpen && classes.menuButtonHidden,
-              )}
-              color="inherit"
-              edge="start"
-              onClick={_toggleDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Hidden>
+      <Hidden mdUp>
+        <AppBar
+          className={clsx(classes.appBar, isDrawerOpen && classes.appBarShift)}
+          position="absolute"
+        >
+          <Toolbar className={classes.toolbar}>
+              <IconButton
+                aria-label="open drawer"
+                className={clsx(
+                  classes.menuButton,
+                  isDrawerOpen && classes.menuButtonHidden,
+                )}
+                color="inherit"
+                edge="start"
+                onClick={_toggleDrawer}
+              >
+                <MenuIcon />
+              </IconButton>
 
-          <img alt="COVID-19" className={classes.logo} src={logo} />
-        </Toolbar>
-      </AppBar>
+            <img alt="COVID-19" className={classes.toolbarLogo} src={logo} />
+          </Toolbar>
+        </AppBar>
+      </Hidden>
 
       <nav className={classes.drawer} aria-label="site navigation">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -192,6 +192,7 @@ export function PageTemplate({ children }) {
             open
             variant="permanent"
           >
+            <img alt="COVID-19" className={classes.drawerLogo} src={logo} />
             {drawerContent}
           </Drawer>
         </Hidden>
