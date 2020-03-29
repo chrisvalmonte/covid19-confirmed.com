@@ -8,6 +8,8 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
+import imgNotAvailable from './img-not-available.png';
+
 const useStyles = makeStyles({
   action: {
     display: 'block',
@@ -25,7 +27,11 @@ export function NewsCard({ description, title, url, urlToImage }) {
 
   return (
     <Card>
-      <CardMedia className={classes.media} image={urlToImage} title={title} />
+      <CardMedia
+        className={classes.media}
+        image={urlToImage || imgNotAvailable}
+        title={title}
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           {title}
