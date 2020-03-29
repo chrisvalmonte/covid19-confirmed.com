@@ -11,29 +11,13 @@ const logoHeight = '24px';
 export const usePageTemplateStyles = makeStyles(theme => ({
   appBar: {
     backgroundColor: blueGrey[900],
+    bottom: 0,
     display: 'flex',
     justifyContent: 'center',
     minHeight: appBarHeight,
-    transition: theme.transitions.create(['width', 'margin'], {
-      duration: theme.transitions.duration.leavingScreen,
-      easing: theme.transitions.easing.sharp,
-    }),
+    position: 'fixed',
+    top: 'auto',
     zIndex: theme.zIndex.drawer + 1,
-  },
-
-  appBarShift: {
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['width', 'margin'], {
-      duration: theme.transitions.duration.enteringScreen,
-      easing: theme.transitions.easing.sharp,
-    }),
-    width: `calc(100% - ${drawerWidth})`,
-  },
-
-  appBarSpacer: {
-    [theme.breakpoints.down('sm')]: {
-      height: appBarHeight,
-    },
   },
 
   content: {

@@ -152,10 +152,7 @@ export function PageTemplate({ children }) {
       <CssBaseline />
 
       <Hidden mdUp>
-        <AppBar
-          className={clsx(classes.appBar, isDrawerOpen && classes.appBarShift)}
-          position="absolute"
-        >
+        <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <IconButton
               aria-label="open drawer"
@@ -208,10 +205,7 @@ export function PageTemplate({ children }) {
         </Hidden>
       </nav>
 
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        {children}
-      </main>
+      <main className={classes.content}>{children}</main>
     </article>
   );
 }
