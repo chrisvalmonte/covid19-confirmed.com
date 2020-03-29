@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  HorizontalGridLines,
-  LineMarkSeries,
-  VerticalGridLines,
-  XAxis,
-  XYPlot,
-  YAxis,
-} from 'react-vis';
 
 import { DataTable } from './DataTable';
+import HistoryChart from './HistoryChart';
 import { getCountries, getHistory } from './services';
 import { rootStyles } from './App';
 
@@ -36,6 +30,7 @@ export function Dashboard() {
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
   const [todayTableBodyRows, setTodayTableBodyRows] = useState([]);
+  const todayTableRef = useRef(null);
   const [history, setHistory] = useState([]);
 
   // Get data for tables and charts when component mounts
@@ -68,7 +63,10 @@ export function Dashboard() {
 
     const _historyData = async () => {
       const { data } = await getHistory();
-      setHistory(data);
+
+      // TODO: Make graph dynamic. Add date and country filters
+      const historyChartData = data.filter(({ country }) => country === 'usa');
+      setHistory(historyChartData);
     };
 
     _countryData();
@@ -95,6 +93,32 @@ export function Dashboard() {
     <article className={classes.root}>
       <Container>
         <Grid container spacing={3}>
+          {/* Today table */}
+          <Grid item xs={12} md={5}>
+            <DashboardHeader>Confirmed Today</DashboardHeader>
+
+            <RootRef rootRef={todayTableRef}>
+              <DataTable
+                bodyRows={todayTableBodyRows}
+                headCells={todayTableHeadCells}
+                initialOrder="desc"
+                initialOrderBy="todayCases"
+              />
+            </RootRef>
+          </Grid>
+
+          {/* History chart */}
+          <Grid item xs={12} md={7}>
+            <DashboardHeader>USA Case History</DashboardHeader>
+
+            <HistoryChart
+              height={
+                todayTableRef.current ? todayTableRef.current.offsetHeight : 300
+              }
+              history={history}
+            />
+          </Grid>
+
           {/* Country overview table */}
           <Grid item xs={12}>
             <DashboardHeader>Country Overview</DashboardHeader>
@@ -104,18 +128,6 @@ export function Dashboard() {
               headCells={countryTableHeadCells}
               initialOrder="desc"
               initialOrderBy="active"
-            />
-          </Grid>
-
-          {/* Today table */}
-          <Grid item xs={12} md={5} lg={4}>
-            <DashboardHeader>Confirmed Today</DashboardHeader>
-
-            <DataTable
-              bodyRows={todayTableBodyRows}
-              headCells={todayTableHeadCells}
-              initialOrder="desc"
-              initialOrderBy="todayCases"
             />
           </Grid>
         </Grid>
@@ -134,38 +146,5 @@ function DashboardHeader({ children }) {
       </Typography>
       <Divider className={classes.divider} />
     </>
-  );
-}
-
-function LineChart(props) {
-  return (
-    <XYPlot width={300} height={300}>
-      <VerticalGridLines />
-      <HorizontalGridLines />
-      <XAxis />
-      <YAxis />
-      <LineMarkSeries
-        className="linemark-series-example"
-        style={{
-          strokeWidth: '3px',
-        }}
-        lineStyle={{ stroke: 'red' }}
-        markStyle={{ stroke: 'blue' }}
-        data={[
-          { x: 1, y: 10 },
-          { x: 2, y: 5 },
-          { x: 3, y: 15 },
-        ]}
-      />
-      <LineMarkSeries
-        className="linemark-series-example-2"
-        curve={'curveMonotoneX'}
-        data={[
-          { x: 1, y: 11 },
-          { x: 1.5, y: 29 },
-          { x: 3, y: 7 },
-        ]}
-      />
-    </XYPlot>
   );
 }
