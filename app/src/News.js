@@ -1,17 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import grey from '@material-ui/core/colors/grey';
+import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Zoom';
+import grey from '@material-ui/core/colors/grey';
+import { makeStyles } from '@material-ui/core/styles';
 import { Waypoint } from 'react-waypoint';
 
 import { NewsCard } from './NewsCard';
 import { getNews } from './services';
 
 const useStyles = makeStyles(() => ({
+  fab: {
+    backgroundColor: grey[900],
+    color: grey[100],
+    bottom: '32px',
+    position: 'fixed',
+    right: '48px',
+    '&:hover': {
+      backgroundColor: grey[900],
+    },
+  },
   newsAPICredit: {
     textAlign: 'right',
   },
@@ -28,8 +41,11 @@ const useStyles = makeStyles(() => ({
 export function News() {
   const classes = useStyles();
 
-  const [newsArticles, setNewsArticles] = useState([]);
+  const pageRef = useRef(null);
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFabShown, setIsFabShown] = useState(false);
+  const [newsArticles, setNewsArticles] = useState([]);
 
   // Get news articles when component mounts
   useEffect(() => {
@@ -56,10 +72,22 @@ export function News() {
     setCurrentPage(currentPage + 1);
   };
 
+  const _scrollToTop = () => {
+    pageRef.current.scrollTo(0, pageRef.current.offsetTop);
+  };
+
   return (
-    <article className={classes.root}>
+    <article className={classes.root} ref={pageRef}>
       <Container>
         <Grid container spacing={3}>
+          <Waypoint
+            onEnter={() => {
+              setIsFabShown(false);
+            }}
+            onLeave={() => {
+              setIsFabShown(true);
+            }}
+          />
           <Grid item xs={12}>
             <Typography className={classes.newsAPICredit} variant="body2">
               Powered by <Link href="https://newsapi.org/">newsapi.org</Link>
@@ -74,6 +102,16 @@ export function News() {
           <Waypoint onEnter={_getNextPage} />
         </Grid>
       </Container>
+      <Zoom in={isFabShown}>
+        <Fab
+          aria-label="scroll back to top"
+          className={classes.fab}
+          onClick={_scrollToTop}
+        >
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </Zoom>
+      )
     </article>
   );
 }
