@@ -3,9 +3,9 @@ import moment from 'moment';
 
 // https://github.com/NovelCOVID/API
 
-export const getGEOData = async () => await axios.get('/covid/jhucsse');
+export const getGEOData = async () => await axios.get('/api/jhucsse');
 
-export const getTotals = async () => await axios.get('/covid/all');
+export const getTotals = async () => await axios.get('/api/all');
 
 // https://newsapi.org/
 

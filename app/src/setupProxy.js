@@ -1,11 +1,11 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 module.exports = function(app) {
   app.use(
-    '/covid',
+    '/api',
     createProxyMiddleware({
       changeOrigin: true,
       pathRewrite: {
-        '^/covid': '',
+        '^/api': '',
       },
       target: 'http://corona.lmao.ninja',
     }),
