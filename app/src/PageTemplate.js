@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import MenuIcon from '@material-ui/icons/Menu';
+import PublicIcon from '@material-ui/icons/Public';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -16,6 +23,7 @@ import clsx from 'clsx';
 import moment from 'moment';
 
 import logo from './logo.svg';
+import { paths } from './App';
 import { CountCard } from './CountCard';
 import { getTotals } from './services';
 import { usePageTemplateStyles } from './PageTemplate.styles';
@@ -96,16 +104,36 @@ export function PageTemplate({ children }) {
 
   const drawerContent = (
     <>
+      <List className={classes.links}>
+        <NavLink to={paths.map.path}>
+          <ListItem button>
+            <ListItemIcon>
+              <PublicIcon />
+            </ListItemIcon>
+            <ListItemText primary={paths.map.name} />
+          </ListItem>
+        </NavLink>
+
+        <NavLink to={paths.news.path}>
+          <ListItem button>
+            <ListItemIcon>
+              <MenuBookIcon />
+            </ListItemIcon>
+            <ListItemText primary={paths.news.name} />
+          </ListItem>
+        </NavLink>
+      </List>
+
       {renderedTotals.map(({ id, ...data }) => (
         <CountCard key={id} {...data} />
       ))}
 
-      {totals.updated && (
-        <Typography className={classes.lastUpdated}>
-          {`Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
-                ${moment(totals.updated).format('h:mmA')}`}
-        </Typography>
-      )}
+      <Typography className={classes.lastUpdated}>
+        {totals.updated
+          ? `Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
+                ${moment(totals.updated).format('h:mmA')}`
+          : 'Finding statistics...'}
+      </Typography>
     </>
   );
 

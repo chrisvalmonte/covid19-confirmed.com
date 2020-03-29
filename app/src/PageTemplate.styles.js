@@ -38,6 +38,11 @@ export const usePageTemplateStyles = makeStyles(theme => ({
 
   drawer: {
     backgroundColor: drawerBgColor,
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100vh',
+    },
     [theme.breakpoints.up('md')]: {
       flexShrink: 0,
       paddingTop: appBarHeight,
@@ -56,6 +61,9 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     width: drawerWidth,
     [theme.breakpoints.up('md')]: {
       backgroundColor: 'transparent',
+      display: 'flex',
+      flexDirection: 'column',
+      height: `calc(100vh - ${appBarHeight})`,
     },
   },
 
@@ -63,7 +71,12 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     color: grey[100],
     fontSize: '12px',
     marginTop: '24px',
+    paddingBottom: '16px',
     paddingLeft: '16px',
+  },
+
+  links: {
+    marginBottom: 'auto',
   },
 
   logo: {
@@ -85,19 +98,7 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     display: 'flex',
   },
 
-  title: {
-    flexGrow: 1,
-  },
-
   toolbar: {
     paddingRight: 24, // Keep right padding when drawer closed
-  },
-
-  toolbarIcon: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
   },
 }));
