@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { Map } from './Map';
 import { News } from './News';
+import { NotFound } from './NotFound';
 import { PageTemplate } from './PageTemplate';
 
 import styles from './App.css'; // eslint-disable-line
@@ -27,13 +28,9 @@ function App() {
     <Router>
       <PageTemplate>
         <Switch>
-          <Route exact path={paths.map.path}>
-            <Map />
-          </Route>
-
-          <Route exact path={paths.news.path}>
-            <News />
-          </Route>
+          <Route component={Map} exact path={paths.map.path} />
+          <Route component={News} exact path={paths.news.path} />
+          <Route component={NotFound} />
         </Switch>
       </PageTemplate>
     </Router>
