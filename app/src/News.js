@@ -111,7 +111,6 @@ export function News() {
           <KeyboardArrowUpIcon />
         </Fab>
       </Zoom>
-      )
     </article>
   );
 }
