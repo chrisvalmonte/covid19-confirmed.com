@@ -40,7 +40,7 @@ export function News() {
       <Container>
         <Grid container spacing={3}>
           {newsArticles.map(article => (
-            <Grid item key={article.title} xs={12} md={6} lg={4}>
+            <Grid item key={article.title} xs={12} sm={6} lg={4}>
               <NewsCard {...article} />
             </Grid>
           ))}
