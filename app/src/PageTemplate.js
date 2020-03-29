@@ -108,7 +108,7 @@ export function PageTemplate({ children }) {
         <NavLink className={classes.link} to={paths.map.path}>
           <ListItem button>
             <ListItemIcon>
-              <PublicIcon style={{color: grey[100]}}/>
+              <PublicIcon style={{ color: grey[100] }} />
             </ListItemIcon>
             <ListItemText primary={paths.map.name} />
           </ListItem>
@@ -117,7 +117,7 @@ export function PageTemplate({ children }) {
         <NavLink className={classes.link} to={paths.news.path}>
           <ListItem button>
             <ListItemIcon>
-              <MenuBookIcon style={{color: grey[100]}}/>
+              <MenuBookIcon style={{ color: grey[100] }} />
             </ListItemIcon>
             <ListItemText primary={paths.news.name} />
           </ListItem>
@@ -147,18 +147,18 @@ export function PageTemplate({ children }) {
           position="absolute"
         >
           <Toolbar className={classes.toolbar}>
-              <IconButton
-                aria-label="open drawer"
-                className={clsx(
-                  classes.menuButton,
-                  isDrawerOpen && classes.menuButtonHidden,
-                )}
-                color="inherit"
-                edge="start"
-                onClick={_toggleDrawer}
-              >
-                <MenuIcon />
-              </IconButton>
+            <IconButton
+              aria-label="open drawer"
+              className={clsx(
+                classes.menuButton,
+                isDrawerOpen && classes.menuButtonHidden,
+              )}
+              color="inherit"
+              edge="start"
+              onClick={_toggleDrawer}
+            >
+              <MenuIcon />
+            </IconButton>
 
             <img alt="COVID-19" className={classes.toolbarLogo} src={logo} />
           </Toolbar>
