@@ -94,8 +94,14 @@ export function News() {
               Powered by <Link href="https://newsapi.org/">newsapi.org</Link>
             </Typography>
           </Grid>
-          {newsArticles.map(article => (
-            <Grid item key={article.title} xs={12} sm={6} lg={4}>
+          {newsArticles.map((article, index) => (
+            <Grid
+              item
+              key={`${index} - ${article.title}`}
+              xs={12}
+              sm={6}
+              lg={4}
+            >
               <NewsCard {...article} />
             </Grid>
           ))}
