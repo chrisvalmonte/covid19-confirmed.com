@@ -46,19 +46,12 @@ export const usePageTemplateStyles = makeStyles(theme => ({
 
   drawerPaper: {
     backgroundColor: drawerBgColor,
-    position: 'relative',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
     whiteSpace: 'nowrap',
     width: drawerWidth,
-    [theme.breakpoints.up('md')]: {
-      backgroundColor: 'transparent',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-    },
   },
 
   lastUpdated: {

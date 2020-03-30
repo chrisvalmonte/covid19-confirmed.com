@@ -21,6 +21,7 @@ import Typography from '@material-ui/core/Typography';
 import green from '@material-ui/core/colors/green';
 import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import yellow from '@material-ui/core/colors/yellow';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -33,6 +34,7 @@ import { usePageTemplateStyles } from './PageTemplate.styles';
 
 export default function PageTemplate({ children }) {
   const classes = usePageTemplateStyles();
+  const isMediumBreakpoint = useMediaQuery('(min-width: 960px)');
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const _toggleDrawer = () => {
@@ -73,6 +75,11 @@ export default function PageTemplate({ children }) {
 
     _totalData();
   }, []); // eslint-disable-line
+
+  // Fix bug when user opens sidebar on a small screen and then enlarges the browser window
+  useEffect(() => {
+    isMediumBreakpoint && isDrawerOpen && setIsDrawerOpen(false);
+  }, [isDrawerOpen, isMediumBreakpoint, setIsDrawerOpen]);
 
   const renderedTotals = [
     {
