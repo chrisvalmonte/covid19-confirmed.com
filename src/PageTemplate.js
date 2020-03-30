@@ -6,6 +6,8 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
+import InfoIcon from '@material-ui/icons/Info';
+import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -103,41 +105,66 @@ export default function PageTemplate({ children }) {
     },
   ];
 
-  const siteLinks = [
+  const links = [
     {
       icon: <PublicIcon className={classes.linkIcon} />,
+      isSiteLink: true,
       text: paths.map.name,
       to: paths.map.path,
     },
     {
       icon: <DashboardIcon className={classes.linkIcon} />,
+      isSiteLink: true,
       text: paths.dashboard.name,
       to: paths.dashboard.path,
     },
     {
       icon: <MenuBookIcon className={classes.linkIcon} />,
+      isSiteLink: true,
       text: paths.news.name,
       to: paths.news.path,
+    },
+    {
+      icon: <InfoIcon className={classes.linkIcon} />,
+      isSiteLink: false,
+      text: 'About',
+      to: 'https://www.webmd.com/lung/coronavirus',
     },
   ];
 
   const drawerContent = (
     <>
       <List className={classes.links}>
-        {siteLinks.map(({ icon, text, to }) => (
-          <NavLink
-            activeClassName={classes.linkActive}
-            className={classes.link}
-            exact
-            key={to}
-            to={to}
-          >
+        {links.map(({ icon, isSiteLink, text, to }) => {
+          const linkContent = (
             <ListItem button>
-              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemIcon className={classes.linkIcon}>{icon}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
-          </NavLink>
-        ))}
+          );
+
+          return isSiteLink ? (
+            <NavLink
+              activeClassName={classes.linkActive}
+              className={classes.link}
+              exact
+              key={to}
+              to={to}
+            >
+              {linkContent}
+            </NavLink>
+          ) : (
+            <Link
+              className={classes.link}
+              href={to}
+              key={to}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {linkContent}
+            </Link>
+          );
+        })}
       </List>
 
       {renderedTotals.map(({ id, ...data }) => (
