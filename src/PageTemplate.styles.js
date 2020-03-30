@@ -73,6 +73,12 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     color: linkColor,
     display: 'block',
     textDecoration: 'none',
+    '&:focus': {
+      textDecoration: 'none',
+    },
+    '&:hover': {
+      textDecoration: 'none',
+    },
   },
 
   linkActive: {
