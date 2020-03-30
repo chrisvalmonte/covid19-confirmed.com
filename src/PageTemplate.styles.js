@@ -113,4 +113,10 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     height: logoHeight,
     marginLeft: 'auto',
   },
+
+  totals: {
+    [theme.breakpoints.up('md')]: {
+      marginBottom: '32px',
+    },
+  },
 }));

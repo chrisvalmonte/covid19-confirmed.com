@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   content: {
     paddingLeft: '16px',
     paddingRight: '16px',
-    paddingTop: '24px',
+    paddingTop: '16px',
     '&:last-child': {
       paddingBottom: 0,
     },
@@ -27,11 +27,14 @@ const useStyles = makeStyles({
     border: 0,
     boxShadow: 'none',
     width: '100%',
+    '&:first-child > *': {
+      paddingTop: '8px',
+    },
   },
   title: {
     color: grey[200],
-    fontSize: '16px',
-    marginBottom: 0,
+    fontSize: '14px',
+    marginBottom: '-2px',
   },
 });
 

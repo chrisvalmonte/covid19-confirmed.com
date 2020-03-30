@@ -104,6 +104,13 @@ export default function PageTemplate({ children }) {
       title: 'Total Confirmed',
     },
   ];
+  const totalsContent = (
+    <section className={classes.totals}>
+      {renderedTotals.map(({ id, ...data }) => (
+        <CountCard key={id} {...data} />
+      ))}
+    </section>
+  );
 
   const links = [
     {
@@ -131,53 +138,48 @@ export default function PageTemplate({ children }) {
       to: 'https://www.webmd.com/lung/coronavirus',
     },
   ];
+  const linksContent = (
+    <List className={classes.links}>
+      {links.map(({ icon, isSiteLink, text, to }) => {
+        const linkContent = (
+          <ListItem button>
+            <ListItemIcon className={classes.linkIcon}>{icon}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        );
 
-  const drawerContent = (
-    <>
-      <List className={classes.links}>
-        {links.map(({ icon, isSiteLink, text, to }) => {
-          const linkContent = (
-            <ListItem button>
-              <ListItemIcon className={classes.linkIcon}>{icon}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          );
+        return isSiteLink ? (
+          <NavLink
+            activeClassName={classes.linkActive}
+            className={classes.link}
+            exact
+            key={to}
+            to={to}
+          >
+            {linkContent}
+          </NavLink>
+        ) : (
+          <Link
+            className={classes.link}
+            href={to}
+            key={to}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {linkContent}
+          </Link>
+        );
+      })}
+    </List>
+  );
 
-          return isSiteLink ? (
-            <NavLink
-              activeClassName={classes.linkActive}
-              className={classes.link}
-              exact
-              key={to}
-              to={to}
-            >
-              {linkContent}
-            </NavLink>
-          ) : (
-            <Link
-              className={classes.link}
-              href={to}
-              key={to}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {linkContent}
-            </Link>
-          );
-        })}
-      </List>
-
-      {renderedTotals.map(({ id, ...data }) => (
-        <CountCard key={id} {...data} />
-      ))}
-
-      <Typography className={classes.lastUpdated}>
-        {totals.updated
-          ? `Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
+  const lastUpdatedContent = (
+    <Typography className={classes.lastUpdated}>
+      {totals.updated
+        ? `Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
                 ${moment(totals.updated).format('h:mmA')}`
-          : 'Finding statistics...'}
-      </Typography>
-    </>
+        : 'Finding statistics...'}
+    </Typography>
   );
 
   return (
@@ -220,7 +222,9 @@ export default function PageTemplate({ children }) {
             open={isDrawerOpen}
             variant="temporary"
           >
-            {drawerContent}
+            {linksContent}
+            {totalsContent}
+            {lastUpdatedContent}
           </SwipeableDrawer>
         </Hidden>
 
@@ -233,7 +237,9 @@ export default function PageTemplate({ children }) {
             variant="permanent"
           >
             <img alt="COVID-19" className={classes.drawerLogo} src={logo} />
-            {drawerContent}
+            {totalsContent}
+            {linksContent}
+            {lastUpdatedContent}
           </Drawer>
         </Hidden>
       </nav>
