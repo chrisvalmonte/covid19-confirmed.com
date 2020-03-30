@@ -49,7 +49,7 @@ export default function HistoryChart({ height, history }) {
       />
       <YAxis tickFormat={y => numeral(y).format('0a')} tickTotal={5} />
 
-      {history.map(({ timeline: { cases } }) => {
+      {history.map(({ timeline: { cases } }, index) => {
         const data = Object.keys(cases).map(date => ({
           x: moment(date).valueOf(),
           y: cases[date],
@@ -59,6 +59,7 @@ export default function HistoryChart({ height, history }) {
           <LineSeries
             curve="curveMonotoneX"
             data={data}
+            key={index}
             onNearestX={d => {
               setCrosshairValue(d);
             }}
