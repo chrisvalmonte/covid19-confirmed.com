@@ -82,6 +82,7 @@ export default function News() {
       <Container>
         <Grid container spacing={3}>
           <Waypoint
+            fireOnRapidScroll
             onEnter={() => {
               setIsFabShown(false);
             }}
