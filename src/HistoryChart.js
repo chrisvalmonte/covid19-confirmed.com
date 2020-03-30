@@ -5,7 +5,6 @@ import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  ChartLabel,
   Crosshair,
   FlexibleWidthXYPlot,
   HorizontalGridLines,
