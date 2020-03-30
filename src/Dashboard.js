@@ -75,7 +75,9 @@ export default function Dashboard() {
       const { data } = await getHistory();
 
       // TODO: Make graph dynamic. Add date and country filters
-      const historyChartData = data.filter(({ country }) => country === 'usa');
+      const historyChartData = data.filter(
+        ({ country }) => country.toLowerCase() === 'usa',
+      );
       setHistory(historyChartData);
     };
 
