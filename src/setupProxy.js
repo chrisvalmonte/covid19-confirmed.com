@@ -3,7 +3,6 @@ module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      changeOrigin: true,
       pathRewrite: {
         '^/api': '',
       },
@@ -13,7 +12,6 @@ module.exports = function(app) {
   app.use(
     '/covid-news',
     createProxyMiddleware({
-      changeOrigin: true,
       pathRewrite: {
         '^/covid-news': '',
       },
