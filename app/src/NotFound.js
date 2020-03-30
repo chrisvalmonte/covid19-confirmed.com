@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
   }, // FIXME: Remove repetition w/ News.js
 }));
 
-export function NotFound() {
+export default function NotFound() {
   const classes = useStyles();
 
   return (

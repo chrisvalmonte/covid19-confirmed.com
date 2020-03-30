@@ -5,7 +5,7 @@ import red from '@material-ui/core/colors/red';
 
 import { getGEOData } from './services';
 
-export function Map() {
+export default function Map() {
   const [viewport, setViewport] = useState({
     latitude: 40.67,
     longitude: -103.59,

@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function DataTable({
+export default function DataTable({
   bodyRows,
   headCells,
   initialOrder = 'asc',

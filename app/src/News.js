@@ -11,7 +11,7 @@ import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
 import { Waypoint } from 'react-waypoint';
 
-import { NewsCard } from './NewsCard';
+import NewsCard from './NewsCard';
 import { rootStyles } from './App';
 import { getNews } from './services';
 
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function News() {
+export default function News() {
   const classes = useStyles();
 
   const pageRef = useRef(null);

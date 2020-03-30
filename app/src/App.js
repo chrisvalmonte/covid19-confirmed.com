@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Dashboard } from './Dashboard';
-import { Map } from './Map';
-import { News } from './News';
-import { NotFound } from './NotFound';
-import { PageTemplate } from './PageTemplate';
+import Dashboard from './Dashboard';
+import Map from './Map';
+import News from './News';
+import NotFound from './NotFound';
+import PageTemplate from './PageTemplate';
 
 import './App.css';
 import '../node_modules/react-vis/dist/style.css';

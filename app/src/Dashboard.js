@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { DataTable } from './DataTable';
+import DataTable from './DataTable';
 import HistoryChart from './HistoryChart';
 import { getCountries, getHistory } from './services';
 import { rootStyles } from './App';
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export function Dashboard() {
+export default function Dashboard() {
   const classes = useStyles();
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);

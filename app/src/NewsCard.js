@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function NewsCard({ description, title, url, urlToImage }) {
+export default function NewsCard({ description, title, url, urlToImage }) {
   const classes = useStyles();
 
   return (

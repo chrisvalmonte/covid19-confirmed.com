@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function CountCard({ count, countColor, prevCount, title }) {
+export default function CountCard({ count, countColor, prevCount, title }) {
   const classes = useStyles();
 
   return (

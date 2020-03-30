@@ -25,11 +25,11 @@ import moment from 'moment';
 
 import logo from './logo.svg';
 import { paths } from './App';
-import { CountCard } from './CountCard';
+import CountCard from './CountCard';
 import { getTotals } from './services';
 import { usePageTemplateStyles } from './PageTemplate.styles';
 
-export function PageTemplate({ children }) {
+export default function PageTemplate({ children }) {
   const classes = usePageTemplateStyles();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
