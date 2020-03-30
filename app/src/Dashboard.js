@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
@@ -12,6 +13,8 @@ import HistoryChart from './HistoryChart';
 import { getCountries, getHistory } from './services';
 import { rootStyles } from './App';
 
+const historyChartContainerPadding = 8; // 8px
+
 const useStyles = makeStyles(() => ({
   divider: {
     marginBottom: '16px',
@@ -19,9 +22,16 @@ const useStyles = makeStyles(() => ({
   header: {
     marginBottom: '12px',
   },
+  historyChartContainer: {
+    padding: `${historyChartContainerPadding}px`,
+  },
   root: {
     ...rootStyles,
     backgroundColor: grey[100],
+  },
+  temp: {
+    marginTop: '50px',
+    textAlign: 'center',
   },
 }));
 
@@ -111,12 +121,17 @@ export default function Dashboard() {
           <Grid item xs={12} md={7}>
             <DashboardHeader>USA Case History</DashboardHeader>
 
-            <HistoryChart
-              height={
-                todayTableRef.current ? todayTableRef.current.offsetHeight : 300
-              }
-              history={history}
-            />
+            <Paper className={classes.historyChartContainer}>
+              <HistoryChart
+                height={
+                  todayTableRef.current
+                    ? todayTableRef.current.offsetHeight -
+                      historyChartContainerPadding * 2
+                    : 300
+                }
+                history={history}
+              />
+            </Paper>
           </Grid>
 
           {/* Country overview table */}
@@ -129,6 +144,12 @@ export default function Dashboard() {
               initialOrder="desc"
               initialOrderBy="active"
             />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography className={classes.temp} component="h3" variant="h6">
+              More insights coming soon...
+            </Typography>
           </Grid>
         </Grid>
       </Container>
