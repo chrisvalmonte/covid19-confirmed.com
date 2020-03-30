@@ -38,14 +38,14 @@ export default function PageTemplate({ children }) {
   };
 
   const [totals, setTotals] = useState({
-    active: 0,
-    cases: 0,
-    deaths: 0,
+    active: 489310,
+    cases: 642531,
+    deaths: 19197,
     prevActive: 0,
     prevCases: 0,
     prevDeaths: 0,
     prevRecovered: 0,
-    recovered: 0,
+    recovered: 134024,
     updated: null,
   });
 
