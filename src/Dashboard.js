@@ -64,8 +64,8 @@ export default function Dashboard() {
         ({ country, todayCases, todayDeaths }) => ({
           id: country,
           country,
-          todayDeaths,
           todayCases,
+          todayDeaths,
         }),
       );
       setTodayTableBodyRows(todayTableData);
@@ -97,8 +97,8 @@ export default function Dashboard() {
   ];
   const todayTableHeadCells = [
     { id: 'country', label: 'Country' },
-    { id: 'todayDeaths', label: 'Deaths' },
     { id: 'todayCases', label: 'Cases' },
+    { id: 'todayDeaths', label: 'Deaths' },
   ];
 
   return (
@@ -107,7 +107,7 @@ export default function Dashboard() {
         <Grid container spacing={3}>
           {/* Today table */}
           <Grid item xs={12} md={5}>
-            <DashboardHeader>Confirmed Today</DashboardHeader>
+            <DashboardHeader>Newly Confirmed</DashboardHeader>
 
             <RootRef rootRef={todayTableRef}>
               <DataTable
