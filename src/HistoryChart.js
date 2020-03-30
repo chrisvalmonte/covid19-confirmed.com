@@ -31,8 +31,6 @@ export default function HistoryChart({ height, history }) {
 
   const [crosshairValue, setCrosshairValue] = useState(null);
 
-  const _formatDate = date => moment(date).format('MM/DD/YYYY');
-
   if (!history.length) return null;
 
   return (
@@ -44,23 +42,10 @@ export default function HistoryChart({ height, history }) {
     >
       <VerticalGridLines />
       <HorizontalGridLines />
-      <ChartLabel
-        includeMargin={false}
-        text="Date"
-        xPercent={0.015}
-        yPercent={1.01}
-      />
-      <XAxis tickFormat={_formatDate} tickTotal={5} />
-
-      <ChartLabel
-        includeMargin={false}
-        style={{
-          transform: 'rotate(-90)',
-          textAnchor: 'end',
-        }}
-        text="# Cases"
-        xPercent={0.03}
-        yPercent={0.06}
+      <XAxis
+        tickFormat={x => moment(x).format('MM/DD')}
+        tickLabelAngle={-45}
+        tickTotal={5}
       />
       <YAxis tickFormat={y => numeral(y).format('0a')} tickTotal={5} />
 
@@ -93,7 +78,8 @@ export default function HistoryChart({ height, history }) {
               {numeral(crosshairValue.y).format('0,0')}
             </Typography>
             <Typography component="p" variant="body2">
-              <strong>Date</strong>: {_formatDate(crosshairValue.x)}
+              <strong>Date</strong>:{' '}
+              {moment(crosshairValue.x).format('MM/DD/YYYY')}
             </Typography>
           </Paper>
         </Crosshair>
