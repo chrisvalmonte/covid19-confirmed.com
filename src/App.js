@@ -26,14 +26,6 @@ export const paths = {
   },
 };
 
-export const rootStyles = {
-  flexGrow: 1,
-  height: '100vh',
-  overflowY: 'auto',
-  paddingBottom: '200px',
-  paddingTop: '16px',
-};
-
 function App() {
   // Initialize Google Analytics when app mounts
   useEffect(() => {

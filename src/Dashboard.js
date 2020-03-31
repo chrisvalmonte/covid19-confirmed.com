@@ -2,55 +2,85 @@ import React, { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
+import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Zoom';
 import amber from '@material-ui/core/colors/amber';
 import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import { makeStyles } from '@material-ui/core/styles';
 import { DiscreteColorLegend } from 'react-vis';
+import { Waypoint } from 'react-waypoint';
 
 import DataTable from './DataTable';
 import HistoryChart from './HistoryChart';
 import HistoryChartFilters, {
   useHistoryChartFilters,
 } from './HistoryChartFilters';
+import News from './News';
 import PieChart from './PieChart';
 import { getCountries, getHistory, getUSStates } from './services';
-import { rootStyles } from './App';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   divider: {
     marginBottom: '16px',
   },
+  fab: {
+    backgroundColor: grey[900],
+    color: grey[100],
+    bottom: '32px',
+    position: 'fixed',
+    right: '48px',
+    '&:hover': {
+      backgroundColor: grey[900],
+    },
+    [theme.breakpoints.down('sm')]: {
+      bottom: '72px',
+      right: '16px',
+    },
+  },
+
   header: {
     marginBottom: '12px',
   },
+
   historyChartContainer: {
     padding: '12px',
   },
+
   pieContainer: {
     display: 'flex',
     marginBottom: '32px',
     justifyContent: 'center',
   },
+
   pieTitle: {
     paddingBottom: '16px',
     textAlign: 'center',
   },
+
   root: {
-    ...rootStyles,
     backgroundColor: grey[100],
+    flexGrow: 1,
+    height: '100vh',
+    overflowY: 'auto',
+    paddingBottom: '200px',
+    paddingTop: '16px',
   },
 }));
 
 export default function Dashboard() {
   const classes = useStyles();
   const dateFilters = useHistoryChartFilters();
+
+  const pageRef = useRef(null);
+  const [isFabShown, setIsFabShown] = useState(false);
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
 
@@ -129,6 +159,10 @@ export default function Dashboard() {
     _usStateData();
   }, []); // eslint-disable-line
 
+  const _scrollToTop = () => {
+    pageRef.current.scrollTo(0, pageRef.current.offsetTop);
+  };
+
   const countryTableHeadCells = [
     { id: 'country', label: 'Country' },
     {
@@ -151,7 +185,17 @@ export default function Dashboard() {
   ];
 
   return (
-    <article className={classes.root}>
+    <article className={classes.root} ref={pageRef}>
+      <Waypoint
+        fireOnRapidScroll
+        onEnter={() => {
+          setIsFabShown(false);
+        }}
+        onLeave={() => {
+          setIsFabShown(true);
+        }}
+      />
+
       <Container>
         <Grid container spacing={3}>
           {/* Country Overview */}
@@ -232,8 +276,24 @@ export default function Dashboard() {
               />
             </Grid>
           </Grid>
+
+          <Grid component="section" item xs={12}>
+            <DashboardHeader>News Feed</DashboardHeader>
+
+            <News />
+          </Grid>
         </Grid>
       </Container>
+
+      <Zoom in={isFabShown}>
+        <Fab
+          aria-label="scroll back to top"
+          className={classes.fab}
+          onClick={_scrollToTop}
+        >
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </Zoom>
     </article>
   );
 }

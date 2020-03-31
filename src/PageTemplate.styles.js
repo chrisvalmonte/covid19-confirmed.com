@@ -110,6 +110,7 @@ export const usePageTemplateStyles = makeStyles(theme => ({
   totals: {
     [theme.breakpoints.up('md')]: {
       marginBottom: '32px',
+      paddingLeft: '12px',
     },
   },
 }));

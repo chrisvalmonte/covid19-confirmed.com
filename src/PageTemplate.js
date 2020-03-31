@@ -12,7 +12,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MenuBookIcon from '@material-ui/icons/MenuBook';
 import MenuIcon from '@material-ui/icons/Menu';
 import PublicIcon from '@material-ui/icons/Public';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
@@ -131,12 +130,6 @@ export default function PageTemplate({ children }) {
       isSiteLink: true,
       text: paths.dashboard.name,
       to: paths.dashboard.path,
-    },
-    {
-      icon: <MenuBookIcon className={classes.linkIcon} />,
-      isSiteLink: true,
-      text: paths.news.name,
-      to: paths.news.path,
     },
     {
       icon: <InfoIcon className={classes.linkIcon} />,
