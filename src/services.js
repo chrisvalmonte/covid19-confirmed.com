@@ -14,6 +14,9 @@ export const getTotals = async () =>
 export const getHistory = async () =>
   await axios.get('https://corona.lmao.ninja/v2/historical');
 
+export const getUSStates = async () =>
+  await axios.get('https://corona.lmao.ninja/states');
+
 // https://newsapi.org
 export const getNews = async ({ page = 1 }) =>
   await axios.get('https://newsapi.org/v2/top-headlines', {

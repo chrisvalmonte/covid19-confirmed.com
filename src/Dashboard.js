@@ -10,7 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import DataTable from './DataTable';
 import HistoryChart from './HistoryChart';
-import { getCountries, getHistory } from './services';
+import PieChart from './PieChart';
+import { getCountries, getHistory, getUSStates } from './services';
 import { rootStyles } from './App';
 
 const historyChartContainerPadding = 8; // 8px
@@ -24,6 +25,9 @@ const useStyles = makeStyles(() => ({
   },
   historyChartContainer: {
     padding: `${historyChartContainerPadding}px`,
+  },
+  pie: {
+    margin: 'auto',
   },
   root: {
     ...rootStyles,
@@ -39,9 +43,12 @@ export default function Dashboard() {
   const classes = useStyles();
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
+  const [history, setHistory] = useState([]);
   const [todayTableBodyRows, setTodayTableBodyRows] = useState([]);
   const todayTableRef = useRef(null);
-  const [history, setHistory] = useState([]);
+  const [USATableBodyRows, setUSATableBodyRows] = useState([]);
+  const USATableRef = useRef(null);
+  const [USAPieChartData, setUSAPieChartData] = useState([]);
 
   // Get data for tables and charts when component mounts
   useEffect(() => {
@@ -81,8 +88,30 @@ export default function Dashboard() {
       setHistory(historyChartData);
     };
 
+    const _usStateData = async () => {
+      const { data } = await getUSStates();
+
+      const USATableData = data.map(({ active, cases, deaths, state }) => ({
+        id: state,
+        state,
+        active,
+        deaths,
+        cases,
+      }));
+      setUSATableBodyRows(USATableData);
+
+      const USAPieData = data.map(({ cases, state }) => {
+        return {
+          label: state,
+          value: cases,
+        };
+      });
+      setUSAPieChartData(USAPieData);
+    };
+
     _countryData();
     _historyData();
+    _usStateData();
   }, []); // eslint-disable-line
 
   const countryTableHeadCells = [
@@ -99,6 +128,15 @@ export default function Dashboard() {
     { id: 'country', label: 'Country' },
     { id: 'todayCases', label: 'Cases' },
     { id: 'todayDeaths', label: 'Deaths' },
+  ];
+  const USATableHeadCells = [
+    { id: 'state', label: 'State' },
+    {
+      id: 'active',
+      label: 'Active Cases',
+    },
+    { id: 'deaths', label: 'Deaths' },
+    { id: 'cases', label: 'Total Confirmed' },
   ];
 
   return (
@@ -145,6 +183,34 @@ export default function Dashboard() {
               headCells={countryTableHeadCells}
               initialOrder="desc"
               initialOrderBy="active"
+            />
+          </Grid>
+
+          {/* USA Overview */}
+          <Grid item xs={12}>
+            <DashboardHeader>USA Overview</DashboardHeader>
+          </Grid>
+          {/* USA overview table */}
+          <Grid item xs={12} lg={7}>
+            <RootRef rootRef={USATableRef}>
+              <DataTable
+                bodyRows={USATableBodyRows}
+                headCells={USATableHeadCells}
+                initialOrder="desc"
+                initialOrderBy="active"
+              />
+            </RootRef>
+          </Grid>
+          {/* USA overview pie chart */}
+          {/* TODO: Connect table to chart */}
+          <Grid item xs={12} lg={5}>
+            <PieChart
+              className={classes.pie}
+              diameter={
+                USATableRef.current ? USATableRef.current.offsetHeight : 300
+              }
+              data={USAPieChartData}
+              valueType="Cases"
             />
           </Grid>
 
