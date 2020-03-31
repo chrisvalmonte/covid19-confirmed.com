@@ -41,7 +41,7 @@ export const usePageTemplateStyles = makeStyles(theme => ({
 
   drawerLogo: {
     height: logoHeight,
-    margin: '16px 0',
+    margin: '32px 0',
   },
 
   drawerPaper: {
