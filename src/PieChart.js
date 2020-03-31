@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import _ from 'lodash';
+import React, { useState } from 'react';
 import numeral from 'numeral';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
-import { RadialChart, Hint } from 'react-vis';
-import { getColor as getRandomMUIColor } from 'random-material-color';
+import { Hint, RadialChart } from 'react-vis';
 
 const useStyles = makeStyles(() => ({
   hint: {
@@ -20,39 +18,21 @@ const useStyles = makeStyles(() => ({
 export default function PieChart({
   className = '',
   data,
-  height,
+  diameter,
   valueClickHandler,
   valueType = '',
-  width,
 }) {
   const classes = useStyles();
-
   const [hintValue, setHintValue] = useState(false);
-  const [pieColors, setPieColors] = useState([]);
-
-  // Initialize
-  useEffect(() => {
-    if (!data.length) return;
-    let colors = [];
-
-    for (let i = 0; i < data.length - 1; i++) {
-      const randomColor = getRandomMUIColor({
-        shades: ['400', '500', '600', '700', '800', '900'],
-      });
-      colors = [...colors, randomColor];
-    }
-
-    setPieColors(colors);
-  }, [data]);
 
   return (
     <RadialChart
       className={className}
-      colorRange={pieColors}
+      colorType="literal"
       data={data}
       getAngle={d => d.value}
-      height={height}
-      innerRadius={height / 3}
+      height={diameter}
+      innerRadius={diameter / 3}
       onSeriesMouseOut={_v => {
         setHintValue(false);
       }}
@@ -63,8 +43,8 @@ export default function PieChart({
         setHintValue(v);
       }}
       padAngle={0.04}
-      radius={height > width ? width / 2 : height / 2}
-      width={width}
+      radius={diameter / 2}
+      width={diameter}
     >
       {hintValue !== false && (
         <Hint value={hintValue}>

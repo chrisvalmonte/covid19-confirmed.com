@@ -3,11 +3,16 @@ import _ from 'lodash';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
+import amber from '@material-ui/core/colors/amber';
 import grey from '@material-ui/core/colors/grey';
+import red from '@material-ui/core/colors/red';
+import yellow from '@material-ui/core/colors/yellow';
 import { makeStyles } from '@material-ui/core/styles';
+import { DiscreteColorLegend } from 'react-vis';
 
 import DataTable from './DataTable';
 import HistoryChart from './HistoryChart';
@@ -30,8 +35,10 @@ const useStyles = makeStyles(theme => ({
   historyChartContainer: {
     padding: `${historyChartContainerPadding}px`,
   },
-  pie: {
-    margin: '0 auto',
+  pieContainer: {
+    display: 'flex',
+    marginBottom: '32px',
+    justifyContent: 'center',
   },
   pieTitle: {
     paddingBottom: '16px',
@@ -41,20 +48,6 @@ const useStyles = makeStyles(theme => ({
     ...rootStyles,
     backgroundColor: grey[100],
   },
-  usaOverviewPie: {
-    marginBottom: '48px',
-    order: 0,
-    [theme.breakpoints.up('lg')]: {
-      marginBottom: 0,
-      order: 1,
-    },
-  },
-  usaOverviewTable: {
-    order: 1,
-    [theme.breakpoints.up('lg')]: {
-      order: 0,
-    },
-  },
 }));
 
 export default function Dashboard() {
@@ -62,14 +55,28 @@ export default function Dashboard() {
   const dateFilters = useHistoryChartFilters();
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
+
   const [history, setHistory] = useState([]);
   const historyFiltersRef = useRef(null);
+
   const [todayTableBodyRows, setTodayTableBodyRows] = useState([]);
   const todayTableRef = useRef(null);
+
   const [USATableBodyRows, setUSATableBodyRows] = useState([]);
-  const USAPieTitleRef = useRef(null);
-  const USATableRef = useRef(null);
+  const USAPieLegendRef = useRef(null);
   const [USAPieChartData, setUSAPieChartData] = useState([]);
+  const USAPieColorRange = [
+    red[900],
+    red[700],
+    red[500],
+    amber[700],
+    amber[600],
+    amber[500],
+    amber[400],
+    yellow[600],
+    yellow[400],
+    yellow[200],
+  ];
 
   // Get data for tables and charts when component mounts
   useEffect(() => {
@@ -124,7 +131,8 @@ export default function Dashboard() {
       // Top 10 Red Zones in USA
       const USAPieData = _.orderBy(data, ['cases'], ['desc'])
         .slice(0, 10)
-        .map(({ cases, state }) => ({
+        .map(({ cases, state }, index) => ({
+          color: USAPieColorRange[index],
           label: state,
           value: cases,
         }));
@@ -214,26 +222,22 @@ export default function Dashboard() {
           </Grid>
 
           {/* USA Overview */}
-          <Grid component="section" container item xs={12}>
+          <Grid component="section" container item spacing={2} xs={12}>
             <Grid item xs={12}>
               <DashboardHeader>USA Overview</DashboardHeader>
             </Grid>
 
-            <Grid container item xs={12}>
-              {/* USA overview table */}
-              <Grid className={classes.usaOverviewTable} item xs={12} lg={7}>
-                <RootRef rootRef={USATableRef}>
-                  <DataTable
-                    bodyRows={USATableBodyRows}
-                    headCells={USATableHeadCells}
-                    initialOrder="desc"
-                    initialOrderBy="active"
-                  />
-                </RootRef>
-              </Grid>
-              {/* USA overview pie chart */}
-              <Grid className={classes.usaOverviewPie} item xs={12} lg={5}>
-                <RootRef rootRef={USAPieTitleRef}>
+            {/* USA overview pie chart */}
+            {/* FIXME: Layout for xs screens */}
+            <Hidden xsDown>
+              <Grid
+                className={classes.usaOverview}
+                container
+                item
+                xs={12}
+                lg={7}
+              >
+                <Grid item xs={12}>
                   <Typography
                     className={classes.pieTitle}
                     component="h3"
@@ -241,24 +245,38 @@ export default function Dashboard() {
                   >
                     Top 10 Red Zones
                   </Typography>
-                </RootRef>
-                <PieChart
-                  className={classes.pie}
-                  data={USAPieChartData}
-                  height={
-                    USAPieTitleRef.current && USATableRef.current
-                      ? USATableRef.current.offsetHeight -
-                        USAPieTitleRef.current.offsetHeight
-                      : 300
-                  }
-                  valueType="Total Cases"
-                  width={
-                    USAPieTitleRef.current
-                      ? USAPieTitleRef.current.offsetWidth
-                      : 300
-                  }
-                />
+                </Grid>
+
+                <Grid className={classes.pieContainer} item xs={12}>
+                  <RootRef rootRef={USAPieLegendRef}>
+                    <DiscreteColorLegend
+                      colors={USAPieColorRange}
+                      items={USAPieChartData.map(d => d.label)}
+                      width={200}
+                    />
+                  </RootRef>
+
+                  <PieChart
+                    data={USAPieChartData}
+                    diameter={
+                      USAPieLegendRef.current
+                        ? USAPieLegendRef.current.offsetHeight
+                        : 300
+                    }
+                    valueType="Total Cases"
+                  />
+                </Grid>
               </Grid>
+            </Hidden>
+
+            <Grid item xs={12} lg={5}>
+              {/* USA overview table */}
+              <DataTable
+                bodyRows={USATableBodyRows}
+                headCells={USATableHeadCells}
+                initialOrder="desc"
+                initialOrderBy="active"
+              />
             </Grid>
           </Grid>
         </Grid>

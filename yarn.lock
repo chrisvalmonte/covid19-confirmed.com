@@ -9037,13 +9037,6 @@ raf@^3.1.0, raf@^3.4.1:
   dependencies:
     performance-now "^2.1.0"
 
-random-material-color@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/random-material-color/-/random-material-color-1.0.5.tgz#cbbef08abd110393b4e923992b519b8968876b67"
-  integrity sha512-S4bF/sARdh0jd+ODZtyM5Di2F7MfC1plLXOPz3P1qCOHNpbX8AmnqeLB8+K00MhYryNr8UZqQcKEQBZ7E4L4WA==
-  dependencies:
-    murmurhash-js "^1.0.0"
-
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
