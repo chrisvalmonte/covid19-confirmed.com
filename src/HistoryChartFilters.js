@@ -10,16 +10,23 @@ import {
 } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
-  datePicker: {
-    marginTop: '32px',
+  formControl: {
+    width: '145px',
+    [theme.breakpoints.up('sm')]: {
+      width: '200px',
+      '&:first-child': {
+        marginRight: '32px',
+      },
+    },
   },
   root: {
-    display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'space-around',
-    padding: '0 8px',
+    padding: '8px',
+    width: '100%',
     [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      margin: '16px 0',
+      paddingLeft: '52px',
     },
   },
 }));
@@ -49,7 +56,6 @@ export default function HistoryChartFilters({
 
   const pickerProps = {
     autoOk: true,
-    className: classes.datePicker,
     disableFuture: true,
     disableToolbar: true,
     format: 'MM/dd/yyyy',
@@ -58,9 +64,9 @@ export default function HistoryChartFilters({
   };
 
   return (
-    <Grid className={classes.root} component="section" item>
+    <Grid className={classes.root} component="section" container>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <FormControl>
+        <FormControl className={classes.formControl}>
           <KeyboardDatePicker
             {...pickerProps}
             label="Start Date"
@@ -72,7 +78,7 @@ export default function HistoryChartFilters({
           />
         </FormControl>
 
-        <FormControl>
+        <FormControl className={classes.formControl}>
           <KeyboardDatePicker
             {...pickerProps}
             format="MM/dd/yyyy"

@@ -23,9 +23,7 @@ import PieChart from './PieChart';
 import { getCountries, getHistory, getUSStates } from './services';
 import { rootStyles } from './App';
 
-const historyChartContainerPadding = 8; // 8px
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   divider: {
     marginBottom: '16px',
   },
@@ -33,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '12px',
   },
   historyChartContainer: {
-    padding: `${historyChartContainerPadding}px`,
+    padding: '12px',
   },
   pieContainer: {
     display: 'flex',
@@ -57,10 +55,6 @@ export default function Dashboard() {
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
 
   const [history, setHistory] = useState([]);
-  const historyFiltersRef = useRef(null);
-
-  const [todayTableBodyRows, setTodayTableBodyRows] = useState([]);
-  const todayTableRef = useRef(null);
 
   const [USATableBodyRows, setUSATableBodyRows] = useState([]);
   const USAPieLegendRef = useRef(null);
@@ -84,26 +78,17 @@ export default function Dashboard() {
       const { data } = await getCountries();
 
       const countryTableData = data.map(
-        ({ active, cases, country, deaths, recovered }) => ({
+        ({ active, cases, country, deaths, recovered, todayCases }) => ({
           id: country,
           country,
           active,
           deaths,
           recovered,
+          todayCases,
           cases,
         }),
       );
       setCountryTableBodyRows(countryTableData);
-
-      const todayTableData = data.map(
-        ({ country, todayCases, todayDeaths }) => ({
-          id: country,
-          country,
-          todayCases,
-          todayDeaths,
-        }),
-      );
-      setTodayTableBodyRows(todayTableData);
     };
 
     const _historyData = async () => {
@@ -152,12 +137,8 @@ export default function Dashboard() {
     },
     { id: 'deaths', label: 'Deaths' },
     { id: 'recovered', label: 'Recovered' },
+    { id: 'todayCases', label: 'Newly Confirmed' },
     { id: 'cases', label: 'Total Confirmed' },
-  ];
-  const todayTableHeadCells = [
-    { id: 'country', label: 'Country' },
-    { id: 'todayCases', label: 'Cases' },
-    { id: 'todayDeaths', label: 'Deaths' },
   ];
   const USATableHeadCells = [
     { id: 'state', label: 'State' },
@@ -173,52 +154,24 @@ export default function Dashboard() {
     <article className={classes.root}>
       <Container>
         <Grid container spacing={3}>
-          {/* Today table */}
-          <Grid component="section" item xs={12} md={5}>
-            <DashboardHeader>Newly Confirmed</DashboardHeader>
-
-            <RootRef rootRef={todayTableRef}>
-              <DataTable
-                bodyRows={todayTableBodyRows}
-                headCells={todayTableHeadCells}
-                initialOrder="desc"
-                initialOrderBy="todayCases"
-              />
-            </RootRef>
-          </Grid>
-
-          {/* History chart */}
-          <Grid component="section" item xs={12} md={7}>
-            <DashboardHeader>Case History</DashboardHeader>
-
-            <Paper className={classes.historyChartContainer}>
-              <HistoryChart
-                height={
-                  historyFiltersRef.current && todayTableRef.current
-                    ? todayTableRef.current.offsetHeight -
-                      historyFiltersRef.current.offsetHeight -
-                      historyChartContainerPadding * 2
-                    : 300
-                }
-                history={history}
-              />
-
-              <RootRef rootRef={historyFiltersRef}>
-                <HistoryChartFilters {...dateFilters} />
-              </RootRef>
-            </Paper>
-          </Grid>
-
-          {/* Country overview table */}
+          {/* Country Overview */}
           <Grid component="section" item xs={12}>
             <DashboardHeader>Country Overview</DashboardHeader>
+            <Paper>
+              <section className={classes.historyChartContainer}>
+                <HistoryChart height={500} history={history} />
+              </section>
+              <HistoryChartFilters {...dateFilters} />
 
-            <DataTable
-              bodyRows={countryTableBodyRows}
-              headCells={countryTableHeadCells}
-              initialOrder="desc"
-              initialOrderBy="active"
-            />
+              {/* Country overview table */}
+              <DataTable
+                bodyRows={countryTableBodyRows}
+                headCells={countryTableHeadCells}
+                elevation={0}
+                initialOrder="desc"
+                initialOrderBy="active"
+              />
+            </Paper>
           </Grid>
 
           {/* USA Overview */}

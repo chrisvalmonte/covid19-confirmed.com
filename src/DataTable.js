@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function DataTable({
   bodyRows,
+  elevation,
   headCells,
   initialOrder = 'asc',
   initialOrderBy = '',
@@ -66,7 +67,7 @@ export default function DataTable({
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={elevation}>
         <TableContainer>
           <Table
             aria-label="data table"
