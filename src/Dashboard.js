@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import _ from 'lodash';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -10,13 +11,16 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import DataTable from './DataTable';
 import HistoryChart from './HistoryChart';
+import HistoryChartFilters, {
+  useHistoryChartFilters,
+} from './HistoryChartFilters';
 import PieChart from './PieChart';
 import { getCountries, getHistory, getUSStates } from './services';
 import { rootStyles } from './App';
 
 const historyChartContainerPadding = 8; // 8px
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   divider: {
     marginBottom: '16px',
   },
@@ -27,26 +31,43 @@ const useStyles = makeStyles(() => ({
     padding: `${historyChartContainerPadding}px`,
   },
   pie: {
-    margin: 'auto',
+    margin: '0 auto',
+  },
+  pieTitle: {
+    paddingBottom: '16px',
+    textAlign: 'center',
   },
   root: {
     ...rootStyles,
     backgroundColor: grey[100],
   },
-  temp: {
-    marginTop: '50px',
-    textAlign: 'center',
+  usaOverviewPie: {
+    marginBottom: '48px',
+    order: 0,
+    [theme.breakpoints.up('lg')]: {
+      marginBottom: 0,
+      order: 1,
+    },
+  },
+  usaOverviewTable: {
+    order: 1,
+    [theme.breakpoints.up('lg')]: {
+      order: 0,
+    },
   },
 }));
 
 export default function Dashboard() {
   const classes = useStyles();
+  const dateFilters = useHistoryChartFilters();
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
   const [history, setHistory] = useState([]);
+  const historyFiltersRef = useRef(null);
   const [todayTableBodyRows, setTodayTableBodyRows] = useState([]);
   const todayTableRef = useRef(null);
   const [USATableBodyRows, setUSATableBodyRows] = useState([]);
+  const USAPieTitleRef = useRef(null);
   const USATableRef = useRef(null);
   const [USAPieChartData, setUSAPieChartData] = useState([]);
 
@@ -100,12 +121,13 @@ export default function Dashboard() {
       }));
       setUSATableBodyRows(USATableData);
 
-      const USAPieData = data.map(({ cases, state }) => {
-        return {
+      // Top 10 Red Zones in USA
+      const USAPieData = _.orderBy(data, ['cases'], ['desc'])
+        .slice(0, 10)
+        .map(({ cases, state }) => ({
           label: state,
           value: cases,
-        };
-      });
+        }));
       setUSAPieChartData(USAPieData);
     };
 
@@ -144,7 +166,7 @@ export default function Dashboard() {
       <Container>
         <Grid container spacing={3}>
           {/* Today table */}
-          <Grid item xs={12} md={5}>
+          <Grid component="section" item xs={12} md={5}>
             <DashboardHeader>Newly Confirmed</DashboardHeader>
 
             <RootRef rootRef={todayTableRef}>
@@ -158,24 +180,29 @@ export default function Dashboard() {
           </Grid>
 
           {/* History chart */}
-          <Grid item xs={12} md={7}>
-            <DashboardHeader>USA Case History</DashboardHeader>
+          <Grid component="section" item xs={12} md={7}>
+            <DashboardHeader>Case History</DashboardHeader>
 
             <Paper className={classes.historyChartContainer}>
               <HistoryChart
                 height={
-                  todayTableRef.current
+                  historyFiltersRef.current && todayTableRef.current
                     ? todayTableRef.current.offsetHeight -
+                      historyFiltersRef.current.offsetHeight -
                       historyChartContainerPadding * 2
                     : 300
                 }
                 history={history}
               />
+
+              <RootRef rootRef={historyFiltersRef}>
+                <HistoryChartFilters {...dateFilters} />
+              </RootRef>
             </Paper>
           </Grid>
 
           {/* Country overview table */}
-          <Grid item xs={12}>
+          <Grid component="section" item xs={12}>
             <DashboardHeader>Country Overview</DashboardHeader>
 
             <DataTable
@@ -187,37 +214,52 @@ export default function Dashboard() {
           </Grid>
 
           {/* USA Overview */}
-          <Grid item xs={12}>
-            <DashboardHeader>USA Overview</DashboardHeader>
-          </Grid>
-          {/* USA overview table */}
-          <Grid item xs={12} lg={7}>
-            <RootRef rootRef={USATableRef}>
-              <DataTable
-                bodyRows={USATableBodyRows}
-                headCells={USATableHeadCells}
-                initialOrder="desc"
-                initialOrderBy="active"
-              />
-            </RootRef>
-          </Grid>
-          {/* USA overview pie chart */}
-          {/* TODO: Connect table to chart */}
-          <Grid item xs={12} lg={5}>
-            <PieChart
-              className={classes.pie}
-              diameter={
-                USATableRef.current ? USATableRef.current.offsetHeight : 300
-              }
-              data={USAPieChartData}
-              valueType="Cases"
-            />
-          </Grid>
+          <Grid component="section" container item xs={12}>
+            <Grid item xs={12}>
+              <DashboardHeader>USA Overview</DashboardHeader>
+            </Grid>
 
-          <Grid item xs={12}>
-            <Typography className={classes.temp} component="h3" variant="h6">
-              More insights coming soon...
-            </Typography>
+            <Grid container item xs={12}>
+              {/* USA overview table */}
+              <Grid className={classes.usaOverviewTable} item xs={12} lg={7}>
+                <RootRef rootRef={USATableRef}>
+                  <DataTable
+                    bodyRows={USATableBodyRows}
+                    headCells={USATableHeadCells}
+                    initialOrder="desc"
+                    initialOrderBy="active"
+                  />
+                </RootRef>
+              </Grid>
+              {/* USA overview pie chart */}
+              <Grid className={classes.usaOverviewPie} item xs={12} lg={5}>
+                <RootRef rootRef={USAPieTitleRef}>
+                  <Typography
+                    className={classes.pieTitle}
+                    component="h3"
+                    variant="h6"
+                  >
+                    Top 10 Red Zones
+                  </Typography>
+                </RootRef>
+                <PieChart
+                  className={classes.pie}
+                  data={USAPieChartData}
+                  height={
+                    USAPieTitleRef.current && USATableRef.current
+                      ? USATableRef.current.offsetHeight -
+                        USAPieTitleRef.current.offsetHeight
+                      : 300
+                  }
+                  valueType="Total Cases"
+                  width={
+                    USAPieTitleRef.current
+                      ? USAPieTitleRef.current.offsetWidth
+                      : 300
+                  }
+                />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Container>

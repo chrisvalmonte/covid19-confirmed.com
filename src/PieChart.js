@@ -19,20 +19,23 @@ const useStyles = makeStyles(() => ({
 
 export default function PieChart({
   className = '',
-  diameter,
   data,
+  height,
   valueClickHandler,
   valueType = '',
+  width,
 }) {
   const classes = useStyles();
 
   const [hintValue, setHintValue] = useState(false);
   const [pieColors, setPieColors] = useState([]);
 
+  // Initialize
   useEffect(() => {
+    if (!data.length) return;
     let colors = [];
 
-    for (let i = 0; i < 250; i++) {
+    for (let i = 0; i < data.length - 1; i++) {
       const randomColor = getRandomMUIColor({
         shades: ['400', '500', '600', '700', '800', '900'],
       });
@@ -40,7 +43,7 @@ export default function PieChart({
     }
 
     setPieColors(colors);
-  }, []);
+  }, [data]);
 
   return (
     <RadialChart
@@ -48,8 +51,8 @@ export default function PieChart({
       colorRange={pieColors}
       data={data}
       getAngle={d => d.value}
-      height={diameter}
-      innerRadius={diameter / 3}
+      height={height}
+      innerRadius={height / 3}
       onSeriesMouseOut={_v => {
         setHintValue(false);
       }}
@@ -60,8 +63,8 @@ export default function PieChart({
         setHintValue(v);
       }}
       padAngle={0.04}
-      radius={diameter / 2}
-      width={diameter}
+      radius={height > width ? width / 2 : height / 2}
+      width={width}
     >
       {hintValue !== false && (
         <Hint value={hintValue}>
