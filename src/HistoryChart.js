@@ -61,6 +61,7 @@ export default function HistoryChart({
       <YAxis tickFormat={y => numeral(y).format('0a')} tickTotal={5} />
 
       <LineSeries
+        animation="stiff"
         curve="curveMonotoneX"
         data={dates.map(date => ({
           x: moment(date).valueOf(),
