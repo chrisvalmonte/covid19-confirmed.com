@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Dashboard from './Dashboard';
 import Map from './Map';
-import News from './News';
 import NotFound from './NotFound';
 import PageTemplate from './PageTemplate';
 
@@ -19,10 +18,6 @@ export const paths = {
   map: {
     name: 'World Map',
     path: '/',
-  },
-  news: {
-    name: 'News Feed',
-    path: '/news',
   },
 };
 
@@ -39,7 +34,6 @@ function App() {
         <Switch>
           <Route component={Dashboard} exact path={paths.dashboard.path} />
           <Route component={Map} exact path={paths.map.path} />
-          <Route component={News} exact path={paths.news.path} />
           <Route component={NotFound} />
         </Switch>
       </PageTemplate>
