@@ -39,11 +39,7 @@ export default function Dashboard({ totals }) {
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
 
-  const [historyDataByCountry, setHistoryDataByCountry] = useState([]);
-  const [currentCountry, setCurrentCountry] = useState({
-    country: '',
-    timeline: { cases: {} },
-  });
+  const [history, setHistory] = useState({});
 
   const [USATableBodyRows, setUSATableBodyRows] = useState([]);
   const USAPieLegendRef = useRef(null);
@@ -83,15 +79,20 @@ export default function Dashboard({ totals }) {
     const _historyData = async () => {
       const { data } = await getHistory();
 
-      const firstCountryToShow = data.find(
-        ({ country }) => country.toLowerCase() === 'usa',
-      );
+      const countryCaseHistory = data.map(country => country.timeline.cases);
+      let totalCaseHistory = {};
+      countryCaseHistory.forEach(country => {
+        Object.keys(country).forEach(date => {
+          if (totalCaseHistory[date] === undefined) {
+            totalCaseHistory[date] = country[date];
+          } else {
+            totalCaseHistory[date] += country[date];
+          }
+        });
+      });
 
-      setHistoryDataByCountry(data);
-      setCurrentCountry(firstCountryToShow);
-      dateFilters.setStartDateFilter(
-        moment(Object.keys(firstCountryToShow.timeline.cases)[0]),
-      );
+      setHistory(totalCaseHistory);
+      dateFilters.setStartDateFilter(moment(Object.keys(totalCaseHistory)[0]));
     };
 
     const _usStateData = async () => {
@@ -215,9 +216,9 @@ export default function Dashboard({ totals }) {
             ))}
           </Grid>
 
-          {/* Country Overview */}
+          {/* Overview */}
           <Grid component="section" item xs={12}>
-            <DashboardHeader>Overview By Country</DashboardHeader>
+            <DashboardHeader>Overview</DashboardHeader>
             <Paper>
               <div className={classes.historyChartContainer}>
                 <Typography className={classes.historyChartTitle}>
@@ -226,7 +227,7 @@ export default function Dashboard({ totals }) {
                 <HistoryChart
                   endDate={dateFilters.endDateFilter}
                   height={500}
-                  history={currentCountry.timeline.cases}
+                  history={history}
                   startDate={dateFilters.startDateFilter}
                 />
               </div>
@@ -246,7 +247,7 @@ export default function Dashboard({ totals }) {
           {/* USA Overview */}
           <Grid component="section" container item spacing={2} xs={12}>
             <Grid item xs={12}>
-              <DashboardHeader>USA Overview</DashboardHeader>
+              <DashboardHeader>USA Breakdown By State</DashboardHeader>
             </Grid>
 
             {/* USA overview pie chart */}
