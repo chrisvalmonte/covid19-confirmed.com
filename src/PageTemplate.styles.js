@@ -115,8 +115,9 @@ export const usePageTemplateStyles = makeStyles(theme => ({
 
   totals: {
     [theme.breakpoints.up('md')]: {
+      transform: 'translateX(0)',
       transitionDuration: theme.transitions.duration.standard,
-      transitionProperty: 'height, margin, opacity',
+      transitionProperty: 'height, margin, transform, opacity',
       transitionTimingFunction: theme.transitions.easing.easeInOut,
       height: 'auto',
       marginBottom: '32px',
@@ -130,6 +131,8 @@ export const usePageTemplateStyles = makeStyles(theme => ({
       height: 0,
       marginBottom: 0,
       opacity: 0,
+      transform: 'translateX(-50px)',
+      transitionProperty: 'height, transform',
     },
   },
 }));
