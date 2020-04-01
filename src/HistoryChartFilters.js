@@ -81,10 +81,12 @@ export default function HistoryChartFilters({
         <FormControl className={classes.formControl}>
           <KeyboardDatePicker
             {...pickerProps}
-            format="MM/dd/yyyy"
             label="End Date"
             onChange={setEndDateFilter}
             value={endDateFilter}
+            KeyboardButtonProps={{
+              'aria-label': 'change end date',
+            }}
           />
         </FormControl>
       </MuiPickersUtilsProvider>

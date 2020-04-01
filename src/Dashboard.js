@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
+import moment from 'moment';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
@@ -38,7 +39,11 @@ export default function Dashboard({ totals }) {
 
   const [countryTableBodyRows, setCountryTableBodyRows] = useState([]);
 
-  const [history, setHistory] = useState([]);
+  const [historyDataByCountry, setHistoryDataByCountry] = useState([]);
+  const [currentCountry, setCurrentCountry] = useState({
+    country: '',
+    timeline: { cases: {} },
+  });
 
   const [USATableBodyRows, setUSATableBodyRows] = useState([]);
   const USAPieLegendRef = useRef(null);
@@ -78,11 +83,15 @@ export default function Dashboard({ totals }) {
     const _historyData = async () => {
       const { data } = await getHistory();
 
-      // TODO: Make graph dynamic. Add date and country filters
-      const historyChartData = data.filter(
+      const firstCountryToShow = data.find(
         ({ country }) => country.toLowerCase() === 'usa',
       );
-      setHistory(historyChartData);
+
+      setHistoryDataByCountry(data);
+      setCurrentCountry(firstCountryToShow);
+      dateFilters.setStartDateFilter(
+        moment(Object.keys(firstCountryToShow.timeline.cases)[0]),
+      );
     };
 
     const _usStateData = async () => {
@@ -211,7 +220,12 @@ export default function Dashboard({ totals }) {
             <DashboardHeader>Country Overview</DashboardHeader>
             <Paper>
               <section className={classes.historyChartContainer}>
-                <HistoryChart height={500} history={history} />
+                <HistoryChart
+                  endDate={dateFilters.endDateFilter}
+                  height={500}
+                  history={currentCountry.timeline.cases}
+                  startDate={dateFilters.startDateFilter}
+                />
               </section>
               <HistoryChartFilters {...dateFilters} />
 

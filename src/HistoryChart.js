@@ -14,7 +14,10 @@ import {
   YAxis,
 } from 'react-vis';
 import moment from 'moment';
+import { extendMoment } from 'moment-range';
 import numeral from 'numeral';
+
+const Moment = extendMoment(moment);
 
 const useStyles = makeStyles(() => ({
   crosshair: {
@@ -25,12 +28,21 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function HistoryChart({ height, history }) {
+export default function HistoryChart({
+  endDate,
+  height,
+  history = {},
+  startDate,
+}) {
   const classes = useStyles();
 
   const [crosshairValue, setCrosshairValue] = useState(null);
+  const dateRange = Moment.range(startDate, endDate);
+  const dates = Object.keys(history).filter(date =>
+    dateRange.contains(moment(date)),
+  );
 
-  if (!history.length) return null;
+  if (!dates.length) return null;
 
   return (
     <FlexibleWidthXYPlot
@@ -48,24 +60,17 @@ export default function HistoryChart({ height, history }) {
       />
       <YAxis tickFormat={y => numeral(y).format('0a')} tickTotal={5} />
 
-      {history.map(({ timeline: { cases } }, index) => {
-        const data = Object.keys(cases).map(date => ({
+      <LineSeries
+        curve="curveMonotoneX"
+        data={dates.map(date => ({
           x: moment(date).valueOf(),
-          y: cases[date],
-        }));
-
-        return (
-          <LineSeries
-            curve="curveMonotoneX"
-            data={data}
-            key={index}
-            onNearestX={d => {
-              setCrosshairValue(d);
-            }}
-            stroke={red[500]}
-          />
-        );
-      })}
+          y: history[date],
+        }))}
+        onNearestX={d => {
+          setCrosshairValue(d);
+        }}
+        stroke={red[500]}
+      />
 
       {crosshairValue && (
         <Crosshair
