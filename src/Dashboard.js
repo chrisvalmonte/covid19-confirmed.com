@@ -217,16 +217,19 @@ export default function Dashboard({ totals }) {
 
           {/* Country Overview */}
           <Grid component="section" item xs={12}>
-            <DashboardHeader>Country Overview</DashboardHeader>
+            <DashboardHeader>Overview By Country</DashboardHeader>
             <Paper>
-              <section className={classes.historyChartContainer}>
+              <div className={classes.historyChartContainer}>
+                <Typography className={classes.historyChartTitle}>
+                  Total Cases Over Time
+                </Typography>
                 <HistoryChart
                   endDate={dateFilters.endDateFilter}
                   height={500}
                   history={currentCountry.timeline.cases}
                   startDate={dateFilters.startDateFilter}
                 />
-              </section>
+              </div>
               <HistoryChartFilters {...dateFilters} />
 
               {/* Country overview table */}

@@ -43,6 +43,11 @@ export const useDashboardStyles = makeStyles(theme => ({
     padding: '12px',
   },
 
+  historyChartTitle: {
+    paddingBottom: '4px',
+    paddingLeft: '36px',
+  },
+
   pieContainer: {
     display: 'flex',
     marginBottom: '32px',
