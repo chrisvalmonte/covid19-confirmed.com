@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -74,8 +74,14 @@ export default function PageTemplate({ children, totals }) {
       title: 'Total Confirmed',
     },
   ];
+  const { pathname } = useLocation();
   const totalsContent = (
-    <section className={classes.totals}>
+    <section
+      className={clsx(
+        classes.totals,
+        pathname === paths.dashboard.path && classes.totalsHide,
+      )}
+    >
       {renderedTotals.map(({ id, title, ...data }) => (
         <CountCard
           key={id}
@@ -88,6 +94,15 @@ export default function PageTemplate({ children, totals }) {
         />
       ))}
     </section>
+  );
+
+  const lastUpdatedContent = (
+    <Typography className={classes.lastUpdated}>
+      {totals.updated
+        ? `Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
+                ${moment(totals.updated).format('h:mmA')}`
+        : 'Finding statistics...'}
+    </Typography>
   );
 
   const links = [
@@ -143,15 +158,6 @@ export default function PageTemplate({ children, totals }) {
         );
       })}
     </List>
-  );
-
-  const lastUpdatedContent = (
-    <Typography className={classes.lastUpdated}>
-      {totals.updated
-        ? `Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
-                ${moment(totals.updated).format('h:mmA')}`
-        : 'Finding statistics...'}
-    </Typography>
   );
 
   return (

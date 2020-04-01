@@ -191,7 +191,7 @@ export default function Dashboard({ totals }) {
             spacing={2}
           >
             {renderedTotals.map(({ id, title, ...data }) => (
-              <Grid item key={id} xs={12} lg={3}>
+              <Grid item key={id} xs={12} sm={5} lg={3}>
                 <Paper className={classes.headerCard} elevation={2}>
                   <CountCard
                     title={

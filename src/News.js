@@ -3,7 +3,6 @@ import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
 import { Waypoint } from 'react-waypoint';
 

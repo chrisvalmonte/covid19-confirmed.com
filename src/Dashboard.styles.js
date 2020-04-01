@@ -23,6 +23,11 @@ export const useDashboardStyles = makeStyles(theme => ({
 
   header: {
     marginBottom: '48px',
+    [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.down('lg')]: {
+        justifyContent: 'space-around',
+      },
+    },
   },
 
   headerCard: {
