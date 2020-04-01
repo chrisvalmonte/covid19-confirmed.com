@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
+import numeral from 'numeral';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -96,7 +97,10 @@ export default function DataTable({
 
                         return (
                           <TableCell key={index} {...cellProps}>
-                            {bodyRow[bodyCell]}
+                            {/* If value is a number, format it */}
+                            {!isNaN(bodyRow[bodyCell])
+                              ? numeral(bodyRow[bodyCell]).format('0,0')
+                              : bodyRow[bodyCell]}
                           </TableCell>
                         );
                       })}
