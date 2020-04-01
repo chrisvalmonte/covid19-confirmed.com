@@ -26,6 +26,12 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     overflow: 'hidden',
   },
 
+  countTitle: {
+    color: grey[200],
+    fontSize: '14px',
+    marginBottom: '-2px',
+  },
+
   drawer: {
     backgroundColor: drawerBgColor,
     [theme.breakpoints.down('sm')]: {

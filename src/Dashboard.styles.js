@@ -22,7 +22,16 @@ export const useDashboardStyles = makeStyles(theme => ({
   },
 
   header: {
-    marginBottom: '12px',
+    marginBottom: '48px',
+  },
+
+  headerCard: {
+    backgroundColor: grey[900],
+    padding: '16px 8px',
+  },
+
+  headerCountTitle: {
+    color: grey[100],
   },
 
   historyChartContainer: {
@@ -47,5 +56,9 @@ export const useDashboardStyles = makeStyles(theme => ({
     overflowY: 'auto',
     paddingBottom: '200px',
     paddingTop: '16px',
+  },
+
+  sectionHeader: {
+    marginBottom: '12px',
   },
 }));

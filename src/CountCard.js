@@ -2,7 +2,6 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
 import CountUp from 'react-countup';
 import numeral from 'numeral';
@@ -28,13 +27,8 @@ const useStyles = makeStyles({
     boxShadow: 'none',
     width: '100%',
     '&:first-child > *': {
-      paddingTop: '8px',
+      paddingTop: 0,
     },
-  },
-  title: {
-    color: grey[200],
-    fontSize: '14px',
-    marginBottom: '-2px',
   },
 });
 
@@ -44,9 +38,7 @@ export default function CountCard({ count, countColor, prevCount, title }) {
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>
-        <Typography className={classes.title} gutterBottom>
-          {title}
-        </Typography>
+        {title}
 
         <Typography
           className={classes.count}

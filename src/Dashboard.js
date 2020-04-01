@@ -11,11 +11,14 @@ import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import amber from '@material-ui/core/colors/amber';
+import green from '@material-ui/core/colors/green';
+import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import { DiscreteColorLegend } from 'react-vis';
 import { Waypoint } from 'react-waypoint';
 
+import CountCard from './CountCard';
 import DataTable from './DataTable';
 import HistoryChart from './HistoryChart';
 import HistoryChartFilters, {
@@ -26,7 +29,7 @@ import PieChart from './PieChart';
 import { getCountries, getHistory, getUSStates } from './services';
 import { useDashboardStyles } from './Dashboard.styles';
 
-export default function Dashboard() {
+export default function Dashboard({ totals }) {
   const classes = useDashboardStyles();
   const dateFilters = useHistoryChartFilters();
 
@@ -135,6 +138,37 @@ export default function Dashboard() {
     { id: 'cases', label: 'Total Confirmed' },
   ];
 
+  const renderedTotals = [
+    {
+      count: totals.active,
+      countColor: red[500],
+      id: 'dashboard-total--active',
+      prevCount: totals.prevActive,
+      title: 'Active Cases',
+    },
+    {
+      count: totals.deaths,
+      countColor: yellow[500],
+      id: 'dashboard-total--deaths',
+      prevCount: totals.prevDeaths,
+      title: 'Deaths',
+    },
+    {
+      count: totals.recovered,
+      countColor: green[400],
+      id: 'dashboard-total--recovered',
+      prevCount: totals.prevRecovered,
+      title: 'Recovered',
+    },
+    {
+      count: totals.cases,
+      countColor: grey[100],
+      id: 'dashboard-total--cases',
+      prevCount: totals.prevCases,
+      title: 'Total Confirmed',
+    },
+  ];
+
   return (
     <article className={classes.root} ref={pageRef}>
       <Waypoint
@@ -149,6 +183,29 @@ export default function Dashboard() {
 
       <Container>
         <Grid container spacing={3}>
+          <Grid
+            className={classes.header}
+            component="header"
+            container
+            item
+            spacing={2}
+          >
+            {renderedTotals.map(({ id, title, ...data }) => (
+              <Grid item key={id} xs={12} lg={3}>
+                <Paper className={classes.headerCard} elevation={2}>
+                  <CountCard
+                    title={
+                      <Typography className={classes.headerCountTitle}>
+                        {title}
+                      </Typography>
+                    }
+                    {...data}
+                  />
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+
           {/* Country Overview */}
           <Grid component="section" item xs={12}>
             <DashboardHeader>Country Overview</DashboardHeader>
@@ -253,7 +310,7 @@ function DashboardHeader({ children }) {
 
   return (
     <>
-      <Typography className={classes.header} component="h2" variant="h5">
+      <Typography className={classes.sectionHeader} component="h2" variant="h5">
         {children}
       </Typography>
       <Divider className={classes.divider} />

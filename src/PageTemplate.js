@@ -28,10 +28,9 @@ import moment from 'moment';
 import logo from './logo.svg';
 import { paths } from './App';
 import CountCard from './CountCard';
-import { getTotals } from './services';
 import { usePageTemplateStyles } from './PageTemplate.styles';
 
-export default function PageTemplate({ children }) {
+export default function PageTemplate({ children, totals }) {
   const classes = usePageTemplateStyles();
   const isMediumBreakpoint = useMediaQuery('(min-width: 960px)');
 
@@ -39,41 +38,6 @@ export default function PageTemplate({ children }) {
   const _toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-
-  const [totals, setTotals] = useState({
-    active: 489310,
-    cases: 642531,
-    deaths: 19197,
-    prevActive: 0,
-    prevCases: 0,
-    prevDeaths: 0,
-    prevRecovered: 0,
-    recovered: 134024,
-    updated: null,
-  });
-
-  // Get total counts when component mounts
-  useEffect(() => {
-    const _totalData = async () => {
-      const {
-        data: { active, cases, deaths, recovered, updated },
-      } = await getTotals();
-
-      setTotals({
-        active,
-        cases,
-        deaths,
-        prevActive: totals.active,
-        prevCases: totals.cases,
-        prevDeaths: totals.deaths,
-        prevRecovered: totals.recovered,
-        recovered,
-        updated,
-      });
-    };
-
-    _totalData();
-  }, []); // eslint-disable-line
 
   // Fix bug when user opens sidebar on a small screen and then enlarges the browser window
   useEffect(() => {
@@ -112,8 +76,16 @@ export default function PageTemplate({ children }) {
   ];
   const totalsContent = (
     <section className={classes.totals}>
-      {renderedTotals.map(({ id, ...data }) => (
-        <CountCard key={id} {...data} />
+      {renderedTotals.map(({ id, title, ...data }) => (
+        <CountCard
+          key={id}
+          title={
+            <Typography className={classes.countTitle} gutterBottom>
+              {title}
+            </Typography>
+          }
+          {...data}
+        />
       ))}
     </section>
   );
