@@ -1,11 +1,70 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MapGL, { Layer, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import green from '@material-ui/core/colors/green';
+import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
+import yellow from '@material-ui/core/colors/yellow';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 
 import { getGEOData } from './services';
 
+const useMapStyles = makeStyles(theme => ({
+  clusterTypeButtonGroup: {
+    position: 'fixed',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    top: '32px',
+    width: 'fit-content',
+
+    [theme.breakpoints.up('sm')]: {
+      left: 'unset',
+      right: '32px',
+      transform: 'none',
+    },
+  },
+
+  clusterTypeButton: {
+    backgroundColor: '#191a1a',
+    color: grey[50],
+  },
+  clusterTypeButtonEnabled: {
+    '&.Mui-disabled': {
+      color: grey[900],
+    },
+  },
+  clusterTypeButtonActive: {
+    color: red[500],
+
+    '&.Mui-disabled': {
+      backgroundColor: red[500],
+      borderColor: red[500],
+    },
+  },
+  clusterTypeButtonDeaths: {
+    color: yellow[500],
+
+    '&.Mui-disabled': {
+      backgroundColor: yellow[500],
+      borderColor: yellow[500],
+    },
+  },
+  clusterTypeButtonRecovered: {
+    color: green[400],
+
+    '&.Mui-disabled': {
+      backgroundColor: green[400],
+      borderColor: green[400],
+    },
+  },
+}));
+
 export default function Map() {
+  const classes = useMapStyles();
+
   const [viewport, setViewport] = useState({
     latitude: 40.67,
     longitude: -103.59,
@@ -95,21 +154,65 @@ export default function Map() {
     type: 'circle',
   };
 
+  const clusterTypeButtons = [
+    {
+      className: clsx(
+        classes.clusterTypeButton,
+        false && classes.clusterTypeButtonEnabled,
+        classes.clusterTypeButtonActive,
+      ),
+      isDisabled: false,
+      type: 'Active Cases',
+    },
+    {
+      className: clsx(
+        classes.clusterTypeButton,
+        false && classes.clusterTypeButtonEnabled,
+        classes.clusterTypeButtonDeaths,
+      ),
+      isDisabled: false,
+      type: 'Deaths',
+    },
+    {
+      className: clsx(
+        classes.clusterTypeButton,
+        false && classes.clusterTypeButtonEnabled,
+        classes.clusterTypeButtonRecovered,
+      ),
+      isDisabled: false,
+      type: 'Recovered',
+    },
+  ];
+
   return (
-    <MapGL
-      {...viewport}
-      dragRotate={false}
-      height="100%"
-      interactiveLayerIds={[clusterLayer.id]}
-      mapStyle="mapbox://styles/mapbox/dark-v9"
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_GL_API_TOKEN}
-      onClick={_onClick}
-      onViewportChange={_onViewportChange}
-      width="100%"
-    >
-      <Source data={clusterData} ref={sourceRef} type="geojson">
-        <Layer {...clusterLayer} />
-      </Source>
-    </MapGL>
+    <>
+      <MapGL
+        {...viewport}
+        dragRotate={false}
+        height="100%"
+        interactiveLayerIds={[clusterLayer.id]}
+        mapStyle="mapbox://styles/mapbox/dark-v9"
+        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_GL_API_TOKEN}
+        onClick={_onClick}
+        onViewportChange={_onViewportChange}
+        width="100%"
+      >
+        <Source data={clusterData} ref={sourceRef} type="geojson">
+          <Layer {...clusterLayer} />
+        </Source>
+      </MapGL>
+
+      <ButtonGroup
+        aria-label="button group to display active cases, deaths, recovered, or total cases on the map"
+        className={classes.clusterTypeButtonGroup}
+        size="small"
+      >
+        {clusterTypeButtons.map(({ className, isDisabled, type }) => (
+          <Button className={className} disabled={isDisabled} key={type}>
+            {type}
+          </Button>
+        ))}
+      </ButtonGroup>
+    </>
   );
 }
