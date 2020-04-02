@@ -24,6 +24,7 @@ export default function Map() {
         ({
           city,
           coordinates: { latitude, longitude },
+          country,
           province,
           stats: { confirmed, deaths, recovered },
         }) => {
@@ -37,10 +38,10 @@ export default function Map() {
               type: 'Point',
             },
             properties: {
-              active: cases - deaths - recovered,
+              active: cases - numDeaths - numRecovered,
               cases,
               city,
-              country: 'USA',
+              country,
               deaths: numDeaths,
               recovered: numRecovered,
               state: province,
