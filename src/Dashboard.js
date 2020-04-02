@@ -181,40 +181,40 @@ export default function Dashboard({ totals }) {
 
   return (
     <article className={classes.root} ref={pageRef}>
-      <Waypoint
-        fireOnRapidScroll
-        onEnter={() => {
-          setIsFabShown(false);
-        }}
-        onLeave={() => {
-          setIsFabShown(true);
-        }}
-      />
-
       <Container>
         <Grid container spacing={3}>
-          <Grid
-            className={classes.header}
-            component="header"
-            container
-            item
-            spacing={2}
+          <Waypoint
+            fireOnRapidScroll
+            onEnter={() => {
+              setIsFabShown(false);
+            }}
+            onLeave={() => {
+              setIsFabShown(true);
+            }}
           >
-            {renderedTotals.map(({ id, title, ...data }) => (
-              <Grid item key={id} xs={12} sm={5} lg={3}>
-                <Paper className={classes.headerCard} elevation={2}>
-                  <CountCard
-                    title={
-                      <Typography className={classes.headerCountTitle}>
-                        {title}
-                      </Typography>
-                    }
-                    {...data}
-                  />
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
+            <Grid
+              className={classes.header}
+              component="header"
+              container
+              item
+              spacing={2}
+            >
+              {renderedTotals.map(({ id, title, ...data }) => (
+                <Grid item key={id} xs={12} sm={5} lg={3}>
+                  <Paper className={classes.headerCard} elevation={2}>
+                    <CountCard
+                      title={
+                        <Typography className={classes.headerCountTitle}>
+                          {title}
+                        </Typography>
+                      }
+                      {...data}
+                    />
+                  </Paper>
+                </Grid>
+              ))}
+            </Grid>
+          </Waypoint>
 
           {/* Overview */}
           <Grid component="section" item xs={12}>
