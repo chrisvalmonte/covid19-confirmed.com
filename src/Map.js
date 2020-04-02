@@ -73,6 +73,8 @@ export default function Map() {
     pitch: 0,
   });
   const [clusterData, setClusterData] = useState(null);
+  const [currentCluster, setCurrentCluster] = useState('active');
+  const [currentClusterColor, setCurrentClusterColor] = useState(red[500]);
   const sourceRef = useRef();
 
   // Get GEO data when component mounts
@@ -142,13 +144,35 @@ export default function Map() {
     });
   };
 
+  const _onClusterTypeBtnClick = type => {
+    let clusterColor;
+
+    switch (type) {
+      default:
+      case 'active':
+        clusterColor = red[500];
+        break;
+
+      case 'deaths':
+        clusterColor = yellow[500];
+        break;
+
+      case 'recovered':
+        clusterColor = green[400];
+        break;
+    }
+
+    setCurrentCluster(type);
+    setCurrentClusterColor(clusterColor);
+  };
+
   const clusterLayer = {
-    filter: ['all', ['has', 'active'], ['>', 'active', 0]],
+    filter: ['all', ['has', currentCluster], ['>', currentCluster, 0]],
     id: 'cluster-circle',
     paint: {
-      'circle-color': red[500],
+      'circle-color': currentClusterColor,
       'circle-opacity': 0.3,
-      'circle-radius': ['step', ['get', 'active'], 2.5, 50, 15, 375, 20],
+      'circle-radius': ['step', ['get', currentCluster], 2.5, 50, 15, 375, 20],
     },
     source: 'cluster-circle',
     type: 'circle',
@@ -158,29 +182,32 @@ export default function Map() {
     {
       className: clsx(
         classes.clusterTypeButton,
-        false && classes.clusterTypeButtonEnabled,
+        currentCluster === 'active' && classes.clusterTypeButtonEnabled,
         classes.clusterTypeButtonActive,
       ),
-      isDisabled: false,
-      type: 'Active Cases',
+      isDisabled: currentCluster === 'active',
+      text: 'Active Cases',
+      type: 'active',
     },
     {
       className: clsx(
         classes.clusterTypeButton,
-        false && classes.clusterTypeButtonEnabled,
+        currentCluster === 'deaths' && classes.clusterTypeButtonEnabled,
         classes.clusterTypeButtonDeaths,
       ),
-      isDisabled: false,
-      type: 'Deaths',
+      isDisabled: currentCluster === 'deaths',
+      text: 'Deaths',
+      type: 'deaths',
     },
     {
       className: clsx(
         classes.clusterTypeButton,
-        false && classes.clusterTypeButtonEnabled,
+        currentCluster === 'recovered' && classes.clusterTypeButtonEnabled,
         classes.clusterTypeButtonRecovered,
       ),
-      isDisabled: false,
-      type: 'Recovered',
+      isDisabled: currentCluster === 'recovered',
+      text: 'Recovered',
+      type: 'recovered',
     },
   ];
 
@@ -207,9 +234,16 @@ export default function Map() {
         className={classes.clusterTypeButtonGroup}
         size="small"
       >
-        {clusterTypeButtons.map(({ className, isDisabled, type }) => (
-          <Button className={className} disabled={isDisabled} key={type}>
-            {type}
+        {clusterTypeButtons.map(({ className, isDisabled, text, type }) => (
+          <Button
+            className={className}
+            disabled={isDisabled}
+            key={type}
+            onClick={() => {
+              _onClusterTypeBtnClick(type);
+            }}
+          >
+            {text}
           </Button>
         ))}
       </ButtonGroup>
