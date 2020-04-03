@@ -75,22 +75,13 @@ export default function Map() {
   const _onClick = event => {
     if (!(event.hasOwnProperty('features') && event.features[0])) return;
 
-    const feature = event.features[0];
-    const clusterId = feature.properties.cluster_id;
+    const clickedPoint = event.features[0];
 
-    const mapboxSource = sourceRef.current.getSource();
-
-    mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
-      if (err) return;
-
-      _onViewportChange({
-        latitude: feature.geometry.coordinates[1],
-        longitude: feature.geometry.coordinates[0],
-        transitionDuration: 500,
-        viewport,
-        zoom,
-      });
-    });
+    // TODO: Display point information in popup
+    // https://uber.github.io/react-map-gl/docs/api-reference/popup
+    console.log(clickedPoint);
+    console.log(clickedPoint.geometry.coordinates);
+    console.log(clickedPoint.properties);
   };
 
   const _onClusterTypeBtnClick = type => {
