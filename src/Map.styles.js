@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useMapStyles = makeStyles(theme => ({
   clusterTypeButtonGroup: {
+    boxShadow: theme.shadows[6],
     position: 'fixed',
     left: '50%',
     transform: 'translateX(-50%)',
