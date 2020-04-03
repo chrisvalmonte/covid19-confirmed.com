@@ -4,9 +4,12 @@ import MapGL, { FlyToInterpolator, Layer, Popup, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Zoom';
+import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
@@ -124,6 +127,16 @@ export default function Map() {
     });
   };
 
+  const _zoomOutMap = () => {
+    setViewport({
+      ...viewport,
+      transitionDuration: 1000,
+      transitionEasing: d3.easeCubic,
+      transitionInterpolator: new FlyToInterpolator(),
+      zoom: 0,
+    });
+  };
+
   const _onClusterTypeBtnClick = type => {
     let clusterColor;
 
@@ -221,7 +234,7 @@ export default function Map() {
             anchor="bottom"
             latitude={popupData.latitude}
             longitude={popupData.longitude}
-            offsetTop={-10}
+            offsetTop={-20}
             onClose={() => {
               setIsPopupOpen(false);
             }}
@@ -264,6 +277,16 @@ export default function Map() {
           </Button>
         ))}
       </ButtonGroup>
+
+      <Zoom in={viewport.zoom > 4.5}>
+        <Fab
+          aria-label="scroll back to top"
+          className={classes.fab}
+          onClick={_zoomOutMap}
+        >
+          <ZoomOutMapIcon />
+        </Fab>
+      </Zoom>
     </>
   );
 }

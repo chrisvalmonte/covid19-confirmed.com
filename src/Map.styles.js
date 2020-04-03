@@ -66,6 +66,21 @@ export const useMapStyles = makeStyles(theme => ({
     },
   },
 
+  fab: {
+    backgroundColor: grey[700],
+    color: grey[100],
+    bottom: '32px',
+    position: 'fixed',
+    right: '48px',
+    '&:hover': {
+      backgroundColor: grey[700],
+    },
+    [theme.breakpoints.down('sm')]: {
+      bottom: '72px',
+      right: '16px',
+    },
+  },
+
   popupStats: {
     padding: 0,
   },
