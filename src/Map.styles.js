@@ -70,7 +70,7 @@ export const useMapStyles = makeStyles(theme => ({
     padding: 0,
   },
   popupTitle: {
-    marginBottom: '8px',
+    margin: '8px 0',
     textAlign: 'center',
   },
 
