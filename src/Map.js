@@ -15,9 +15,9 @@ export default function Map() {
   const classes = useMapStyles();
 
   const [viewport, setViewport] = useState({
-    latitude: 40.67,
-    longitude: -103.59,
-    zoom: 1.5,
+    latitude: 29.5,
+    longitude: -37.5,
+    zoom: 0,
     bearing: 0,
     pitch: 0,
   });
@@ -108,11 +108,11 @@ export default function Map() {
 
   let clusterOpacity = 0;
   const { zoom } = viewport;
-  if (zoom <= 1) clusterOpacity = 0.2;
-  else if (zoom > 1 && zoom <= 2) clusterOpacity = 0.3;
-  else if (zoom > 2 && zoom <= 4) clusterOpacity = 0.5;
-  else if (zoom > 4 && zoom <= 5.5) clusterOpacity = 0.75;
-  else clusterOpacity = 0.9;
+  if (zoom <= 1) clusterOpacity = 0.075;
+  else if (zoom > 1 && zoom <= 2) clusterOpacity = 0.15;
+  else if (zoom > 2 && zoom <= 3) clusterOpacity = 0.3;
+  else if (zoom > 3 && zoom <= 4) clusterOpacity = 0.5;
+  else clusterOpacity = 0.75;
 
   const clusterLayer = {
     filter: ['all', ['has', currentCluster], ['>', currentCluster, 0]],
@@ -168,7 +168,7 @@ export default function Map() {
         interactiveLayerIds={[clusterLayer.id]}
         mapStyle="mapbox://styles/mapbox/dark-v9"
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_GL_API_TOKEN}
-        maxZoom={7}
+        maxZoom={5}
         onClick={_onClick}
         onViewportChange={_onViewportChange}
         width="100%"
