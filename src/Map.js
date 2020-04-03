@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import numeral from 'numeral';
-import MapGL, { Layer, Popup, Source } from 'react-map-gl';
+import MapGL, { FlyToInterpolator, Layer, Popup, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -11,6 +11,7 @@ import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import clsx from 'clsx';
+import * as d3 from 'd3-ease';
 
 import { getGEOData } from './services';
 import { useMapStyles } from './Map.styles';
@@ -84,18 +85,24 @@ export default function Map() {
     const clickedPoint = event.features[0];
 
     const {
+      geometry: {
+        coordinates: [longitude, latitude],
+      },
       properties: { active, country, deaths, recovered, state },
     } = clickedPoint;
     const isStatePresent = state && state !== 'null';
     const isCountryPresent = country && country !== 'null';
 
-    const locationName =
-      isStatePresent && isCountryPresent ? `${state}, ${country}` : country;
+    _flyToClickedPoint({
+      latitude,
+      longitude,
+    });
 
     setPopupData({
-      latitude: clickedPoint.geometry.coordinates[1],
-      longitude: clickedPoint.geometry.coordinates[0],
-      name: locationName,
+      latitude,
+      longitude,
+      name:
+        isStatePresent && isCountryPresent ? `${state}, ${country}` : country,
       stats: {
         active: numeral(active).format('0,0'),
         deaths: numeral(deaths).format('0,0'),
@@ -103,6 +110,18 @@ export default function Map() {
       },
     });
     setIsPopupOpen(true);
+  };
+
+  const _flyToClickedPoint = ({ latitude, longitude }) => {
+    setViewport({
+      ...viewport,
+      latitude,
+      longitude,
+      transitionDuration: 1000,
+      transitionEasing: d3.easeCubic,
+      transitionInterpolator: new FlyToInterpolator(),
+      zoom: 5,
+    });
   };
 
   const _onClusterTypeBtnClick = type => {
@@ -197,7 +216,7 @@ export default function Map() {
           <Layer {...clusterLayer} />
         </Source>
 
-        {viewport.zoom > 1 && isPopupOpen && (
+        {viewport.zoom === 5 && isPopupOpen && (
           <Popup
             anchor="top"
             latitude={popupData.latitude}
