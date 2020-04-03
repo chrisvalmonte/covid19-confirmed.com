@@ -117,7 +117,7 @@ export default function Map() {
       ...viewport,
       latitude,
       longitude,
-      transitionDuration: 1000,
+      transitionDuration: viewport.zoom < 5 ? 1000 : 100,
       transitionEasing: d3.easeCubic,
       transitionInterpolator: new FlyToInterpolator(),
       zoom: 5,
