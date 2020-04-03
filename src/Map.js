@@ -218,10 +218,10 @@ export default function Map() {
 
         {viewport.zoom > 4.5 && isPopupOpen && (
           <Popup
-            anchor="top"
+            anchor="bottom"
             latitude={popupData.latitude}
             longitude={popupData.longitude}
-            offsetTop={10}
+            offsetTop={-10}
             onClose={() => {
               setIsPopupOpen(false);
             }}
