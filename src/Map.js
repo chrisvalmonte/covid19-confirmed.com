@@ -227,7 +227,6 @@ export default function Map() {
               {popupData.name}
             </Typography>
 
-            {/* <Typography className={classes.popupStat} variant="body2"> */}
             <List className={classes.popupStats} dense>
               <ListItem dense>
                 <strong>{`${popupData.stats.active} Active Cases`}</strong>
@@ -239,7 +238,6 @@ export default function Map() {
                 <strong>{`${popupData.stats.recovered} Recoveries`}</strong>
               </ListItem>
             </List>
-            {/* </Typography> */}
           </Popup>
         )}
       </MapGL>
