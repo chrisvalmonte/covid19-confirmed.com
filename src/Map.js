@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
@@ -228,17 +227,19 @@ export default function Map() {
               {popupData.name}
             </Typography>
 
-            <Typography className={classes.popupStat} variant="body2">
-              {currentCluster === 'active' && (
-                <strong>{`${popupData.stats.active} Active Cases Reported`}</strong>
-              )}
-              {currentCluster === 'deaths' && (
-                <strong>{`${popupData.stats.deaths} Deaths Reported`}</strong>
-              )}
-              {currentCluster === 'recovered' && (
-                <strong>{`${popupData.stats.recovered} Recoveries Reported`}</strong>
-              )}
-            </Typography>
+            {/* <Typography className={classes.popupStat} variant="body2"> */}
+            <List className={classes.popupStats} dense>
+              <ListItem dense>
+                <strong>{`${popupData.stats.active} Active Cases`}</strong>
+              </ListItem>
+              <ListItem>
+                <strong>{`${popupData.stats.deaths} Deaths`}</strong>
+              </ListItem>
+              <ListItem>
+                <strong>{`${popupData.stats.recovered} Recoveries`}</strong>
+              </ListItem>
+            </List>
+            {/* </Typography> */}
           </Popup>
         )}
       </MapGL>

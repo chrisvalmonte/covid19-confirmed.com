@@ -22,11 +22,6 @@ export const useMapStyles = makeStyles(theme => ({
   clusterTypeButton: {
     backgroundColor: '#191a1a',
     color: grey[50],
-
-    '&.MuiButton-root:hover': {
-      backgroundColor: '#191a1a',
-      color: grey[50],
-    },
   },
   clusterTypeButtonEnabled: {
     '&.Mui-disabled': {
@@ -39,10 +34,18 @@ export const useMapStyles = makeStyles(theme => ({
       backgroundColor: red[500],
       borderColor: red[500],
     },
+    '&.MuiButton-root:hover': {
+      backgroundColor: red[500],
+      borderColor: red[500],
+    },
   },
   clusterTypeButtonDeaths: {
     color: yellow[500],
     '&.Mui-disabled': {
+      backgroundColor: yellow[500],
+      borderColor: yellow[500],
+    },
+    '&.MuiButton-root:hover': {
       backgroundColor: yellow[500],
       borderColor: yellow[500],
     },
@@ -52,11 +55,15 @@ export const useMapStyles = makeStyles(theme => ({
     '&.Mui-disabled': {
       backgroundColor: green[400],
       borderColor: green[400],
+      '&.MuiButton-root:hover': {
+        backgroundColor: green[400],
+        borderColor: green[400],
+      },
     },
   },
 
-  popupStat: {
-    textAlign: 'center',
+  popupStats: {
+    padding: 0,
   },
   popupTitle: {
     marginBottom: '8px',
