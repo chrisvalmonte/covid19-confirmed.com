@@ -117,7 +117,7 @@ export default function Map() {
       ...viewport,
       latitude,
       longitude,
-      transitionDuration: viewport.zoom < 5 ? 1000 : 100,
+      transitionDuration: viewport.zoom < 5 ? 1000 : 0,
       transitionEasing: d3.easeCubic,
       transitionInterpolator: new FlyToInterpolator(),
       zoom: 5,
@@ -216,7 +216,7 @@ export default function Map() {
           <Layer {...clusterLayer} />
         </Source>
 
-        {viewport.zoom === 5 && isPopupOpen && (
+        {viewport.zoom > 4.5 && isPopupOpen && (
           <Popup
             anchor="top"
             latitude={popupData.latitude}
