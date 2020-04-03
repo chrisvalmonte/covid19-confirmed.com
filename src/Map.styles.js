@@ -37,6 +37,7 @@ export const useMapStyles = makeStyles(theme => ({
     '&.MuiButton-root:hover': {
       backgroundColor: red[500],
       borderColor: red[500],
+      color: grey[900],
     },
   },
   clusterTypeButtonDeaths: {
@@ -48,6 +49,7 @@ export const useMapStyles = makeStyles(theme => ({
     '&.MuiButton-root:hover': {
       backgroundColor: yellow[500],
       borderColor: yellow[500],
+      color: grey[900],
     },
   },
   clusterTypeButtonRecovered: {
@@ -55,10 +57,11 @@ export const useMapStyles = makeStyles(theme => ({
     '&.Mui-disabled': {
       backgroundColor: green[400],
       borderColor: green[400],
-      '&.MuiButton-root:hover': {
-        backgroundColor: green[400],
-        borderColor: green[400],
-      },
+    },
+    '&.MuiButton-root:hover': {
+      backgroundColor: green[400],
+      borderColor: green[400],
+      color: grey[900],
     },
   },
 
