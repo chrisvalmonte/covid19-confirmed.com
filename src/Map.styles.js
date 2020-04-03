@@ -22,6 +22,11 @@ export const useMapStyles = makeStyles(theme => ({
   clusterTypeButton: {
     backgroundColor: '#191a1a',
     color: grey[50],
+
+    '&.MuiButton-root:hover': {
+      backgroundColor: '#191a1a',
+      color: grey[50],
+    },
   },
   clusterTypeButtonEnabled: {
     '&.Mui-disabled': {
@@ -30,41 +35,37 @@ export const useMapStyles = makeStyles(theme => ({
   },
   clusterTypeButtonActive: {
     color: red[500],
-
     '&.Mui-disabled': {
       backgroundColor: red[500],
       borderColor: red[500],
-    },
-    '&.MuiButton-root:hover': {
-      backgroundColor: red[500],
-      borderColor: red[500],
-      color: grey[900],
     },
   },
   clusterTypeButtonDeaths: {
     color: yellow[500],
-
     '&.Mui-disabled': {
       backgroundColor: yellow[500],
       borderColor: yellow[500],
-    },
-    '&.MuiButton-root:hover': {
-      backgroundColor: yellow[500],
-      borderColor: yellow[500],
-      color: grey[900],
     },
   },
   clusterTypeButtonRecovered: {
     color: green[400],
-
     '&.Mui-disabled': {
       backgroundColor: green[400],
       borderColor: green[400],
     },
-    '&.MuiButton-root:hover': {
-      backgroundColor: green[400],
-      borderColor: green[400],
-      color: grey[900],
-    },
   },
+
+  popupStat: {
+    textAlign: 'center',
+  },
+  popupTitle: {
+    marginBottom: '8px',
+    textAlign: 'center',
+  },
+
+  // TODO: Figure out why styles aren't being overridden
+  // 'main .mapboxgl-popup-content': {
+  //   backgroundColor: 'transparent !important',
+  //   padding: '0 !important',
+  // },
 }));

@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import MapGL, { Layer, Source } from 'react-map-gl';
+import numeral from 'numeral';
+import MapGL, { Layer, Popup, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
@@ -24,6 +29,10 @@ export default function Map() {
   const [clusterData, setClusterData] = useState(null);
   const [currentCluster, setCurrentCluster] = useState('active');
   const [currentClusterColor, setCurrentClusterColor] = useState(red[500]);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupData, setPopupData] = useState({});
+
   const sourceRef = useRef();
 
   // Get GEO data when component mounts
@@ -77,11 +86,37 @@ export default function Map() {
 
     const clickedPoint = event.features[0];
 
-    // TODO: Display point information in popup
-    // https://uber.github.io/react-map-gl/docs/api-reference/popup
-    console.log(clickedPoint);
-    console.log(clickedPoint.geometry.coordinates);
+    const {
+      properties: { active, city, country, deaths, recovered, state },
+    } = clickedPoint;
+    const isCityPresent = city !== 'null';
+    const isStatePresent = state !== 'null';
+    const isCountryPresent = country !== 'null';
+
     console.log(clickedPoint.properties);
+
+    let locationName = '';
+    if (isCityPresent && isStatePresent && isCountryPresent)
+      locationName = `${city}, ${state}, ${country}`;
+    else if (isStatePresent && isCountryPresent)
+      locationName = `${state}, ${country}`;
+    else if (isCityPresent && isCountryPresent)
+      locationName = `${city}, ${country}`;
+    else if (isCityPresent && isStatePresent)
+      locationName = `${city}, ${state}`;
+    else locationName = country;
+
+    setPopupData({
+      latitude: clickedPoint.geometry.coordinates[1],
+      longitude: clickedPoint.geometry.coordinates[0],
+      name: locationName,
+      stats: {
+        active: numeral(active).format('0,0'),
+        deaths: numeral(deaths).format('0,0'),
+        recovered: numeral(recovered).format('0,0'),
+      },
+    });
+    setIsPopupOpen(true);
   };
 
   const _onClusterTypeBtnClick = type => {
@@ -176,6 +211,36 @@ export default function Map() {
         <Source data={clusterData} ref={sourceRef} type="geojson">
           <Layer {...clusterLayer} />
         </Source>
+
+        {viewport.zoom > 1 && isPopupOpen && (
+          <Popup
+            anchor="top"
+            closeButton={false}
+            latitude={popupData.latitude}
+            longitude={popupData.longitude}
+            offsetTop={10}
+            onClose={() => {
+              setIsPopupOpen(false);
+            }}
+            tipSize={6}
+          >
+            <Typography className={classes.popupTitle} component="h6">
+              {popupData.name}
+            </Typography>
+
+            <Typography className={classes.popupStat} variant="body2">
+              {currentCluster === 'active' && (
+                <strong>{`${popupData.stats.active} Active Cases Reported`}</strong>
+              )}
+              {currentCluster === 'deaths' && (
+                <strong>{`${popupData.stats.deaths} Deaths Reported`}</strong>
+              )}
+              {currentCluster === 'recovered' && (
+                <strong>{`${popupData.stats.recovered} Recoveries Reported`}</strong>
+              )}
+            </Typography>
+          </Popup>
+        )}
       </MapGL>
 
       <ButtonGroup
