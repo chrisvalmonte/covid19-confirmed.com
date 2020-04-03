@@ -6,7 +6,7 @@ export const getCountries = async () =>
   await axios.get('https://corona.lmao.ninja/countries');
 
 export const getGEOData = async () =>
-  await axios.get('https://corona.lmao.ninja/jhucsse');
+  await axios.get('https://corona.lmao.ninja/v2/jhucsse');
 
 export const getTotals = async () =>
   await axios.get('https://corona.lmao.ninja/all');
