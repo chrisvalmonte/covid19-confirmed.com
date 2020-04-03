@@ -177,6 +177,7 @@ export default function Map() {
         interactiveLayerIds={[clusterLayer.id]}
         mapStyle="mapbox://styles/mapbox/dark-v9"
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_GL_API_TOKEN}
+        maxZoom={7}
         onClick={_onClick}
         onViewportChange={_onViewportChange}
         width="100%"
