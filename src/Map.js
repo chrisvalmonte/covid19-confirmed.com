@@ -129,10 +129,9 @@ export default function Map() {
 
   let clusterOpacity = 0;
   const { zoom } = viewport;
-  if (zoom <= 1) clusterOpacity = 0.075;
-  else if (zoom > 1 && zoom <= 2) clusterOpacity = 0.15;
-  else if (zoom > 2 && zoom <= 3) clusterOpacity = 0.3;
-  else if (zoom > 3 && zoom <= 4) clusterOpacity = 0.5;
+  if (zoom <= 1) clusterOpacity = 0.1;
+  else if (zoom > 1 && zoom <= 3) clusterOpacity = 0.3;
+  else if (zoom > 3 && zoom <= 4) clusterOpacity = 0.6;
   else clusterOpacity = 0.75;
 
   const clusterLayer = {
