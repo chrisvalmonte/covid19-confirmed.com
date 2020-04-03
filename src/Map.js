@@ -43,6 +43,11 @@ const useMapStyles = makeStyles(theme => ({
       backgroundColor: red[500],
       borderColor: red[500],
     },
+    '&:hover': {
+      backgroundColor: red[500],
+      borderColor: red[500],
+      color: grey[900],
+    },
   },
   clusterTypeButtonDeaths: {
     color: yellow[500],
@@ -51,6 +56,11 @@ const useMapStyles = makeStyles(theme => ({
       backgroundColor: yellow[500],
       borderColor: yellow[500],
     },
+    '&:hover': {
+      backgroundColor: yellow[500],
+      borderColor: yellow[500],
+      color: grey[900],
+    },
   },
   clusterTypeButtonRecovered: {
     color: green[400],
@@ -58,6 +68,11 @@ const useMapStyles = makeStyles(theme => ({
     '&.Mui-disabled': {
       backgroundColor: green[400],
       borderColor: green[400],
+    },
+    '&:hover': {
+      backgroundColor: green[400],
+      borderColor: green[400],
+      color: grey[900],
     },
   },
 }));
