@@ -35,7 +35,7 @@ export const useMapStyles = makeStyles(theme => ({
       backgroundColor: red[500],
       borderColor: red[500],
     },
-    '&:hover': {
+    '&.MuiButton-root:hover': {
       backgroundColor: red[500],
       borderColor: red[500],
       color: grey[900],
@@ -48,7 +48,7 @@ export const useMapStyles = makeStyles(theme => ({
       backgroundColor: yellow[500],
       borderColor: yellow[500],
     },
-    '&:hover': {
+    '&.MuiButton-root:hover': {
       backgroundColor: yellow[500],
       borderColor: yellow[500],
       color: grey[900],
@@ -61,7 +61,7 @@ export const useMapStyles = makeStyles(theme => ({
       backgroundColor: green[400],
       borderColor: green[400],
     },
-    '&:hover': {
+    '&.MuiButton-root:hover': {
       backgroundColor: green[400],
       borderColor: green[400],
       color: grey[900],
