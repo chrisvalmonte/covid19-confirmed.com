@@ -166,12 +166,20 @@ export default function Map() {
     setCurrentClusterColor(clusterColor);
   };
 
+  let clusterOpacity = 0;
+  const { zoom } = viewport;
+  if (zoom <= 1) clusterOpacity = 0.2;
+  else if (zoom > 1 && zoom <= 2) clusterOpacity = 0.3;
+  else if (zoom > 2 && zoom <= 4) clusterOpacity = 0.5;
+  else if (zoom > 4 && zoom <= 5.5) clusterOpacity = 0.75;
+  else clusterOpacity = 0.9;
+
   const clusterLayer = {
     filter: ['all', ['has', currentCluster], ['>', currentCluster, 0]],
     id: 'cluster-circle',
     paint: {
       'circle-color': currentClusterColor,
-      'circle-opacity': 0.3,
+      'circle-opacity': clusterOpacity,
       'circle-radius': ['step', ['get', currentCluster], 2.5, 50, 15, 375, 20],
     },
     source: 'cluster-circle',
