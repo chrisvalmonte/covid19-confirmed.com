@@ -40,7 +40,6 @@ export default function Map() {
       const { data } = await getGEOData();
       const features = data.map(
         ({
-          city,
           coordinates: { latitude, longitude },
           country,
           province,
@@ -58,7 +57,6 @@ export default function Map() {
             properties: {
               active: cases - numDeaths - numRecovered,
               cases,
-              city,
               country,
               deaths: numDeaths,
               recovered: numRecovered,
@@ -86,24 +84,13 @@ export default function Map() {
     const clickedPoint = event.features[0];
 
     const {
-      properties: { active, city, country, deaths, recovered, state },
+      properties: { active, country, deaths, recovered, state },
     } = clickedPoint;
-    const isCityPresent = city !== 'null';
-    const isStatePresent = state !== 'null';
-    const isCountryPresent = country !== 'null';
+    const isStatePresent = state && state !== 'null';
+    const isCountryPresent = country && country !== 'null';
 
-    console.log(clickedPoint.properties);
-
-    let locationName = '';
-    if (isCityPresent && isStatePresent && isCountryPresent)
-      locationName = `${city}, ${state}, ${country}`;
-    else if (isStatePresent && isCountryPresent)
-      locationName = `${state}, ${country}`;
-    else if (isCityPresent && isCountryPresent)
-      locationName = `${city}, ${country}`;
-    else if (isCityPresent && isStatePresent)
-      locationName = `${city}, ${state}`;
-    else locationName = country;
+    const locationName =
+      isStatePresent && isCountryPresent ? `${state}, ${country}` : country;
 
     setPopupData({
       latitude: clickedPoint.geometry.coordinates[1],
