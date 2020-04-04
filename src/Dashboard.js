@@ -81,8 +81,8 @@ export default function Dashboard({ totals }) {
     const _historyData = async () => {
       const { data } = await getHistory();
 
-      const countryCaseHistory = data.map(country => country.timeline.cases);
       let totalCaseHistory = {};
+      const countryCaseHistory = data.map(country => country.timeline.cases);
       countryCaseHistory.forEach(country => {
         Object.keys(country).forEach(date => {
           if (totalCaseHistory[date] === undefined) {
@@ -252,7 +252,7 @@ export default function Dashboard({ totals }) {
           {/* USA Overview */}
           <Grid component="section" container item xs={12}>
             <Grid item xs={12}>
-              <DashboardHeader>USA Breakdown By State</DashboardHeader>
+              <DashboardHeader>USA Breakdown</DashboardHeader>
             </Grid>
 
             {/* USA overview pie chart */}

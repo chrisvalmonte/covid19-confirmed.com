@@ -44,6 +44,7 @@ export default function PageTemplate({ children, totals }) {
     isMediumBreakpoint && isDrawerOpen && setIsDrawerOpen(false);
   }, [isDrawerOpen, isMediumBreakpoint, setIsDrawerOpen]);
 
+  // Format totals in sidebar
   const renderedTotals = [
     {
       count: totals.active,
@@ -105,6 +106,7 @@ export default function PageTemplate({ children, totals }) {
     </Typography>
   );
 
+  // Format links in sidebar
   const links = [
     {
       icon: <PublicIcon className={classes.linkIcon} />,
