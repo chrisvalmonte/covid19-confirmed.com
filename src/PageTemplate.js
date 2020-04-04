@@ -1,46 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import moment from 'moment';
 
 import logo from './logo.svg';
+import SiteNavigation, { useSiteNavigation } from './SiteNavigation';
 
-import { usePageTemplateStyles } from './PageTemplate.styles';
-import SiteLinks from './SiteLinks';
-import StatTotals from './StatTotals';
+const appBarHeight = '60px';
+const logoHeight = '24px';
+
+export const useStyles = makeStyles(theme => ({
+  appBar: {
+    backgroundColor: blueGrey[900],
+    bottom: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    minHeight: appBarHeight,
+    position: 'fixed',
+    top: 'auto',
+    zIndex: theme.zIndex.drawer + 1,
+  },
+
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'hidden',
+  },
+
+  menuButton: {
+    marginRight: '36px',
+  },
+
+  menuButtonHidden: {
+    display: 'none',
+  },
+
+  root: {
+    display: 'flex',
+  },
+
+  toolbar: {
+    paddingRight: 24, // Keep right padding when drawer closed
+  },
+
+  toolbarLogo: {
+    height: logoHeight,
+    marginLeft: 'auto',
+  },
+}));
 
 export default function PageTemplate({ children, totals }) {
-  const classes = usePageTemplateStyles();
-  const isMediumBreakpoint = useMediaQuery('(min-width: 960px)');
-
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const _toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
-
-  // Fix bug when user opens sidebar on a small screen and then enlarges the browser window
-  useEffect(() => {
-    isMediumBreakpoint && isDrawerOpen && setIsDrawerOpen(false);
-  }, [isDrawerOpen, isMediumBreakpoint, setIsDrawerOpen]);
-
-  const lastUpdatedContent = (
-    <Typography className={classes.lastUpdated}>
-      {totals.updated
-        ? `Last Update: ${moment(totals.updated).format('MM/DD/YYYY')} at
-                ${moment(totals.updated).format('h:mmA')}`
-        : 'Finding statistics...'}
-    </Typography>
-  );
+  const classes = useStyles();
+  const siteNavigationProps = useSiteNavigation();
 
   return (
     <div className={classes.root}>
@@ -53,11 +70,11 @@ export default function PageTemplate({ children, totals }) {
               aria-label="open drawer"
               className={clsx(
                 classes.menuButton,
-                isDrawerOpen && classes.menuButtonHidden,
+                siteNavigationProps.isDrawerOpen && classes.menuButtonHidden,
               )}
               color="inherit"
               edge="start"
-              onClick={_toggleDrawer}
+              onClick={siteNavigationProps.toggleDrawerHandler}
             >
               <MenuIcon />
             </IconButton>
@@ -67,42 +84,7 @@ export default function PageTemplate({ children, totals }) {
         </AppBar>
       </Hidden>
 
-      <nav className={classes.drawer} aria-label="site navigation">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden mdUp implementation="css">
-          <SwipeableDrawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Used for better performance on mobile
-            }}
-            onClose={_toggleDrawer}
-            onOpen={_toggleDrawer}
-            open={isDrawerOpen}
-            variant="temporary"
-          >
-            <SiteLinks />
-            <StatTotals totals={totals} />
-            {lastUpdatedContent}
-          </SwipeableDrawer>
-        </Hidden>
-
-        <Hidden smDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            open
-            variant="permanent"
-          >
-            <img alt="COVID-19" className={classes.drawerLogo} src={logo} />
-            <StatTotals totals={totals} />
-            <SiteLinks />
-            {lastUpdatedContent}
-          </Drawer>
-        </Hidden>
-      </nav>
+      <SiteNavigation {...siteNavigationProps} totals={totals} />
 
       <main className={classes.content}>{children}</main>
     </div>
