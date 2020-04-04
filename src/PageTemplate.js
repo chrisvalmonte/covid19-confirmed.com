@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
-import Link from '@material-ui/core/Link';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
-import PublicIcon from '@material-ui/icons/Public';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -29,6 +21,7 @@ import logo from './logo.svg';
 import { paths } from './App';
 import CountCard from './CountCard';
 import { usePageTemplateStyles } from './PageTemplate.styles';
+import SiteLinks from './SiteLinks';
 
 export default function PageTemplate({ children, totals }) {
   const classes = usePageTemplateStyles();
@@ -106,62 +99,6 @@ export default function PageTemplate({ children, totals }) {
     </Typography>
   );
 
-  // Format links in sidebar
-  const links = [
-    {
-      icon: <PublicIcon className={classes.linkIcon} />,
-      isSiteLink: true,
-      text: paths.map.name,
-      to: paths.map.path,
-    },
-    {
-      icon: <DashboardIcon className={classes.linkIcon} />,
-      isSiteLink: true,
-      text: paths.dashboard.name,
-      to: paths.dashboard.path,
-    },
-    {
-      icon: <InfoIcon className={classes.linkIcon} />,
-      isSiteLink: false,
-      text: 'About',
-      to: 'https://www.webmd.com/lung/coronavirus',
-    },
-  ];
-  const linksContent = (
-    <List className={classes.links}>
-      {links.map(({ icon, isSiteLink, text, to }) => {
-        const linkContent = (
-          <ListItem button>
-            <ListItemIcon className={classes.linkIcon}>{icon}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        );
-
-        return isSiteLink ? (
-          <NavLink
-            activeClassName={classes.linkActive}
-            className={classes.link}
-            exact
-            key={to}
-            to={to}
-          >
-            {linkContent}
-          </NavLink>
-        ) : (
-          <Link
-            className={classes.link}
-            href={to}
-            key={to}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {linkContent}
-          </Link>
-        );
-      })}
-    </List>
-  );
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -202,7 +139,7 @@ export default function PageTemplate({ children, totals }) {
             open={isDrawerOpen}
             variant="temporary"
           >
-            {linksContent}
+            <SiteLinks />
             {totalsContent}
             {lastUpdatedContent}
           </SwipeableDrawer>
@@ -218,7 +155,7 @@ export default function PageTemplate({ children, totals }) {
           >
             <img alt="COVID-19" className={classes.drawerLogo} src={logo} />
             {totalsContent}
-            {linksContent}
+            <SiteLinks />
             {lastUpdatedContent}
           </Drawer>
         </Hidden>
