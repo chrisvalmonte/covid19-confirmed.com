@@ -2,16 +2,35 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import grey from '@material-ui/core/colors/grey';
+import {
+  ThemeProvider,
+  createMuiTheme,
+  makeStyles,
+} from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
+// Override selected-day styling inside the datepicker
+// https://github.com/mui-org/material-ui-pickers/issues/393#issuecomment-591747961
+const selectedDateColorOverride = createMuiTheme({
+  overrides: {
+    MuiPickersDay: {
+      daySelected: {
+        backgroundColor: grey[800],
+        color: grey[100],
+      },
+    },
+  },
+});
+
 const useStyles = makeStyles(theme => ({
   formControl: {
     width: '145px',
+
     [theme.breakpoints.up('sm')]: {
       width: '200px',
       '&:first-child': {
@@ -19,11 +38,13 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+
   root: {
     justifyContent: 'space-around',
     margin: '16px 0',
     padding: '8px',
     width: '100%',
+
     [theme.breakpoints.up('sm')]: {
       justifyContent: 'flex-start',
       paddingLeft: '52px',
@@ -69,36 +90,38 @@ export default function HistoryChartFilters({
   };
 
   return (
-    <Grid className={classes.root} component="section" container>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <FormControl className={classes.formControl}>
-          <KeyboardDatePicker
-            {...pickerProps}
-            label="Start Date"
-            maxDate={moment(endDateFilter).subtract(1, 'days')}
-            minDate={minDate}
-            onChange={setStartDateFilter}
-            value={startDateFilter}
-            KeyboardButtonProps={{
-              'aria-label': 'change start date',
-            }}
-          />
-        </FormControl>
+    <ThemeProvider theme={selectedDateColorOverride}>
+      <Grid className={classes.root} component="section" container>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <FormControl className={classes.formControl}>
+            <KeyboardDatePicker
+              {...pickerProps}
+              label="Start Date"
+              maxDate={moment(endDateFilter).subtract(1, 'days')}
+              minDate={minDate}
+              onChange={setStartDateFilter}
+              value={startDateFilter}
+              KeyboardButtonProps={{
+                'aria-label': 'change start date',
+              }}
+            />
+          </FormControl>
 
-        <FormControl className={classes.formControl}>
-          <KeyboardDatePicker
-            {...pickerProps}
-            label="End Date"
-            maxDate={moment()}
-            minDate={moment(startDateFilter).add(1, 'days')}
-            onChange={setEndDateFilter}
-            value={endDateFilter}
-            KeyboardButtonProps={{
-              'aria-label': 'change end date',
-            }}
-          />
-        </FormControl>
-      </MuiPickersUtilsProvider>
-    </Grid>
+          <FormControl className={classes.formControl}>
+            <KeyboardDatePicker
+              {...pickerProps}
+              label="End Date"
+              maxDate={moment()}
+              minDate={moment(startDateFilter).add(1, 'days')}
+              onChange={setEndDateFilter}
+              value={endDateFilter}
+              KeyboardButtonProps={{
+                'aria-label': 'change end date',
+              }}
+            />
+          </FormControl>
+        </MuiPickersUtilsProvider>
+      </Grid>
+    </ThemeProvider>
   );
 }
