@@ -27,22 +27,32 @@ export default function NewsCard({ description, title, url, urlToImage }) {
 
   return (
     <Card component="section">
-      <CardMedia
-        className={classes.media}
-        image={urlToImage || imgNotAvailable}
-        title={title}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {title}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {description}
-        </Typography>
-      </CardContent>
+      <CardActionArea
+        onClick={event => {
+          event.currentTarget.querySelector(`.${classes.action}`).click();
+        }}
+      >
+        <CardMedia
+          className={classes.media}
+          image={urlToImage || imgNotAvailable}
+          title={title}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {description}
+          </Typography>
+        </CardContent>
 
-      <CardActionArea component="div">
-        <Link className={classes.action} color="primary" href={url}>
+        <Link
+          className={classes.action}
+          color="primary"
+          href={url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <Button color="inherit" size="small">
             Read more
           </Button>
