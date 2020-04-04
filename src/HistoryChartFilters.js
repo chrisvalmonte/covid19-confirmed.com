@@ -21,11 +21,11 @@ const useStyles = makeStyles(theme => ({
   },
   root: {
     justifyContent: 'space-around',
+    margin: '16px 0',
     padding: '8px',
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       justifyContent: 'flex-start',
-      margin: '16px 0',
       paddingLeft: '52px',
     },
   },
