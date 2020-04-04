@@ -95,7 +95,10 @@ export default function Dashboard({ totals }) {
       });
 
       setHistory(totalCaseHistory);
-      dateFilters.setStartDateFilter(moment(Object.keys(totalCaseHistory)[0]));
+
+      const firstDate = moment(Object.keys(totalCaseHistory)[0]);
+      dateFilters.setMinDate(firstDate);
+      dateFilters.setStartDateFilter(firstDate);
     };
 
     const _usStateData = async () => {

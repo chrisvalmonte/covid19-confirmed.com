@@ -35,12 +35,15 @@ export const useHistoryChartFilters = () => {
   const [country, setCountry] = useState([]);
   const [startDateFilter, setStartDateFilter] = useState(moment('02/01/2020'));
   const [endDateFilter, setEndDateFilter] = useState(moment());
+  const [minDate, setMinDate] = useState(startDateFilter);
 
   return {
     country,
     endDateFilter,
+    minDate,
     setCountry,
     setEndDateFilter,
+    setMinDate,
     setStartDateFilter,
     startDateFilter,
   };
@@ -48,6 +51,7 @@ export const useHistoryChartFilters = () => {
 
 export default function HistoryChartFilters({
   endDateFilter,
+  minDate,
   setEndDateFilter,
   setStartDateFilter,
   startDateFilter,
@@ -56,10 +60,11 @@ export default function HistoryChartFilters({
 
   const pickerProps = {
     autoOk: true,
-    disableFuture: true,
     disableToolbar: true,
     format: 'MM/dd/yyyy',
     margin: 'normal',
+    maxDateMessage: 'Cannot filter chart by this date.',
+    minDateMessage: 'Cannot filter chart by this date.',
     variant: 'inline',
   };
 
@@ -70,6 +75,8 @@ export default function HistoryChartFilters({
           <KeyboardDatePicker
             {...pickerProps}
             label="Start Date"
+            maxDate={moment(endDateFilter).subtract(1, 'days')}
+            minDate={minDate}
             onChange={setStartDateFilter}
             value={startDateFilter}
             KeyboardButtonProps={{
@@ -82,6 +89,8 @@ export default function HistoryChartFilters({
           <KeyboardDatePicker
             {...pickerProps}
             label="End Date"
+            maxDate={moment()}
+            minDate={moment(startDateFilter).add(1, 'days')}
             onChange={setEndDateFilter}
             value={endDateFilter}
             KeyboardButtonProps={{
