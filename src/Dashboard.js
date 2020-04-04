@@ -62,10 +62,7 @@ export default function Dashboard({ totals }) {
     const _countryData = async () => {
       const { data } = await getCountries();
 
-      // Omit first entry from table (data for 'World')
-      // Already fetching world totals through services#getTotals
-      // eslint-disable-next-line
-      const [worldData, ...countryTableData] = data.map(
+      const countryTableData = data.map(
         ({ active, cases, country, deaths, recovered, todayCases }) => ({
           id: country,
           country,
