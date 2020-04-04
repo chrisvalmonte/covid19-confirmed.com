@@ -9,7 +9,6 @@ import {
   FlexibleWidthXYPlot,
   HorizontalGridLines,
   LineSeries,
-  VerticalGridLines,
   XAxis,
   YAxis,
 } from 'react-vis';
@@ -51,14 +50,13 @@ export default function HistoryChart({
         setCrosshairValue(null);
       }}
     >
-      <VerticalGridLines />
       <HorizontalGridLines />
       <XAxis
         tickFormat={x => moment(x).format('MM/DD')}
         tickLabelAngle={-45}
         tickTotal={5}
       />
-      <YAxis tickFormat={y => numeral(y).format('0a')} tickTotal={5} />
+      <YAxis hideLine tickFormat={y => numeral(y).format('0a')} tickTotal={5} />
 
       <LineSeries
         animation="stiff"
