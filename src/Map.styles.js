@@ -4,6 +4,19 @@ import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import { makeStyles } from '@material-ui/core/styles';
 
+const clusterTypeBtnColors = color => ({
+  color,
+  '&.Mui-disabled': {
+    backgroundColor: color,
+    borderColor: color,
+  },
+  '&.MuiButton-root:hover': {
+    backgroundColor: color,
+    borderColor: color,
+    color: grey[900],
+  },
+});
+
 export const useMapStyles = makeStyles(theme => ({
   clusterTypeButtonGroup: {
     boxShadow: theme.shadows[6],
@@ -30,40 +43,13 @@ export const useMapStyles = makeStyles(theme => ({
     },
   },
   clusterTypeButtonActive: {
-    color: red[500],
-    '&.Mui-disabled': {
-      backgroundColor: red[500],
-      borderColor: red[500],
-    },
-    '&.MuiButton-root:hover': {
-      backgroundColor: red[500],
-      borderColor: red[500],
-      color: grey[900],
-    },
+    ...clusterTypeBtnColors(red[500]),
   },
   clusterTypeButtonDeaths: {
-    color: yellow[500],
-    '&.Mui-disabled': {
-      backgroundColor: yellow[500],
-      borderColor: yellow[500],
-    },
-    '&.MuiButton-root:hover': {
-      backgroundColor: yellow[500],
-      borderColor: yellow[500],
-      color: grey[900],
-    },
+    ...clusterTypeBtnColors(yellow[500]),
   },
   clusterTypeButtonRecovered: {
-    color: green[400],
-    '&.Mui-disabled': {
-      backgroundColor: green[400],
-      borderColor: green[400],
-    },
-    '&.MuiButton-root:hover': {
-      backgroundColor: green[400],
-      borderColor: green[400],
-      color: grey[900],
-    },
+    ...clusterTypeBtnColors(green[400]),
   },
 
   fab: {
