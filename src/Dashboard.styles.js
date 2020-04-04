@@ -48,10 +48,26 @@ export const useDashboardStyles = makeStyles(theme => ({
     paddingLeft: '36px',
   },
 
+  pie: {
+    [theme.breakpoints.down('sm')]: {
+      order: 0,
+    },
+  },
+
   pieContainer: {
     display: 'flex',
     marginBottom: '32px',
     justifyContent: 'center',
+  },
+
+  pieLegend: {
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '16px',
+      order: 1,
+
+      // Override react-vis inline style
+      width: '100% !important',
+    },
   },
 
   pieTitle: {

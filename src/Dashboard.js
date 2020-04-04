@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
@@ -15,6 +14,7 @@ import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
 import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import yellow from '@material-ui/core/colors/yellow';
 import { DiscreteColorLegend } from 'react-vis';
 import { Waypoint } from 'react-waypoint';
@@ -33,6 +33,8 @@ import { useDashboardStyles } from './Dashboard.styles';
 export default function Dashboard({ totals }) {
   const classes = useDashboardStyles();
   const dateFilters = useHistoryChartFilters();
+
+  const isXSBreakpoint = useMediaQuery('(max-width: 600px)');
 
   const pageRef = useRef(null);
   const [isFabShown, setIsFabShown] = useState(false);
@@ -229,7 +231,7 @@ export default function Dashboard({ totals }) {
                 </Typography>
                 <HistoryChart
                   endDate={dateFilters.endDateFilter}
-                  height={500}
+                  height={isXSBreakpoint ? 250 : 500}
                   history={history}
                   startDate={dateFilters.startDateFilter}
                 />
@@ -248,52 +250,46 @@ export default function Dashboard({ totals }) {
           </Grid>
 
           {/* USA Overview */}
-          <Grid component="section" container item spacing={2} xs={12}>
+          <Grid component="section" container item xs={12}>
             <Grid item xs={12}>
               <DashboardHeader>USA Breakdown By State</DashboardHeader>
             </Grid>
 
             {/* USA overview pie chart */}
-            {/* FIXME: Layout for xs screens */}
-            <Hidden xsDown>
-              <Grid
-                className={classes.usaOverview}
-                container
-                item
-                xs={12}
-                lg={7}
-              >
-                <Grid item xs={12}>
-                  <Typography
-                    className={classes.pieTitle}
-                    component="h3"
-                    variant="h6"
-                  >
-                    Top 10 Red Zones
-                  </Typography>
-                </Grid>
-
-                <Grid className={classes.pieContainer} item xs={12}>
-                  <RootRef rootRef={USAPieLegendRef}>
-                    <DiscreteColorLegend
-                      colors={USAPieColorRange}
-                      items={USAPieChartData.map(d => d.label)}
-                      width={200}
-                    />
-                  </RootRef>
-
-                  <PieChart
-                    data={USAPieChartData}
-                    diameter={
-                      USAPieLegendRef.current
-                        ? USAPieLegendRef.current.offsetHeight
-                        : 300
-                    }
-                    valueType="Total Cases"
-                  />
-                </Grid>
+            <Grid container item xs={12} lg={7}>
+              <Grid item xs={12}>
+                <Typography
+                  className={classes.pieTitle}
+                  component="h3"
+                  variant="h6"
+                >
+                  Top 10 Red Zones
+                </Typography>
               </Grid>
-            </Hidden>
+
+              <Grid className={classes.pieContainer} container item xs={12}>
+                <RootRef rootRef={USAPieLegendRef}>
+                  <DiscreteColorLegend
+                    className={classes.pieLegend}
+                    colors={USAPieColorRange}
+                    items={USAPieChartData.map(d => d.label)}
+                    orientation={isXSBreakpoint ? 'horizontal' : 'vertical'}
+                    width={200}
+                  />
+                </RootRef>
+
+                <PieChart
+                  className={classes.pie}
+                  data={USAPieChartData}
+                  diameter={
+                    !isXSBreakpoint && USAPieLegendRef.current
+                      ? USAPieLegendRef.current.offsetHeight
+                      : 300
+                  }
+                  valueType="Total Cases"
+                />
+              </Grid>
+            </Grid>
 
             <Grid item xs={12} lg={5}>
               {/* USA overview table */}
