@@ -25,12 +25,6 @@ export const usePageTemplateStyles = makeStyles(theme => ({
     overflow: 'hidden',
   },
 
-  countTitle: {
-    color: grey[200],
-    fontSize: '14px',
-    marginBottom: '-2px',
-  },
-
   drawer: {
     backgroundColor: drawerBgColor,
     [theme.breakpoints.down('sm')]: {
@@ -86,28 +80,5 @@ export const usePageTemplateStyles = makeStyles(theme => ({
   toolbarLogo: {
     height: logoHeight,
     marginLeft: 'auto',
-  },
-
-  totals: {
-    [theme.breakpoints.up('md')]: {
-      transform: 'translateX(0)',
-      transitionDuration: theme.transitions.duration.standard,
-      transitionProperty: 'height, margin, transform, opacity',
-      transitionTimingFunction: theme.transitions.easing.easeInOut,
-      height: 'auto',
-      marginBottom: '32px',
-      opacity: 1,
-      paddingLeft: '12px',
-    },
-  },
-
-  totalsHide: {
-    [theme.breakpoints.up('md')]: {
-      height: 0,
-      marginBottom: 0,
-      opacity: 0,
-      transform: 'translateX(-50px)',
-      transitionProperty: 'height, transform',
-    },
   },
 }));
