@@ -61,7 +61,7 @@ export const useDashboardStyles = makeStyles(theme => ({
   },
 
   pieLegend: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       marginTop: '16px',
       order: 1,
 
