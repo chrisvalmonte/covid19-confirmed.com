@@ -144,7 +144,7 @@ export default function Dashboard({ totals }) {
     { id: 'cases', label: 'Total Confirmed' },
   ];
   const USATableHeadCells = [
-    { id: 'state', label: 'State' },
+    { id: 'state', label: 'State/Territory' },
     {
       id: 'active',
       label: 'Active Cases',
