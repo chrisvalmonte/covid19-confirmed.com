@@ -188,6 +188,7 @@ export default function Dashboard({ totals }) {
     <article className={classes.root} ref={pageRef}>
       <Container>
         <Grid container spacing={3}>
+          {/* Header */}
           <Waypoint
             fireOnRapidScroll
             onEnter={() => {
@@ -223,7 +224,7 @@ export default function Dashboard({ totals }) {
 
           {/* Overview */}
           <Grid component="section" item xs={12}>
-            <DashboardHeader>Overview</DashboardHeader>
+            <DashboardHeading>Overview</DashboardHeading>
             <Paper>
               <div className={classes.historyChartContainer}>
                 <Typography className={classes.historyChartTitle}>
@@ -252,7 +253,7 @@ export default function Dashboard({ totals }) {
           {/* USA Overview */}
           <Grid component="section" container item xs={12}>
             <Grid item xs={12}>
-              <DashboardHeader>USA Breakdown</DashboardHeader>
+              <DashboardHeading>USA Breakdown</DashboardHeading>
             </Grid>
 
             {/* USA overview pie chart */}
@@ -302,8 +303,9 @@ export default function Dashboard({ totals }) {
             </Grid>
           </Grid>
 
+          {/* News Feed */}
           <Grid component="section" item xs={12}>
-            <DashboardHeader>News Feed</DashboardHeader>
+            <DashboardHeading>News Feed</DashboardHeading>
             <News />
           </Grid>
         </Grid>
@@ -322,7 +324,7 @@ export default function Dashboard({ totals }) {
   );
 }
 
-function DashboardHeader({ children }) {
+function DashboardHeading({ children }) {
   const classes = useDashboardStyles();
 
   return (
