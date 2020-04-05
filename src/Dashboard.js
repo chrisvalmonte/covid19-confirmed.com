@@ -63,8 +63,14 @@ export default function Dashboard({ totals }) {
   useEffect(() => {
     const _countryData = async () => {
       const { data } = await getCountries();
+      let countryTableData = data;
 
-      const countryTableData = data.map(
+      // API keeps fucking changing. Filter out first if it is USA.
+      // eslint-disable-next-line
+      const [worldData, ...countryData] = data;
+      if (worldData.country === 'World') countryTableData = countryData;
+
+      const countryBodyRows = countryTableData.map(
         ({ active, cases, country, deaths, recovered, todayCases }) => ({
           id: country,
           country,
@@ -75,7 +81,7 @@ export default function Dashboard({ totals }) {
           cases,
         }),
       );
-      setCountryTableBodyRows(countryTableData);
+      setCountryTableBodyRows(countryBodyRows);
     };
 
     const _historyData = async () => {
@@ -92,11 +98,14 @@ export default function Dashboard({ totals }) {
 
     const _usStateData = async () => {
       const { data } = await getUSStates();
-      // API keeps fucking changing. Filtering out first since it is now all US data.
+      let stateTableData = data;
+
+      // API keeps fucking changing. Filter out first if it is USA.
       // eslint-disable-next-line
       const [USData, ...stateData] = data;
+      if (USData.state === 'USA') stateTableData = stateData;
 
-      const USATableData = stateData.map(
+      const USATableData = stateTableData.map(
         ({ active, cases, deaths, state }) => ({
           id: state,
           state,
