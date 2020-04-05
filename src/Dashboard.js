@@ -92,18 +92,23 @@ export default function Dashboard({ totals }) {
 
     const _usStateData = async () => {
       const { data } = await getUSStates();
+      // API keeps fucking changing. Filtering out first since it is now all US data.
+      // eslint-disable-next-line
+      const [USData, ...stateData] = data;
 
-      const USATableData = data.map(({ active, cases, deaths, state }) => ({
-        id: state,
-        state,
-        active,
-        deaths,
-        cases,
-      }));
+      const USATableData = stateData.map(
+        ({ active, cases, deaths, state }) => ({
+          id: state,
+          state,
+          active,
+          deaths,
+          cases,
+        }),
+      );
       setUSATableBodyRows(USATableData);
 
       // Top 10 Red Zones in USA
-      const USAPieData = _.orderBy(data, ['cases'], ['desc'])
+      const USAPieData = _.orderBy(stateData, ['cases'], ['desc'])
         .slice(0, 10)
         .map(({ cases, state }, index) => ({
           color: USAPieColorRange[index],
