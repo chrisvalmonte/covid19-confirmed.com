@@ -79,23 +79,13 @@ export default function Dashboard({ totals }) {
     };
 
     const _historyData = async () => {
-      const { data } = await getHistory();
+      const {
+        data: { cases },
+      } = await getHistory();
 
-      let totalCaseHistory = {};
-      const countryCaseHistory = data.map(country => country.timeline.cases);
-      countryCaseHistory.forEach(country => {
-        Object.keys(country).forEach(date => {
-          if (totalCaseHistory[date] === undefined) {
-            totalCaseHistory[date] = country[date];
-          } else {
-            totalCaseHistory[date] += country[date];
-          }
-        });
-      });
+      setHistory(cases);
 
-      setHistory(totalCaseHistory);
-
-      const firstDate = moment(Object.keys(totalCaseHistory)[0]);
+      const firstDate = moment(Object.keys(cases)[0]);
       dateFilters.setMinDate(firstDate);
       dateFilters.setStartDateFilter(firstDate);
     };

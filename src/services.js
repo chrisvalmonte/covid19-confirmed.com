@@ -12,7 +12,7 @@ export const getTotals = async () =>
   await axios.get('https://corona.lmao.ninja/all');
 
 export const getHistory = async () =>
-  await axios.get('https://corona.lmao.ninja/v2/historical');
+  await axios.get('https://corona.lmao.ninja/v2/historical/all');
 
 export const getUSStates = async () =>
   await axios.get('https://corona.lmao.ninja/states');
