@@ -65,7 +65,7 @@ export default function Dashboard({ totals }) {
       const { data } = await getCountries();
       let countryTableData = data;
 
-      // API keeps fucking changing. Filter out first if it is USA.
+      // API keeps fucking changing. Filter out first if it is World.
       // eslint-disable-next-line
       const [worldData, ...countryData] = data;
       if (worldData.country === 'World') countryTableData = countryData;
