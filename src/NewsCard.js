@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -13,6 +14,7 @@ import imgNotAvailable from './img-not-available.png';
 const useStyles = makeStyles({
   action: {
     display: 'block',
+    marginTop: '-16px',
     padding: '8px',
     textAlign: 'right',
   },
@@ -20,9 +22,22 @@ const useStyles = makeStyles({
   media: {
     height: '225px',
   },
+
+  publishedAt: {
+    fontSize: '12px',
+    marginBottom: '8px',
+    textTransform: 'uppercase',
+  },
 });
 
-export default function NewsCard({ description, title, url, urlToImage }) {
+export default function NewsCard({
+  description,
+  publishedAt,
+  source: { name },
+  title,
+  url,
+  urlToImage,
+}) {
   const classes = useStyles();
 
   return (
@@ -37,11 +52,19 @@ export default function NewsCard({ description, title, url, urlToImage }) {
           image={urlToImage || imgNotAvailable}
           title={title}
         />
+
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography component="h2" gutterBottom variant="h5">
             {title}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography
+            className={classes.publishedAt}
+            component="p"
+            variant="body2"
+          >
+            {`${name} - ${moment(publishedAt).fromNow()}`}
+          </Typography>
+          <Typography color="textSecondary" component="p" variant="body2">
             {description}
           </Typography>
         </CardContent>
