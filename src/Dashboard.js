@@ -117,7 +117,7 @@ export default function Dashboard({ totals }) {
       setUSATableBodyRows(USATableData);
 
       // Top 10 Red Zones in USA
-      const USAPieData = _.orderBy(stateData, ['cases'], ['desc'])
+      const USAPieData = _.orderBy(stateTableData, ['cases'], ['desc'])
         .slice(0, 10)
         .map(({ cases, state }, index) => ({
           color: USAPieColorRange[index],
