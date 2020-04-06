@@ -51,8 +51,9 @@ export default function NewsCard({
   const classes = useStyles();
 
   return (
-    <Card component="section">
+    <Card component="article">
       <CardActionArea
+        component="div"
         onClick={event => {
           event.currentTarget.querySelector(`.${classes.action}`).click();
         }}
