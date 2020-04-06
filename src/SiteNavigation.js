@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import SiteLinks from './SiteLinks';
@@ -11,6 +12,21 @@ import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 
 import logo from './logo.svg';
+
+SiteNavigation.propTypes = {
+  isDrawerOpen: PropTypes.bool.isRequired,
+  toggleDrawerHandler: PropTypes.func.isRequired,
+  totals: PropTypes.shape({
+    active: PropTypes.number,
+    cases: PropTypes.number,
+    deaths: PropTypes.number,
+    prevActive: PropTypes.number,
+    prevCases: PropTypes.number,
+    prevDeaths: PropTypes.number,
+    prevRecovered: PropTypes.number,
+    recovered: PropTypes.number,
+  }).isRequired,
+};
 
 const drawerBgColor = grey[900];
 const drawerWidth = '240px';
