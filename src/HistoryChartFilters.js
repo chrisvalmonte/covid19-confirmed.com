@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
@@ -13,6 +14,14 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
+
+HistoryChartFilters.propTypes = {
+  endDateFilter: PropTypes.instanceOf(moment).isRequired,
+  minDate: PropTypes.instanceOf(moment).isRequired,
+  setEndDateFilter: PropTypes.func.isRequired,
+  setStartDateFilter: PropTypes.func.isRequired,
+  startDateFilter: PropTypes.instanceOf(moment).isRequired,
+};
 
 // Override selected-day styling inside the datepicker
 // https://github.com/mui-org/material-ui-pickers/issues/393#issuecomment-591747961
