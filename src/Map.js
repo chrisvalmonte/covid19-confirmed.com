@@ -159,12 +159,20 @@ export default function Map() {
     setCurrentClusterColor(clusterColor);
   };
 
-  let clusterOpacity = 0;
+  let clusterOpacity = 0,
+    clusterStrokeOpacity = 0;
   const { zoom } = viewport;
   if (zoom <= 1) clusterOpacity = 0.1;
-  else if (zoom > 1 && zoom <= 3) clusterOpacity = 0.3;
-  else if (zoom > 3 && zoom <= 4) clusterOpacity = 0.6;
-  else clusterOpacity = 0.75;
+  else if (zoom > 1 && zoom <= 3) {
+    clusterOpacity = 0.3;
+    clusterStrokeOpacity = 0.75;
+  } else if (zoom > 3 && zoom <= 4) {
+    clusterOpacity = 0.6;
+    clusterStrokeOpacity = 1;
+  } else {
+    clusterOpacity = 0.75;
+    clusterStrokeOpacity = 1;
+  }
 
   const clusterLayer = {
     filter: ['all', ['has', currentCluster], ['>', currentCluster, 0]],
@@ -173,6 +181,9 @@ export default function Map() {
       'circle-color': currentClusterColor,
       'circle-opacity': clusterOpacity,
       'circle-radius': ['step', ['get', currentCluster], 2.5, 50, 15, 375, 20],
+      'circle-stroke-color': currentClusterColor,
+      'circle-stroke-opacity': clusterStrokeOpacity,
+      'circle-stroke-width': 1,
     },
     source: 'cluster-circle',
     type: 'circle',
