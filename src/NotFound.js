@@ -22,14 +22,13 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     backgroundColor: grey[100],
     display: 'flex',
-    justifyContent: 'center',
-
     flexGrow: 1,
     height: '100vh',
+    justifyContent: 'center',
     overflowY: 'auto',
     paddingBottom: '16px',
     paddingTop: '16px',
-  }, // FIXME: Remove repetition w/ News.js
+  },
 }));
 
 export default function NotFound() {
