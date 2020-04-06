@@ -62,7 +62,7 @@ export default function Dashboard({ totals }) {
 
   const [history, setHistory] = useState({});
 
-  const [USAMortalityRate, setUSAMortalityRate] = useState(0);
+  const [USATests, setUSATests] = useState(0);
   const [USATableBodyRows, setUSATableBodyRows] = useState([]);
   const USAPieLegendRef = useRef(null);
   const [USAPieChartData, setUSAPieChartData] = useState([]);
@@ -148,12 +148,9 @@ export default function Dashboard({ totals }) {
     };
 
     const _usTotalsData = async () => {
-      const {
-        data: { cases, deaths },
-      } = await getUSTotals();
-      const mortalityRate = (deaths / cases) * 100;
+      const { data } = await getUSTotals();
 
-      setUSAMortalityRate(mortalityRate);
+      setUSATests(data.tests);
     };
 
     _countryData();
@@ -268,16 +265,19 @@ export default function Dashboard({ totals }) {
               <DashboardHeading>Overview</DashboardHeading>
             </Grid>
 
+            {/* Worldwide mortality rate */}
             <Grid className={classes.numbersGrid} container item xs={12}>
               <Grid className={classes.numberContainer} item xs={12} sm={6}>
                 <DashboardNumber
-                  caption="Tests administered"
-                  formattingFn={number => numeral(number).format('0,0')}
+                  caption="Mortality rate"
+                  decimals={2}
+                  formattingFn={number => `${number}%`}
                 >
-                  {totals.tests}
+                  {(totals.deaths / totals.cases) * 100}
                 </DashboardNumber>
               </Grid>
 
+              {/* Affected countries */}
               <Grid className={classes.numberContainer} item xs={12} sm={6}>
                 <DashboardNumber caption="Affected countries">
                   {totals.affectedCountries}
@@ -319,6 +319,7 @@ export default function Dashboard({ totals }) {
             </Grid>
 
             <Grid className={classes.numbersGrid} container item xs={12}>
+              {/* USA days since first case */}
               <Grid className={classes.numberContainer} item xs={12} sm={6}>
                 <DashboardNumber
                   caption={
@@ -338,13 +339,13 @@ export default function Dashboard({ totals }) {
                 </DashboardNumber>
               </Grid>
 
+              {/* USA tests administered */}
               <Grid className={classes.numberContainer} item xs={12} sm={6}>
                 <DashboardNumber
-                  caption="Mortality rate"
-                  decimals={2}
-                  formattingFn={number => `${number}%`}
+                  caption="Tests administered"
+                  formattingFn={number => numeral(number).format('0,0')}
                 >
-                  {USAMortalityRate}
+                  {USATests}
                 </DashboardNumber>
               </Grid>
             </Grid>
