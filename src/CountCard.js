@@ -1,10 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import green from '@material-ui/core/colors/green';
+import grey from '@material-ui/core/colors/grey';
+import red from '@material-ui/core/colors/red';
+import yellow from '@material-ui/core/colors/yellow';
 import { makeStyles } from '@material-ui/core/styles';
 import CountUp from 'react-countup';
 import numeral from 'numeral';
+
+CountCard.propTypes = {
+  count: PropTypes.number.isRequired,
+  countColor: PropTypes.oneOf([red[500], yellow[500], green[400], grey[100]]),
+  prevCount: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 const useStyles = makeStyles({
   content: {
