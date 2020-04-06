@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
@@ -15,6 +16,13 @@ import {
 import moment from 'moment';
 import { extendMoment } from 'moment-range';
 import numeral from 'numeral';
+
+HistoryChart.propTypes = {
+  endDate: PropTypes.instanceOf(moment).isRequired,
+  height: PropTypes.number.isRequired,
+  history: PropTypes.object, // key is date, value is cases per date
+  startDate: PropTypes.instanceOf(moment).isRequired,
+};
 
 const Moment = extendMoment(moment);
 
