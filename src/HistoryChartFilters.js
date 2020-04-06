@@ -64,7 +64,9 @@ const useStyles = makeStyles(theme => ({
 export const useHistoryChartFilters = () => {
   const [country, setCountry] = useState([]);
   const [startDateFilter, setStartDateFilter] = useState(moment('02/01/2020'));
-  const [endDateFilter, setEndDateFilter] = useState(moment());
+  const [endDateFilter, setEndDateFilter] = useState(
+    moment().subtract(1, 'days'),
+  );
   const [minDate, setMinDate] = useState(startDateFilter);
 
   return {

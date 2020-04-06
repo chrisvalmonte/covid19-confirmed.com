@@ -62,9 +62,15 @@ export default function HistoryChart({
       <XAxis
         tickFormat={x => moment(x).format('MM/DD')}
         tickLabelAngle={-45}
+        tickTotal={dates.length < 7 ? (dates.length >= 4 ? 2 : 0) : 5}
+      />
+      <YAxis
+        hideLine
+        tickFormat={y =>
+          y > 1000000 ? numeral(y).format('0.0a') : numeral(y).format('0a')
+        }
         tickTotal={5}
       />
-      <YAxis hideLine tickFormat={y => numeral(y).format('0a')} tickTotal={5} />
 
       <LineSeries
         animation="stiff"
