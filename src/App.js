@@ -24,14 +24,16 @@ export const paths = {
 
 function App() {
   const [totals, setTotals] = useState({
-    active: 489310,
-    cases: 642531,
-    deaths: 19197,
+    active: 0,
+    affectedCountries: 0,
+    cases: 0,
+    deaths: 0,
     prevActive: 0,
     prevCases: 0,
     prevDeaths: 0,
     prevRecovered: 0,
-    recovered: 134024,
+    recovered: 0,
+    tests: 0,
     updated: null,
   });
 
@@ -43,20 +45,14 @@ function App() {
 
     // Get total counts
     const _totalData = async () => {
-      const {
-        data: { active, cases, deaths, recovered, updated },
-      } = await getTotals();
+      const { data } = await getTotals();
 
       setTotals({
-        active,
-        cases,
-        deaths,
         prevActive: totals.active,
         prevCases: totals.cases,
         prevDeaths: totals.deaths,
         prevRecovered: totals.recovered,
-        recovered,
-        updated,
+        ...data,
       });
     };
 

@@ -71,8 +71,7 @@ export const useDashboardStyles = makeStyles(theme => ({
   },
 
   pieTitle: {
-    paddingBottom: '16px',
-    textAlign: 'center',
+    paddingBottom: '24px',
   },
 
   root: {
@@ -86,5 +85,20 @@ export const useDashboardStyles = makeStyles(theme => ({
 
   sectionHeader: {
     marginBottom: '12px',
+  },
+
+  number: {
+    textAlign: 'left',
+
+    [theme.breakpoints.up('sm')]: {
+      textAlign: 'center',
+    },
+  },
+  numberContainer: {
+    marginTop: '32px',
+    padding: '0 16px',
+  },
+  numbersGrid: {
+    marginBottom: '72px',
   },
 }));

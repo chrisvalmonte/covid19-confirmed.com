@@ -59,10 +59,10 @@ export default function CountCard({ count, countColor, prevCount, title }) {
           variant="h4"
         >
           <CountUp
+            duration={1.5}
             end={count}
             formattingFn={number => numeral(number).format('0,0')}
             start={prevCount}
-            useEasing={false}
           />
         </Typography>
       </CardContent>

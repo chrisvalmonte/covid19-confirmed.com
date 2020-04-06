@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
+import numeral from 'numeral';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
@@ -17,6 +19,7 @@ import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import yellow from '@material-ui/core/colors/yellow';
+import CountUp from 'react-countup';
 import { DiscreteColorLegend } from 'react-vis';
 import { Waypoint } from 'react-waypoint';
 
@@ -28,12 +31,13 @@ import HistoryChartFilters, {
 } from './HistoryChartFilters';
 import News from './News';
 import PieChart from './PieChart';
-import { getCountries, getHistory, getUSStates } from './services';
+import { getCountries, getHistory, getUSStates, getUSTotals } from './services';
 import { useDashboardStyles } from './Dashboard.styles';
 
 Dashboard.propTypes = {
   totals: PropTypes.shape({
     active: PropTypes.number,
+    affectedCountries: PropTypes.number,
     cases: PropTypes.number,
     deaths: PropTypes.number,
     prevActive: PropTypes.number,
@@ -41,6 +45,7 @@ Dashboard.propTypes = {
     prevDeaths: PropTypes.number,
     prevRecovered: PropTypes.number,
     recovered: PropTypes.number,
+    tests: PropTypes.number,
   }).isRequired,
 };
 
@@ -57,6 +62,7 @@ export default function Dashboard({ totals }) {
 
   const [history, setHistory] = useState({});
 
+  const [USAMortalityRate, setUSAMortalityRate] = useState(0);
   const [USATableBodyRows, setUSATableBodyRows] = useState([]);
   const USAPieLegendRef = useRef(null);
   const [USAPieChartData, setUSAPieChartData] = useState([]);
@@ -79,7 +85,7 @@ export default function Dashboard({ totals }) {
       const { data } = await getCountries();
       let countryTableData = data;
 
-      // API keeps fucking changing. Filter out first if it is World.
+      // API keeps changing. Filter out first if it is World.
       // eslint-disable-next-line
       const [worldData, ...countryData] = data;
       if (worldData.country === 'World') countryTableData = countryData;
@@ -114,7 +120,7 @@ export default function Dashboard({ totals }) {
       const { data } = await getUSStates();
       let stateTableData = data;
 
-      // API keeps fucking changing. Filter out first if it is USA.
+      // API keeps changing. Filter out first if it is USA.
       // eslint-disable-next-line
       const [USData, ...stateData] = data;
       if (USData.state === 'USA') stateTableData = stateData;
@@ -141,9 +147,19 @@ export default function Dashboard({ totals }) {
       setUSAPieChartData(USAPieData);
     };
 
+    const _usTotalsData = async () => {
+      const {
+        data: { cases, deaths },
+      } = await getUSTotals();
+      const mortalityRate = (deaths / cases) * 100;
+
+      setUSAMortalityRate(mortalityRate);
+    };
+
     _countryData();
     _historyData();
     _usStateData();
+    _usTotalsData();
   }, []); // eslint-disable-line
 
   const _scrollToTop = () => {
@@ -202,6 +218,12 @@ export default function Dashboard({ totals }) {
     },
   ];
 
+  const dateOfFirstConfirmedUSCase = moment('01/21/2020');
+  const today = moment();
+  const daysSinceFirstUSCase = numeral(
+    today.diff(dateOfFirstConfirmedUSCase, 'days'),
+  ).format('0,0');
+
   return (
     <article className={classes.root} ref={pageRef}>
       <Container>
@@ -241,31 +263,53 @@ export default function Dashboard({ totals }) {
           </Waypoint>
 
           {/* Overview */}
-          <Grid component="section" item xs={12}>
-            <DashboardHeading>Overview</DashboardHeading>
-            <Paper>
-              <div className={classes.historyChartContainer}>
-                <Typography className={classes.historyChartTitle}>
-                  Total Cases Over Time
-                </Typography>
-                <HistoryChart
-                  endDate={dateFilters.endDateFilter}
-                  height={isXSBreakpoint ? 250 : 500}
-                  history={history}
-                  startDate={dateFilters.startDateFilter}
-                />
-              </div>
-              <HistoryChartFilters {...dateFilters} />
+          <Grid component="section" container item xs={12}>
+            <Grid item xs={12}>
+              <DashboardHeading>Overview</DashboardHeading>
+            </Grid>
 
-              {/* Country overview table */}
-              <DataTable
-                bodyRows={countryTableBodyRows}
-                headCells={countryTableHeadCells}
-                elevation={0}
-                initialOrder="desc"
-                initialOrderBy="active"
-              />
-            </Paper>
+            <Grid className={classes.numbersGrid} container item xs={12}>
+              <Grid className={classes.numberContainer} item xs={12} sm={6}>
+                <DashboardNumber
+                  caption="Tests administered"
+                  formattingFn={number => numeral(number).format('0,0')}
+                >
+                  {totals.tests}
+                </DashboardNumber>
+              </Grid>
+
+              <Grid className={classes.numberContainer} item xs={12} sm={6}>
+                <DashboardNumber caption="Affected countries">
+                  {totals.affectedCountries}
+                </DashboardNumber>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Paper>
+                <div className={classes.historyChartContainer}>
+                  <Typography className={classes.historyChartTitle}>
+                    Total Cases Over Time
+                  </Typography>
+                  <HistoryChart
+                    endDate={dateFilters.endDateFilter}
+                    height={isXSBreakpoint ? 250 : 500}
+                    history={history}
+                    startDate={dateFilters.startDateFilter}
+                  />
+                </div>
+                <HistoryChartFilters {...dateFilters} />
+
+                {/* Country overview table */}
+                <DataTable
+                  bodyRows={countryTableBodyRows}
+                  headCells={countryTableHeadCells}
+                  elevation={0}
+                  initialOrder="desc"
+                  initialOrderBy="active"
+                />
+              </Paper>
+            </Grid>
           </Grid>
 
           {/* USA Overview */}
@@ -274,10 +318,42 @@ export default function Dashboard({ totals }) {
               <DashboardHeading>USA Breakdown</DashboardHeading>
             </Grid>
 
+            <Grid className={classes.numbersGrid} container item xs={12}>
+              <Grid className={classes.numberContainer} item xs={12} sm={6}>
+                <DashboardNumber
+                  caption={
+                    <>
+                      Days since{' '}
+                      <Link
+                        href="https://www.cdc.gov/media/releases/2020/p0121-novel-coronavirus-travel-case.html"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        first confirmed case
+                      </Link>
+                    </>
+                  }
+                >
+                  {daysSinceFirstUSCase}
+                </DashboardNumber>
+              </Grid>
+
+              <Grid className={classes.numberContainer} item xs={12} sm={6}>
+                <DashboardNumber
+                  caption="Mortality rate"
+                  decimals={2}
+                  formattingFn={number => `${number}%`}
+                >
+                  {USAMortalityRate}
+                </DashboardNumber>
+              </Grid>
+            </Grid>
+
             {/* USA overview pie chart */}
             <Grid container item xs={12} lg={7}>
               <Grid item xs={12}>
                 <Typography
+                  align="center"
                   className={classes.pieTitle}
                   component="h3"
                   variant="h6"
@@ -351,6 +427,47 @@ function DashboardHeading({ children }) {
         {children}
       </Typography>
       <Divider className={classes.divider} />
+    </>
+  );
+}
+
+function DashboardNumber({
+  caption,
+  children: number,
+  decimals = 0,
+  formattingFn = undefined,
+}) {
+  const classes = useDashboardStyles();
+
+  const [counterEnd, setCounterEnd] = useState(0);
+  const [didCount, setDidCount] = useState(false);
+
+  // Update count if number changes and count animation was already seen
+  useEffect(() => {
+    if (didCount && counterEnd !== number) setCounterEnd(number);
+  }, [number]); // eslint-disable-line
+
+  const _startCounter = () => {
+    if (didCount) return;
+
+    setCounterEnd(number);
+    setDidCount(true);
+  };
+
+  return (
+    <>
+      <Waypoint onEnter={_startCounter} />
+      <Typography className={classes.number} component="h3" variant="h2">
+        <CountUp
+          decimals={decimals}
+          end={counterEnd}
+          formattingFn={formattingFn}
+          start={0}
+        />
+      </Typography>
+      <Typography className={classes.number} component="p" variant="body1">
+        {caption}
+      </Typography>
     </>
   );
 }
