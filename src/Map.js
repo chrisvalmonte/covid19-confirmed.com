@@ -180,29 +180,29 @@ export default function Map() {
       'circle-radius': [
         'step',
         ['get', currentCluster],
-        2, // Base radius
-        50, // When active cases is <= 50, radius = 5 * base radius
+        2.5, // Base radius
+        50, // When active cases >= 50 && cases < 100, radius = 5
         5,
         100,
         7.5,
         500,
         10,
         1000,
-        15,
+        12.5,
         2500,
-        20,
-        5000, // When active cases > 2500 && cases <= 5000, radius = 25 * base radius
-        25,
+        15,
+        5000, // When active cases >= 5000 && cases < 10000, radius = 17.5
+        17.5,
         10000,
-        30,
+        20,
         25000,
-        35,
+        23,
         50000,
-        40,
+        26,
         75000,
-        45,
+        29,
         100000,
-        50,
+        32,
       ],
       'circle-stroke-color': currentClusterColor,
       'circle-stroke-opacity': clusterStrokeOpacity,
