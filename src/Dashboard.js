@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 import Container from '@material-ui/core/Container';
@@ -29,6 +30,19 @@ import News from './News';
 import PieChart from './PieChart';
 import { getCountries, getHistory, getUSStates } from './services';
 import { useDashboardStyles } from './Dashboard.styles';
+
+Dashboard.propTypes = {
+  totals: PropTypes.shape({
+    active: PropTypes.number,
+    cases: PropTypes.number,
+    deaths: PropTypes.number,
+    prevActive: PropTypes.number,
+    prevCases: PropTypes.number,
+    prevDeaths: PropTypes.number,
+    prevRecovered: PropTypes.number,
+    recovered: PropTypes.number,
+  }).isRequired,
+};
 
 export default function Dashboard({ totals }) {
   const classes = useDashboardStyles();
