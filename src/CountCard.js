@@ -15,7 +15,7 @@ CountCard.propTypes = {
   count: PropTypes.number.isRequired,
   countColor: PropTypes.oneOf([red[500], yellow[500], green[400], grey[100]]),
   prevCount: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
 };
 
 const useStyles = makeStyles({

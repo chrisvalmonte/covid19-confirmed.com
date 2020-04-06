@@ -18,7 +18,7 @@ DataTable.propTypes = {
   elevation: PropTypes.number,
   headCells: PropTypes.arrayOf(PropTypes.object),
   initialOrder: PropTypes.oneOf(['asc', 'desc']),
-  initialOrderBy: PropTypes,
+  initialOrderBy: PropTypes.string,
 };
 
 const useStyles = makeStyles(theme => ({
