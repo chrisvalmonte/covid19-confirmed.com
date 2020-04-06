@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -10,6 +11,15 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import imgNotAvailable from './img-not-available.png';
+
+NewsCard.propTypes = {
+  description: PropTypes.string.isRequired,
+  publishedAt: PropTypes.string.isRequired,
+  source: PropTypes.shape({ name: PropTypes.string.isRequired }),
+  title: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  urlToImage: PropTypes.string,
+};
 
 const useStyles = makeStyles({
   action: {
