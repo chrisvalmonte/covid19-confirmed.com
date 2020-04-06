@@ -162,15 +162,12 @@ export default function Map() {
   let clusterOpacity = 0,
     clusterStrokeOpacity = 0;
   const { zoom } = viewport;
-  if (zoom <= 1) clusterOpacity = 0.1;
+  if (zoom <= 1) clusterOpacity = 0.175;
   else if (zoom > 1 && zoom <= 3) {
     clusterOpacity = 0.3;
-    clusterStrokeOpacity = 0.75;
-  } else if (zoom > 3 && zoom <= 4) {
-    clusterOpacity = 0.6;
-    clusterStrokeOpacity = 1;
+    clusterStrokeOpacity = 0.5;
   } else {
-    clusterOpacity = 0.75;
+    clusterOpacity = 0.6;
     clusterStrokeOpacity = 1;
   }
 
@@ -180,7 +177,33 @@ export default function Map() {
     paint: {
       'circle-color': currentClusterColor,
       'circle-opacity': clusterOpacity,
-      'circle-radius': ['step', ['get', currentCluster], 2.5, 50, 15, 375, 20],
+      'circle-radius': [
+        'step',
+        ['get', currentCluster],
+        2, // Base radius
+        50, // When active cases is <= 50, radius = 5 * base radius
+        5,
+        100,
+        7.5,
+        500,
+        10,
+        1000,
+        15,
+        2500,
+        20,
+        5000, // When active cases > 2500 && cases <= 5000, radius = 25 * base radius
+        25,
+        10000,
+        30,
+        25000,
+        35,
+        50000,
+        40,
+        75000,
+        45,
+        100000,
+        50,
+      ],
       'circle-stroke-color': currentClusterColor,
       'circle-stroke-opacity': clusterStrokeOpacity,
       'circle-stroke-width': 1,
@@ -245,7 +268,6 @@ export default function Map() {
             anchor="bottom"
             latitude={popupData.latitude}
             longitude={popupData.longitude}
-            offsetTop={-20}
             onClose={() => {
               setIsPopupOpen(false);
             }}
