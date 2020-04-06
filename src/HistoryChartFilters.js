@@ -122,7 +122,7 @@ export default function HistoryChartFilters({
             <KeyboardDatePicker
               {...pickerProps}
               label="End Date"
-              maxDate={moment()}
+              maxDate={moment().subtract(1, 'days')}
               minDate={moment(startDateFilter).add(1, 'days')}
               onChange={setEndDateFilter}
               value={endDateFilter}
