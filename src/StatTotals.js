@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import green from '@material-ui/core/colors/green';
@@ -10,6 +11,19 @@ import clsx from 'clsx';
 
 import { paths } from './App';
 import CountCard from './CountCard';
+
+StatTotals.propTypes = {
+  totals: PropTypes.shape({
+    active: PropTypes.number,
+    cases: PropTypes.number,
+    deaths: PropTypes.number,
+    prevActive: PropTypes.number,
+    prevCases: PropTypes.number,
+    prevDeaths: PropTypes.number,
+    prevRecovered: PropTypes.number,
+    recovered: PropTypes.number,
+  }).isRequired,
+};
 
 const useStyles = makeStyles(theme => ({
   countTitle: {
@@ -42,7 +56,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function StateTotals({ totals }) {
+export default function StatTotals({ totals }) {
   const classes = useStyles();
 
   const renderedTotals = [
