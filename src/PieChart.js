@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import numeral from 'numeral';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
 import { Hint, RadialChart } from 'react-vis';
+
+PieChart.propTypes = {
+  className: PropTypes.string,
+  data: PropTypes.arrayOf(PropTypes.object),
+  diameter: PropTypes.number.isRequired,
+  valueType: PropTypes.string,
+};
 
 const useStyles = makeStyles(() => ({
   hint: {
@@ -19,7 +27,6 @@ export default function PieChart({
   className = '',
   data,
   diameter,
-  valueClickHandler,
   valueType = '',
 }) {
   const classes = useStyles();
@@ -35,9 +42,6 @@ export default function PieChart({
       innerRadius={diameter / 3}
       onSeriesMouseOut={_v => {
         setHintValue(false);
-      }}
-      onValueClick={(v, _event) => {
-        valueClickHandler && valueClickHandler(v);
       }}
       onValueMouseOver={v => {
         setHintValue(v);
