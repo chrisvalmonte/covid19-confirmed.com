@@ -101,5 +101,9 @@ export const useDashboardStyles = makeStyles(theme => ({
   },
   numbersGrid: {
     marginBottom: '48px',
+    marginLeft: '16px',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: 0,
+    },
   },
 }));

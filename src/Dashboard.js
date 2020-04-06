@@ -250,36 +250,6 @@ export default function Dashboard({ totals }) {
               <DashboardHeading>Overview</DashboardHeading>
             </Grid>
 
-            <Grid className={classes.numbersGrid} container item xs={12}>
-              {/* Affected countries */}
-              <Grid className={classes.numberContainer} item xs={12} sm={4}>
-                <DashboardNumber caption="Affected Countries">
-                  {totals.affectedCountries}
-                </DashboardNumber>
-              </Grid>
-
-              {/* Worldwide mortality rate */}
-              <Grid className={classes.numberContainer} item xs={12} sm={4}>
-                <DashboardNumber
-                  caption="Mortality Rate"
-                  decimals={2}
-                  formattingFn={number => `${number}%`}
-                >
-                  {(totals.deaths / totals.cases) * 100}
-                </DashboardNumber>
-              </Grid>
-
-              <Grid className={classes.numberContainer} item xs={12} sm={4}>
-                <DashboardNumber
-                  caption="Tests Administered"
-                  decimals={2}
-                  formattingFn={number => numeral(number).format('0,0')}
-                >
-                  {totals.tests}
-                </DashboardNumber>
-              </Grid>
-            </Grid>
-
             <Grid item xs={12}>
               <Paper>
                 <div className={classes.historyChartContainer}>
@@ -294,6 +264,36 @@ export default function Dashboard({ totals }) {
                   />
                 </div>
                 <HistoryChartFilters {...dateFilters} />
+
+                <Grid className={classes.numbersGrid} container xs={12}>
+                  {/* Affected countries */}
+                  <Grid className={classes.numberContainer} item xs={12} sm={4}>
+                    <DashboardNumber caption="Affected Countries">
+                      {totals.affectedCountries}
+                    </DashboardNumber>
+                  </Grid>
+
+                  {/* Worldwide mortality rate */}
+                  <Grid className={classes.numberContainer} item xs={12} sm={4}>
+                    <DashboardNumber
+                      caption="Mortality Rate"
+                      decimals={2}
+                      formattingFn={number => `${number}%`}
+                    >
+                      {(totals.deaths / totals.cases) * 100}
+                    </DashboardNumber>
+                  </Grid>
+
+                  <Grid className={classes.numberContainer} item xs={12} sm={4}>
+                    <DashboardNumber
+                      caption="Tests Administered"
+                      decimals={2}
+                      formattingFn={number => numeral(number).format('0,0')}
+                    >
+                      {totals.tests}
+                    </DashboardNumber>
+                  </Grid>
+                </Grid>
 
                 {/* Country overview table */}
                 <DataTable
