@@ -100,6 +100,6 @@ export const useDashboardStyles = makeStyles(theme => ({
     padding: '0 16px',
   },
   numbersGrid: {
-    marginBottom: '72px',
+    marginBottom: '48px',
   },
 }));

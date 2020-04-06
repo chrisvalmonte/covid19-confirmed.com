@@ -8,7 +8,6 @@ import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
@@ -31,7 +30,7 @@ import HistoryChartFilters, {
 } from './HistoryChartFilters';
 import News from './News';
 import PieChart from './PieChart';
-import { getCountries, getHistory, getUSStates, getUSTotals } from './services';
+import { getCountries, getHistory, getUSStates } from './services';
 import { useDashboardStyles } from './Dashboard.styles';
 
 Dashboard.propTypes = {
@@ -62,7 +61,6 @@ export default function Dashboard({ totals }) {
 
   const [history, setHistory] = useState({});
 
-  const [USATests, setUSATests] = useState(0);
   const [USATableBodyRows, setUSATableBodyRows] = useState([]);
   const USAPieLegendRef = useRef(null);
   const [USAPieChartData, setUSAPieChartData] = useState([]);
@@ -147,16 +145,9 @@ export default function Dashboard({ totals }) {
       setUSAPieChartData(USAPieData);
     };
 
-    const _usTotalsData = async () => {
-      const { data } = await getUSTotals();
-
-      setUSATests(data.tests);
-    };
-
     _countryData();
     _historyData();
     _usStateData();
-    _usTotalsData();
   }, []); // eslint-disable-line
 
   const _scrollToTop = () => {
@@ -215,12 +206,6 @@ export default function Dashboard({ totals }) {
     },
   ];
 
-  const dateOfFirstConfirmedUSCase = moment('01/21/2020');
-  const today = moment();
-  const daysSinceFirstUSCase = numeral(
-    today.diff(dateOfFirstConfirmedUSCase, 'days'),
-  ).format('0,0');
-
   return (
     <article className={classes.root} ref={pageRef}>
       <Container>
@@ -265,11 +250,18 @@ export default function Dashboard({ totals }) {
               <DashboardHeading>Overview</DashboardHeading>
             </Grid>
 
-            {/* Worldwide mortality rate */}
             <Grid className={classes.numbersGrid} container item xs={12}>
-              <Grid className={classes.numberContainer} item xs={12} sm={6}>
+              {/* Affected countries */}
+              <Grid className={classes.numberContainer} item xs={12} sm={4}>
+                <DashboardNumber caption="Affected Countries">
+                  {totals.affectedCountries}
+                </DashboardNumber>
+              </Grid>
+
+              {/* Worldwide mortality rate */}
+              <Grid className={classes.numberContainer} item xs={12} sm={4}>
                 <DashboardNumber
-                  caption="Mortality rate"
+                  caption="Mortality Rate"
                   decimals={2}
                   formattingFn={number => `${number}%`}
                 >
@@ -277,10 +269,13 @@ export default function Dashboard({ totals }) {
                 </DashboardNumber>
               </Grid>
 
-              {/* Affected countries */}
-              <Grid className={classes.numberContainer} item xs={12} sm={6}>
-                <DashboardNumber caption="Affected countries">
-                  {totals.affectedCountries}
+              <Grid className={classes.numberContainer} item xs={12} sm={4}>
+                <DashboardNumber
+                  caption="Tests Administered"
+                  decimals={2}
+                  formattingFn={number => numeral(number).format('0,0')}
+                >
+                  {totals.tests}
                 </DashboardNumber>
               </Grid>
             </Grid>
@@ -316,38 +311,6 @@ export default function Dashboard({ totals }) {
           <Grid component="section" container item xs={12}>
             <Grid item xs={12}>
               <DashboardHeading>USA Breakdown</DashboardHeading>
-            </Grid>
-
-            <Grid className={classes.numbersGrid} container item xs={12}>
-              {/* USA days since first case */}
-              <Grid className={classes.numberContainer} item xs={12} sm={6}>
-                <DashboardNumber
-                  caption={
-                    <>
-                      Days since{' '}
-                      <Link
-                        href="https://www.cdc.gov/media/releases/2020/p0121-novel-coronavirus-travel-case.html"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        first confirmed case
-                      </Link>
-                    </>
-                  }
-                >
-                  {daysSinceFirstUSCase}
-                </DashboardNumber>
-              </Grid>
-
-              {/* USA tests administered */}
-              <Grid className={classes.numberContainer} item xs={12} sm={6}>
-                <DashboardNumber
-                  caption="Tests administered"
-                  formattingFn={number => numeral(number).format('0,0')}
-                >
-                  {USATests}
-                </DashboardNumber>
-              </Grid>
             </Grid>
 
             {/* USA overview pie chart */}
@@ -458,7 +421,7 @@ function DashboardNumber({
   return (
     <>
       <Waypoint onEnter={_startCounter} />
-      <Typography className={classes.number} component="h3" variant="h2">
+      <Typography className={classes.number} component="h3" variant="h4">
         <CountUp
           decimals={decimals}
           end={counterEnd}

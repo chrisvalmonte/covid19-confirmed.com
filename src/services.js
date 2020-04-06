@@ -5,9 +5,6 @@ import moment from 'moment';
 export const getCountries = async () =>
   await axios.get('https://corona.lmao.ninja/countries');
 
-export const getUSTotals = async () =>
-  await axios.get('https://corona.lmao.ninja/countries/USA');
-
 export const getGEOData = async () =>
   await axios.get('https://corona.lmao.ninja/v2/jhucsse');
 
