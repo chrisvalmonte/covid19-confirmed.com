@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
@@ -11,6 +12,20 @@ import clsx from 'clsx';
 
 import logo from './logo.svg';
 import SiteNavigation, { useSiteNavigation } from './SiteNavigation';
+
+PageTemplate.propTypes = {
+  children: PropTypes.node.isRequired,
+  totals: PropTypes.shape({
+    active: PropTypes.number,
+    cases: PropTypes.number,
+    deaths: PropTypes.number,
+    prevActive: PropTypes.number,
+    prevCases: PropTypes.number,
+    prevDeaths: PropTypes.number,
+    prevRecovered: PropTypes.number,
+    recovered: PropTypes.number,
+  }).isRequired,
+};
 
 const appBarHeight = '60px';
 const logoHeight = '24px';
