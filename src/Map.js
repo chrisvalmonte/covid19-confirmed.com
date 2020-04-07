@@ -7,6 +7,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import SortIcon from '@material-ui/icons/Sort';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
@@ -220,7 +221,7 @@ export default function Map() {
         classes.clusterTypeButtonActive,
       ),
       isDisabled: currentCluster === 'active',
-      text: 'Active Cases',
+      text: 'Active',
       type: 'active',
     },
     {
@@ -297,6 +298,14 @@ export default function Map() {
         className={classes.clusterTypeButtonGroup}
         size="small"
       >
+        <Button
+          className={clsx(
+            classes.clusterTypeButton,
+            classes.clusterTypeButtonShowList,
+          )}
+        >
+          <SortIcon fontSize="small" />
+        </Button>
         {clusterTypeButtons.map(({ className, isDisabled, text, type }) => (
           <Button
             className={className}

@@ -10,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
-import Tooltip from '@material-ui/core/Tooltip';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';

@@ -42,8 +42,21 @@ export const useMapStyles = makeStyles(theme => ({
       color: grey[900],
     },
   },
+  clusterTypeButtonShowList: {
+    ...clusterTypeBtnColors(grey[50]),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
   clusterTypeButtonActive: {
     ...clusterTypeBtnColors(red[500]),
+
+    [theme.breakpoints.up('sm')]: {
+      '&:not(:last-child)': {
+        borderTopLeftRadius: theme.shape.borderRadius,
+        borderBottomLeftRadius: theme.shape.borderRadius,
+      },
+    },
   },
   clusterTypeButtonDeaths: {
     ...clusterTypeBtnColors(yellow[500]),
