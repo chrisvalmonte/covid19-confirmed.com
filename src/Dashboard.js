@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
+import Tooltip from '@material-ui/core/Tooltip';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
@@ -37,7 +38,7 @@ import {
   getUSStates,
   getYesterdayTotals,
 } from './services';
-import { useDashboardStyles } from './Dashboard.styles';
+import { useDashboardStyles, YesterdayDiffTooltip } from './Dashboard.styles';
 
 Dashboard.propTypes = {
   totals: PropTypes.shape({
@@ -277,15 +278,24 @@ export default function Dashboard({ totals }) {
                           className={classes.yesterdayContainer}
                           container
                         >
-                          <Typography
-                            className={classes.yesterdayDiff}
-                            component="p"
-                            variant="body2"
-                          >
-                            {`+ ${numeral(yesterdayDiff).format(
+                          <YesterdayDiffTooltip
+                            placement="right-start"
+                            title={`${numeral(yesterdayDiff).format(
                               '0,0',
-                            )} (${numeral(yesterdayPercent).format('0.00')}%)`}
-                          </Typography>
+                            )} new cases since yesterday`}
+                          >
+                            <Typography
+                              className={classes.yesterdayDiff}
+                              component="p"
+                              variant="body2"
+                            >
+                              {`+ ${numeral(yesterdayDiff).format(
+                                '0,0',
+                              )} (${numeral(yesterdayPercent).format(
+                                '0.00',
+                              )}%)`}
+                            </Typography>
+                          </YesterdayDiffTooltip>
 
                           {yesterdayDiff > 0 && (
                             <TrendingUpIcon

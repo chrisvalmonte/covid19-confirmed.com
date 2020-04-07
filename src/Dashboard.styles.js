@@ -1,7 +1,17 @@
 import grey from '@material-ui/core/colors/grey';
-import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const yesterdayColor = grey[200];
+
+export const YesterdayDiffTooltip = withStyles(theme => ({
+  tooltip: {
+    backgroundColor: grey[50],
+    boxShadow: theme.shadows[5],
+    color: grey[900],
+    marginLeft: '4px',
+  },
+}))(Tooltip);
 
 export const useDashboardStyles = makeStyles(theme => ({
   divider: {
