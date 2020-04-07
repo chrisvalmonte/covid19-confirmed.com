@@ -88,22 +88,11 @@ export const useDashboardStyles = makeStyles(theme => ({
     marginBottom: '12px',
   },
 
-  number: {
-    textAlign: 'left',
-
-    [theme.breakpoints.up('sm')]: {
-      textAlign: 'center',
-    },
-  },
   numberContainer: {
     marginTop: '32px',
     padding: '0 16px',
   },
   numbersGrid: {
     marginBottom: '48px',
-    marginLeft: '16px',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: 0,
-    },
   },
 }));

@@ -266,17 +266,15 @@ export default function Dashboard({ totals }) {
                 <HistoryChartFilters {...dateFilters} />
 
                 <Grid className={classes.numbersGrid} container xs={12}>
-                  {/* Affected countries */}
-                  <Grid className={classes.numberContainer} item xs={12} sm={4}>
-                    <DashboardNumber caption="Affected Countries">
+                  <Grid className={classes.numberContainer} item xs={6} lg={4}>
+                    <DashboardNumber caption="Countries affected">
                       {totals.affectedCountries}
                     </DashboardNumber>
                   </Grid>
 
-                  {/* Worldwide mortality rate */}
-                  <Grid className={classes.numberContainer} item xs={12} sm={4}>
+                  <Grid className={classes.numberContainer} item xs={6} lg={4}>
                     <DashboardNumber
-                      caption="Mortality Rate"
+                      caption="Mortality rate"
                       decimals={2}
                       formattingFn={number => `${number}%`}
                     >
@@ -284,9 +282,9 @@ export default function Dashboard({ totals }) {
                     </DashboardNumber>
                   </Grid>
 
-                  <Grid className={classes.numberContainer} item xs={12} sm={4}>
+                  <Grid className={classes.numberContainer} item xs={12} lg={4}>
                     <DashboardNumber
-                      caption="Tests Administered"
+                      caption="Tests administered"
                       decimals={2}
                       formattingFn={number => numeral(number).format('0,0')}
                     >
@@ -421,7 +419,7 @@ function DashboardNumber({
   return (
     <>
       <Waypoint onEnter={_startCounter} />
-      <Typography className={classes.number} component="h3" variant="h4">
+      <Typography align="center" component="h3" variant="h4">
         <CountUp
           decimals={decimals}
           end={counterEnd}
@@ -429,7 +427,7 @@ function DashboardNumber({
           start={0}
         />
       </Typography>
-      <Typography className={classes.number} component="p" variant="body1">
+      <Typography align="center" component="p" variant="body1">
         {caption}
       </Typography>
     </>
