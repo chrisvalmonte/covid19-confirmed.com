@@ -1,6 +1,8 @@
 import grey from '@material-ui/core/colors/grey';
 import { makeStyles } from '@material-ui/core/styles';
 
+const yesterdayColor = grey[200];
+
 export const useDashboardStyles = makeStyles(theme => ({
   divider: {
     marginBottom: '16px',
@@ -42,11 +44,18 @@ export const useDashboardStyles = makeStyles(theme => ({
   historyChartContainer: {
     padding: '12px',
   },
-
   historyChartTitle: {
     paddingBottom: '4px',
     paddingLeft: '36px',
     paddingTop: '8px',
+  },
+
+  numberContainer: {
+    marginTop: '32px',
+    padding: '0 16px',
+  },
+  numbersGrid: {
+    marginBottom: '48px',
   },
 
   pie: {
@@ -88,11 +97,16 @@ export const useDashboardStyles = makeStyles(theme => ({
     marginBottom: '12px',
   },
 
-  numberContainer: {
-    marginTop: '32px',
-    padding: '0 16px',
+  yesterdayContainer: {
+    marginTop: '12px',
   },
-  numbersGrid: {
-    marginBottom: '48px',
+  yesterdayDiff: {
+    color: yesterdayColor,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    marginRight: '8px',
+  },
+  yesterdayIcon: {
+    color: yesterdayColor,
   },
 }));

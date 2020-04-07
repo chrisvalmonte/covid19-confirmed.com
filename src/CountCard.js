@@ -12,6 +12,7 @@ import CountUp from 'react-countup';
 import numeral from 'numeral';
 
 CountCard.propTypes = {
+  children: PropTypes.node,
   count: PropTypes.number.isRequired,
   countColor: PropTypes.oneOf([red[500], yellow[500], green[400], grey[100]]),
   prevCount: PropTypes.number.isRequired,
@@ -44,7 +45,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CountCard({ count, countColor, prevCount, title }) {
+export default function CountCard({
+  children,
+  count,
+  countColor,
+  prevCount,
+  title,
+}) {
   const classes = useStyles();
 
   return (
@@ -65,6 +72,8 @@ export default function CountCard({ count, countColor, prevCount, title }) {
             start={prevCount}
           />
         </Typography>
+
+        {children}
       </CardContent>
     </Card>
   );

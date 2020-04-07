@@ -11,6 +11,9 @@ export const getGEOData = async () =>
 export const getTotals = async () =>
   await axios.get('https://corona.lmao.ninja/all');
 
+export const getYesterdayTotals = async () =>
+  await axios.get('https://corona.lmao.ninja/yesterday/all');
+
 export const getHistory = async () =>
   await axios.get('https://corona.lmao.ninja/v2/historical/all');
 

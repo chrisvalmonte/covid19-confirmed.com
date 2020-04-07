@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
-// import numeral from 'numeral';
+import numeral from 'numeral';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import amber from '@material-ui/core/colors/amber';
@@ -30,7 +31,12 @@ import HistoryChartFilters, {
 } from './HistoryChartFilters';
 import News from './News';
 import PieChart from './PieChart';
-import { getCountries, getHistory, getUSStates } from './services';
+import {
+  getCountries,
+  getHistory,
+  getUSStates,
+  getYesterdayTotals,
+} from './services';
 import { useDashboardStyles } from './Dashboard.styles';
 
 Dashboard.propTypes = {
@@ -76,6 +82,13 @@ export default function Dashboard({ totals }) {
     yellow[400],
     yellow[200],
   ];
+
+  const [yesterdayTotals, setYesterdayTotals] = useState({
+    active: totals.active,
+    cases: totals.cases,
+    deaths: totals.deaths,
+    recovered: totals.recovered,
+  });
 
   // Get data for tables and charts when component mounts
   useEffect(() => {
@@ -145,9 +158,16 @@ export default function Dashboard({ totals }) {
       setUSAPieChartData(USAPieData);
     };
 
+    const _yesterdayData = async () => {
+      const { data } = await getYesterdayTotals();
+
+      setYesterdayTotals(data);
+    };
+
     _countryData();
     _historyData();
     _usStateData();
+    _yesterdayData();
   }, []); // eslint-disable-line
 
   const _scrollToTop = () => {
@@ -182,6 +202,9 @@ export default function Dashboard({ totals }) {
       id: 'dashboard-total--active',
       prevCount: totals.prevActive,
       title: 'Active Cases',
+      yesterdayDiff: totals.active - yesterdayTotals.active,
+      yesterdayPercent:
+        ((totals.active - yesterdayTotals.active) / totals.active) * 100,
     },
     {
       count: totals.deaths,
@@ -189,6 +212,9 @@ export default function Dashboard({ totals }) {
       id: 'dashboard-total--deaths',
       prevCount: totals.prevDeaths,
       title: 'Deaths',
+      yesterdayDiff: totals.deaths - yesterdayTotals.deaths,
+      yesterdayPercent:
+        ((totals.deaths - yesterdayTotals.deaths) / totals.deaths) * 100,
     },
     {
       count: totals.recovered,
@@ -196,6 +222,10 @@ export default function Dashboard({ totals }) {
       id: 'dashboard-total--recovered',
       prevCount: totals.prevRecovered,
       title: 'Recovered',
+      yesterdayDiff: totals.recovered - yesterdayTotals.recovered,
+      yesterdayPercent:
+        ((totals.recovered - yesterdayTotals.recovered) / totals.recovered) *
+        100,
     },
     {
       count: totals.cases,
@@ -203,6 +233,9 @@ export default function Dashboard({ totals }) {
       id: 'dashboard-total--cases',
       prevCount: totals.prevCases,
       title: 'Total Confirmed',
+      yesterdayDiff: totals.cases - yesterdayTotals.cases,
+      yesterdayPercent:
+        ((totals.cases - yesterdayTotals.cases) / totals.cases) * 100,
     },
   ];
 
@@ -227,20 +260,45 @@ export default function Dashboard({ totals }) {
               item
               spacing={2}
             >
-              {renderedTotals.map(({ id, title, ...data }) => (
-                <Grid item key={id} xs={12} sm={5} lg={3}>
-                  <Paper className={classes.headerCard} elevation={2}>
-                    <CountCard
-                      title={
-                        <Typography className={classes.headerCountTitle}>
-                          {title}
-                        </Typography>
-                      }
-                      {...data}
-                    />
-                  </Paper>
-                </Grid>
-              ))}
+              {renderedTotals.map(
+                ({ id, title, yesterdayDiff, yesterdayPercent, ...data }) => (
+                  <Grid item key={id} xs={12} sm={5} lg={3}>
+                    <Paper className={classes.headerCard} elevation={2}>
+                      <CountCard
+                        title={
+                          <Typography className={classes.headerCountTitle}>
+                            {title}
+                          </Typography>
+                        }
+                        {...data}
+                      >
+                        <Grid
+                          alignItems="center"
+                          className={classes.yesterdayContainer}
+                          container
+                        >
+                          <Typography
+                            className={classes.yesterdayDiff}
+                            component="p"
+                            variant="body2"
+                          >
+                            {`+ ${numeral(yesterdayDiff).format(
+                              '0,0',
+                            )} (${numeral(yesterdayPercent).format('0.00')}%)`}
+                          </Typography>
+
+                          {yesterdayDiff > 0 && (
+                            <TrendingUpIcon
+                              className={classes.yesterdayIcon}
+                              fontSize="small"
+                            />
+                          )}
+                        </Grid>
+                      </CountCard>
+                    </Paper>
+                  </Grid>
+                ),
+              )}
             </Grid>
           </Waypoint>
 
