@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
+import _ from 'lodash';
 import numeral from 'numeral';
 import MapGL, { FlyToInterpolator, Layer, Popup, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Backdrop from '@material-ui/core/Backdrop';
 import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -37,13 +39,19 @@ export default function Map() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState({});
 
+  const [clusterList, setClusterList] = useState([]);
+  const [isClusterListOpen, setIsClusterListOpen] = useState(false);
+
   const sourceRef = useRef();
 
   // Get GEO data when component mounts
   useEffect(() => {
     const _geoData = async () => {
       const { data } = await getGEOData();
-      const features = data.map(
+
+      const cleanData = data.filter(({ province }) => province !== 'Recovered');
+
+      const features = cleanData.map(
         ({
           coordinates: { latitude, longitude },
           country,
@@ -72,6 +80,13 @@ export default function Map() {
         },
       );
 
+      const list = _.orderBy(
+        features.map(({ properties }) => properties),
+        [currentCluster],
+        ['desc'],
+      );
+
+      setClusterList(list);
       setClusterData({
         features,
         type: 'FeatureCollection',
@@ -156,8 +171,19 @@ export default function Map() {
         break;
     }
 
+    const updatedList = _.orderBy(clusterList, [type], ['desc']);
+
     setCurrentCluster(type);
     setCurrentClusterColor(clusterColor);
+    setClusterList(updatedList);
+  };
+
+  const _onClusterListBtnClick = () => {
+    if (isClusterListOpen) return;
+
+    setIsClusterListOpen(true);
+
+    console.log(clusterList);
   };
 
   let clusterOpacity = 0,
@@ -294,18 +320,22 @@ export default function Map() {
       </MapGL>
 
       <ButtonGroup
-        aria-label="button group to display active cases, deaths, recovered, or total cases on the map"
+        aria-label="button group to display active cases, deaths, or recovered on the map"
         className={classes.clusterTypeButtonGroup}
         size="small"
       >
         <Button
+          aria-label="button to toggle a list of locations in descending order, by active cases, deaths, or recovered"
           className={clsx(
             classes.clusterTypeButton,
+            isClusterListOpen && classes.clusterTypeButtonEnabled,
             classes.clusterTypeButtonShowList,
           )}
+          onClick={_onClusterListBtnClick}
         >
           <SortIcon fontSize="small" />
         </Button>
+
         {clusterTypeButtons.map(({ className, isDisabled, text, type }) => (
           <Button
             className={className}
@@ -322,13 +352,35 @@ export default function Map() {
 
       <Zoom in={viewport.zoom > 4.5}>
         <Fab
-          aria-label="scroll back to top"
+          aria-label="zoom out map"
           className={classes.fab}
           onClick={_zoomOutMap}
         >
           <ZoomOutMapIcon />
         </Fab>
       </Zoom>
+
+      <Backdrop
+        className={classes.clusterListBackdrop}
+        onClick={() => {
+          setIsClusterListOpen(false);
+        }}
+        open={isClusterListOpen}
+      >
+        <List className={classes.popupStats} dense>
+          {clusterList.map(({ active, country, deaths, recovered, state }) => (
+            <ListItem
+              dense
+              key={`${state} - ${country}, ${active}${deaths}${recovered}`}
+            >
+              <div>
+                {state} {country}
+              </div>
+              <div>{active}</div>
+            </ListItem>
+          ))}
+        </List>
+      </Backdrop>
     </>
   );
 }

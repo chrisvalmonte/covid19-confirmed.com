@@ -17,80 +17,89 @@ const clusterTypeBtnColors = color => ({
   },
 });
 
-export const useMapStyles = makeStyles(theme => ({
-  clusterTypeButtonGroup: {
-    boxShadow: theme.shadows[6],
-    position: 'fixed',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    top: '32px',
-    width: 'fit-content',
+export const useMapStyles = makeStyles(theme => {
+  const clusterListBackdropZIndex = theme.zIndex.drawer + 1;
 
-    [theme.breakpoints.up('sm')]: {
-      left: 'unset',
-      right: '32px',
-      transform: 'none',
+  return {
+    clusterListBackdrop: {
+      zIndex: clusterListBackdropZIndex,
     },
-  },
 
-  clusterTypeButton: {
-    backgroundColor: '#191a1a',
-    color: grey[50],
-  },
-  clusterTypeButtonEnabled: {
-    '&.Mui-disabled': {
-      color: grey[900],
-    },
-  },
-  clusterTypeButtonShowList: {
-    ...clusterTypeBtnColors(grey[50]),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
-  },
-  clusterTypeButtonActive: {
-    ...clusterTypeBtnColors(red[500]),
+    clusterTypeButtonGroup: {
+      boxShadow: theme.shadows[6],
+      position: 'fixed',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      top: '32px',
+      width: 'fit-content',
+      zIndex: clusterListBackdropZIndex + 1,
 
-    [theme.breakpoints.up('sm')]: {
-      '&:not(:last-child)': {
-        borderTopLeftRadius: theme.shape.borderRadius,
-        borderBottomLeftRadius: theme.shape.borderRadius,
+      [theme.breakpoints.up('sm')]: {
+        left: 'unset',
+        right: '32px',
+        transform: 'none',
       },
     },
-  },
-  clusterTypeButtonDeaths: {
-    ...clusterTypeBtnColors(yellow[500]),
-  },
-  clusterTypeButtonRecovered: {
-    ...clusterTypeBtnColors(green[400]),
-  },
 
-  fab: {
-    backgroundColor: grey[700],
-    color: grey[100],
-    bottom: '32px',
-    position: 'fixed',
-    right: '48px',
-    '&:hover': {
+    clusterTypeButton: {
+      backgroundColor: '#191a1a',
+      color: grey[50],
+    },
+    clusterTypeButtonEnabled: {
+      '&.Mui-disabled': {
+        color: grey[900],
+      },
+    },
+    clusterTypeButtonShowList: {
+      ...clusterTypeBtnColors(grey[50]),
+      [theme.breakpoints.up('sm')]: {
+        display: 'none',
+      },
+    },
+    clusterTypeButtonActive: {
+      ...clusterTypeBtnColors(red[500]),
+
+      [theme.breakpoints.up('sm')]: {
+        '&:not(:last-child)': {
+          borderTopLeftRadius: theme.shape.borderRadius,
+          borderBottomLeftRadius: theme.shape.borderRadius,
+        },
+      },
+    },
+    clusterTypeButtonDeaths: {
+      ...clusterTypeBtnColors(yellow[500]),
+    },
+    clusterTypeButtonRecovered: {
+      ...clusterTypeBtnColors(green[400]),
+    },
+
+    fab: {
       backgroundColor: grey[700],
+      color: grey[100],
+      bottom: '32px',
+      position: 'fixed',
+      right: '48px',
+      '&:hover': {
+        backgroundColor: grey[700],
+      },
+      [theme.breakpoints.down('sm')]: {
+        bottom: '72px',
+        right: '16px',
+      },
     },
-    [theme.breakpoints.down('sm')]: {
-      bottom: '72px',
-      right: '16px',
+
+    popupStats: {
+      padding: 0,
     },
-  },
+    popupTitle: {
+      margin: '8px 0',
+      textAlign: 'center',
+    },
 
-  popupStats: {
-    padding: 0,
-  },
-  popupTitle: {
-    margin: '8px 0',
-    textAlign: 'center',
-  },
-
-  // TODO: Figure out why styles aren't being overridden
-  // 'main .mapboxgl-popup-content': {
-  //   backgroundColor: 'transparent !important',
-  //   padding: '0 !important',
-  // },
-}));
+    // TODO: Figure out why styles aren't being overridden
+    // 'main .mapboxgl-popup-content': {
+    //   backgroundColor: 'transparent !important',
+    //   padding: '0 !important',
+    // },
+  };
+});
