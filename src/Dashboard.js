@@ -10,7 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Paper from '@material-ui/core/Paper';
 import RootRef from '@material-ui/core/RootRef';
-import Tooltip from '@material-ui/core/Tooltip';
+import TrendingDownIcon from '@material-ui/icons/TrendingDown';
+import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
@@ -289,15 +290,33 @@ export default function Dashboard({ totals }) {
                               component="p"
                               variant="body2"
                             >
-                              {`+ ${numeral(yesterdayDiff).format(
+                              {`${
+                                yesterdayPercent > 0
+                                  ? '+ '
+                                  : yesterdayPercent < 0
+                                  ? '- '
+                                  : ' '
+                              }${numeral(yesterdayDiff).format(
                                 '0,0',
                               )} (${numeral(yesterdayPercent).format(
                                 '0.00',
                               )}%)`}
                             </Typography>
                           </YesterdayDiffTooltip>
-
-                          {yesterdayDiff > 0 && (
+                          {yesterdayPercent <= -0.5 && (
+                            <TrendingDownIcon
+                              className={classes.yesterdayIcon}
+                              fontSize="small"
+                            />
+                          )}
+                          {yesterdayPercent > -0.5 &&
+                            yesterdayPercent < 0.5 && (
+                              <TrendingFlatIcon
+                                className={classes.yesterdayIcon}
+                                fontSize="small"
+                              />
+                            )}
+                          {yesterdayPercent >= 0.5 && (
                             <TrendingUpIcon
                               className={classes.yesterdayIcon}
                               fontSize="small"
