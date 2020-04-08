@@ -108,7 +108,7 @@ export const useDashboardStyles = makeStyles(theme => ({
   },
 
   yesterdayContainer: {
-    marginTop: '12px',
+    marginTop: '2px',
   },
   yesterdayDiff: {
     color: yesterdayColor,
