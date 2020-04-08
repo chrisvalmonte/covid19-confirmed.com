@@ -283,7 +283,7 @@ export default function Dashboard({ totals }) {
                             placement="right-start"
                             title={`${numeral(yesterdayDiff).format(
                               '0,0',
-                            )} new cases since yesterday`}
+                            )} newly confirmed cases`}
                           >
                             <Typography
                               className={classes.yesterdayDiff}
@@ -303,6 +303,7 @@ export default function Dashboard({ totals }) {
                               )}%)`}
                             </Typography>
                           </YesterdayDiffTooltip>
+
                           {yesterdayPercent <= -0.5 && (
                             <TrendingDownIcon
                               className={classes.yesterdayIcon}
