@@ -5,11 +5,12 @@ import MapGL, { FlyToInterpolator, Layer, Popup, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Backdrop from '@material-ui/core/Backdrop';
+// import Drawer from '@material-ui/core/Drawer';
 import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import SortIcon from '@material-ui/icons/Sort';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
@@ -22,7 +23,7 @@ import * as d3 from 'd3-ease';
 import { getGEOData } from './services';
 import { useMapStyles } from './Map.styles';
 
-export default function Map() {
+export default function Map({ totals }) {
   const classes = useMapStyles();
 
   const [viewport, setViewport] = useState({
@@ -49,18 +50,19 @@ export default function Map() {
     const _geoData = async () => {
       const { data } = await getGEOData();
 
-      const cleanData = data.filter(({ province }) => province !== 'Recovered');
-
-      const features = cleanData.map(
+      const features = data.map(
         ({
           coordinates: { latitude, longitude },
           country,
-          province,
+          province: state,
           stats: { confirmed, deaths, recovered },
         }) => {
           const cases = parseInt(confirmed);
           const numDeaths = parseInt(deaths);
           const numRecovered = parseInt(recovered);
+
+          const isStatePresent = state && state !== 'null';
+          const isCountryPresent = country && country !== 'null';
 
           return {
             geometry: {
@@ -70,10 +72,14 @@ export default function Map() {
             properties: {
               active: cases - numDeaths - numRecovered,
               cases,
-              country,
               deaths: numDeaths,
+              latitude: parseFloat(latitude), // mapboxGL throws an error when this is a string
+              longitude: parseFloat(longitude), // mapboxGL throws an error when this is a string
+              name:
+                isStatePresent && isCountryPresent
+                  ? `${state}, ${country}`
+                  : country,
               recovered: numRecovered,
-              state: province,
             },
             type: 'Feature',
           };
@@ -94,7 +100,7 @@ export default function Map() {
     };
 
     _geoData();
-  }, []);
+  }, []); // eslint-disable-line
 
   const _onViewportChange = updatedViewport => setViewport(updatedViewport);
 
@@ -107,10 +113,8 @@ export default function Map() {
       geometry: {
         coordinates: [longitude, latitude],
       },
-      properties: { active, country, deaths, recovered, state },
+      properties: { active, deaths, name, recovered },
     } = clickedPoint;
-    const isStatePresent = state && state !== 'null';
-    const isCountryPresent = country && country !== 'null';
 
     _flyToClickedPoint({
       latitude,
@@ -120,8 +124,7 @@ export default function Map() {
     setPopupData({
       latitude,
       longitude,
-      name:
-        isStatePresent && isCountryPresent ? `${state}, ${country}` : country,
+      name,
       stats: {
         active: numeral(active).format('0,0'),
         deaths: numeral(deaths).format('0,0'),
@@ -131,12 +134,16 @@ export default function Map() {
     setIsPopupOpen(true);
   };
 
-  const _flyToClickedPoint = ({ latitude, longitude }) => {
+  const _flyToClickedPoint = ({
+    latitude,
+    longitude,
+    transitionDuration = 1000,
+  }) => {
     setViewport({
       ...viewport,
       latitude,
       longitude,
-      transitionDuration: viewport.zoom < 5 ? 1000 : 0,
+      transitionDuration,
       transitionEasing: d3.easeCubic,
       transitionInterpolator: new FlyToInterpolator(),
       zoom: 5,
@@ -176,14 +183,6 @@ export default function Map() {
     setCurrentCluster(type);
     setCurrentClusterColor(clusterColor);
     setClusterList(updatedList);
-  };
-
-  const _onClusterListBtnClick = () => {
-    if (isClusterListOpen) return;
-
-    setIsClusterListOpen(true);
-
-    console.log(clusterList);
   };
 
   let clusterOpacity = 0,
@@ -331,7 +330,9 @@ export default function Map() {
             isClusterListOpen && classes.clusterTypeButtonEnabled,
             classes.clusterTypeButtonShowList,
           )}
-          onClick={_onClusterListBtnClick}
+          onClick={() => {
+            setIsClusterListOpen(!isClusterListOpen);
+          }}
         >
           <SortIcon fontSize="small" />
         </Button>
@@ -360,14 +361,113 @@ export default function Map() {
         </Fab>
       </Zoom>
 
-      <Backdrop
-        className={classes.clusterListBackdrop}
-        onClick={() => {
+      <SwipeableDrawer
+        anchor="bottom"
+        classes={{
+          paper: classes.clusterListSwipeableDrawer,
+        }}
+        className={classes.clusterListSwipeableDrawerContainer}
+        onClose={() => {
           setIsClusterListOpen(false);
+        }}
+        onOpen={() => {
+          setIsClusterListOpen(true);
         }}
         open={isClusterListOpen}
       >
-        <List className={classes.popupStats} dense>
+        <Typography
+          align="center"
+          className={clsx(
+            classes.clusterListHeader,
+            currentCluster === 'active' && classes.clusterListHeaderActive,
+            currentCluster === 'deaths' && classes.clusterListHeaderDeaths,
+            currentCluster === 'recovered' &&
+              classes.clusterListHeaderRecovered,
+          )}
+          component="h3"
+          variant="h3"
+        >
+          {numeral(totals[currentCluster]).format('0,0')}
+        </Typography>
+        <Typography
+          align="center"
+          className={clsx(
+            classes.clusterListSubHeader,
+            currentCluster === 'active' && classes.clusterListHeaderActive,
+            currentCluster === 'deaths' && classes.clusterListHeaderDeaths,
+            currentCluster === 'recovered' &&
+              classes.clusterListHeaderRecovered,
+          )}
+          component="h4"
+          variant="h6"
+        >
+          {currentCluster === 'active' && 'Active Cases'}
+          {currentCluster === 'deaths' && 'Deaths'}
+          {currentCluster === 'recovered' && 'Recoveries'}
+        </Typography>
+
+        <List className={classes.clusterList}>
+          {clusterList.map(
+            ({ active, deaths, latitude, longitude, name, recovered }) => {
+              let dataToShow;
+              switch (currentCluster) {
+                default:
+                case 'active':
+                  dataToShow = active;
+                  break;
+                case 'deaths':
+                  dataToShow = deaths;
+                  break;
+                case 'recovered':
+                  dataToShow = recovered;
+                  break;
+              }
+
+              return (
+                <ListItem
+                  button
+                  className={classes.clusterListItem}
+                  key={`${name}${active}${deaths}${recovered}`}
+                  onClick={() => {
+                    setIsClusterListOpen(false);
+
+                    setPopupData({
+                      latitude,
+                      longitude,
+                      name,
+                      stats: {
+                        active: numeral(active).format('0,0'),
+                        deaths: numeral(deaths).format('0,0'),
+                        recovered: numeral(recovered).format('0,0'),
+                      },
+                    });
+                    setIsPopupOpen(true);
+
+                    _flyToClickedPoint({
+                      latitude,
+                      longitude,
+                      transitionDuration: 2500,
+                    });
+                  }}
+                >
+                  <span className={classes.clusterListItemName}>{name}</span>
+                  <span>{numeral(dataToShow).format('0,0')}</span>
+                </ListItem>
+              );
+            },
+          )}
+        </List>
+      </SwipeableDrawer>
+
+      {/*
+      TODO: Add for medium screens and up
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="right"
+        open={isClusterListOpen}
+      >
+        <List className={classes.clusterList} dense>
           {clusterList.map(({ active, country, deaths, recovered, state }) => (
             <ListItem
               dense
@@ -380,7 +480,7 @@ export default function Map() {
             </ListItem>
           ))}
         </List>
-      </Backdrop>
+      </Drawer> */}
     </>
   );
 }

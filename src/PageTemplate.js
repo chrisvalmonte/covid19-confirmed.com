@@ -39,7 +39,6 @@ export const useStyles = makeStyles(theme => ({
     minHeight: appBarHeight,
     position: 'fixed',
     top: 'auto',
-    zIndex: theme.zIndex.drawer + 1,
   },
 
   content: {

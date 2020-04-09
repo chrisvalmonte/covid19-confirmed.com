@@ -45,6 +45,9 @@ const useStyles = makeStyles(theme => ({
       width: drawerWidth,
     },
   },
+  drawerMdUp: {
+    zIndex: `${theme.zIndex.drawer + 1000} !important`,
+  },
 
   drawerLogo: {
     height: logoHeight,
@@ -59,6 +62,7 @@ const useStyles = makeStyles(theme => ({
     }),
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    zIndex: theme.zIndex.drawer + 1001,
   },
 
   lastUpdated: {
@@ -111,6 +115,7 @@ export default function SiteNavigation({
         <SwipeableDrawer
           classes={{
             paper: classes.drawerPaper,
+            root: classes.drawerMdUp,
           }}
           ModalProps={{
             keepMounted: true, // Used for better performance on mobile

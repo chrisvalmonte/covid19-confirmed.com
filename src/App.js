@@ -68,7 +68,11 @@ function App() {
             path={paths.dashboard.path}
             render={_props => <Dashboard totals={totals} />}
           />
-          <Route component={Map} exact path={paths.map.path} />
+          <Route
+            exact
+            path={paths.map.path}
+            render={_props => <Map totals={totals} />}
+          />
           <Route component={NotFound} />
         </Switch>
       </PageTemplate>
