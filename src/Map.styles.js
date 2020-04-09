@@ -20,7 +20,7 @@ const clusterTypeBtnColors = color => ({
 export const useMapStyles = makeStyles(theme => ({
   clusterList: {
     color: grey[50],
-    height: '60vh',
+    height: '50vh',
   },
   clusterListHeader: {
     fontWeight: 'bold',
