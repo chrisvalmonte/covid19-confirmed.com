@@ -102,9 +102,9 @@ export default function Map({ totals }) {
     _geoData();
   }, []); // eslint-disable-line
 
-  const _onViewportChange = updatedViewport => setViewport(updatedViewport);
+  const _onViewportChange = (updatedViewport) => setViewport(updatedViewport);
 
-  const _onClick = event => {
+  const _onClick = (event) => {
     if (!(event.hasOwnProperty('features') && event.features[0])) return;
 
     const clickedPoint = event.features[0];
@@ -160,7 +160,7 @@ export default function Map({ totals }) {
     });
   };
 
-  const _onClusterTypeBtnClick = type => {
+  const _onClusterTypeBtnClick = (type) => {
     let clusterColor;
 
     switch (type) {
@@ -189,7 +189,7 @@ export default function Map({ totals }) {
     clusterStrokeOpacity = 0;
   const { zoom } = viewport;
   if (zoom <= 1) clusterOpacity = 0.175;
-  else if (zoom > 1 && zoom <= 3) {
+  else if (zoom > 1 && zoom <= 2) {
     clusterOpacity = 0.3;
     clusterStrokeOpacity = 0.5;
   } else {
@@ -229,6 +229,8 @@ export default function Map({ totals }) {
         29,
         100000,
         32,
+        150000,
+        35,
       ],
       'circle-stroke-color': currentClusterColor,
       'circle-stroke-opacity': clusterStrokeOpacity,
