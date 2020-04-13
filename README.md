@@ -1,68 +1,37 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# [covid19-confirmed.com](https://www.covid19-confirmed.com)
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [About](#about)
+- [Data Sources](#data-sources)
+- [Environment Variables](#environment-variables)
+- [Contributing](#contributing)
+- [License and Copyright](#license-and-copyright)
 
-### `yarn start`
+## About
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+My family and I were indirectly affected by the COVID-19 pandemic. In response, I developed this app to track the spread of the virus worldwide.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+The project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). If needed, the original Create React App README is located [here](README_CRA.md) for reference.
 
-### `yarn test`
+## Data Sources
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The data displayed in the UI is sourced from [Johns Hopkins University CSSE](https://systems.jhu.edu) and [Worldometer](https://www.worldometers.info) through the [NovelCOVID API](https://github.com/NovelCOVID/API). The NovelCOVID API was recommended by Postman [here](https://covid-19-apis.postman.com/).
 
-### `yarn build`
+## Environment Variables
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This app uses [Google Analytics](https://www.analytics.google.com), [MapboxGL API](https://www.mapbox.com/), and the [News API](https://newsapi.org). If you decide to fork/extend this project, you need to create a `.env` file in the root directory with the following environment variables:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- `REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID` - Tracking ID for Google Analytics
+- `REACT_APP_MAPBOX_GL_API_TOKEN` - API token for MapboxGL
+- `REACT_APP_NEWS_API_TOKEN`- API token for News API
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Contributing
 
-### `yarn eject`
+I will not accept any pull requests in this repository.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## License and Copyright
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Licensed under the [MIT License](LICENSE)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Copyright © 2020 Christopher Valmonte
