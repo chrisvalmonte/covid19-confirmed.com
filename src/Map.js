@@ -51,7 +51,12 @@ export default function Map({ totals }) {
     const _geoData = async () => {
       const { data } = await getGEOData();
 
-      const features = data.map(
+      // Remove garbage data
+      const filteredData = data.filter(
+        ({ province }) => province !== 'Recovered',
+      );
+
+      const features = filteredData.map(
         ({
           coordinates: { latitude, longitude },
           country,
