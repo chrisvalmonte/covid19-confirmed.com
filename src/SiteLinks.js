@@ -36,8 +36,8 @@ const useStyles = makeStyles(() => ({
     color: linkColor,
   },
 
-  links: {
-    marginBottom: 'auto',
+  root: {
+    padding: 0,
   },
 }));
 
@@ -66,7 +66,7 @@ export default function SiteLinks() {
   ];
 
   return (
-    <List className={classes.links}>
+    <List classes={{ root: classes.root }}>
       {links.map(({ icon, isSiteLink, text, to }) => {
         const linkContent = (
           <ListItem button>

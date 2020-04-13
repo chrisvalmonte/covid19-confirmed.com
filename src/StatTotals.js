@@ -25,7 +25,7 @@ StatTotals.propTypes = {
   }).isRequired,
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   countTitle: {
     color: grey[200],
     fontSize: '14px',
@@ -33,20 +33,21 @@ const useStyles = makeStyles(theme => ({
   },
 
   totals: {
-    [theme.breakpoints.up('md')]: {
+    marginTop: 'auto',
+  },
+
+  [theme.breakpoints.up('md')]: {
+    totals: {
       transform: 'translateX(0)',
       transitionDuration: theme.transitions.duration.standard,
       transitionProperty: 'height, margin, transform, opacity',
       transitionTimingFunction: theme.transitions.easing.easeInOut,
       height: 'auto',
-      marginBottom: '32px',
       opacity: 1,
       paddingLeft: '12px',
     },
-  },
 
-  totalsHide: {
-    [theme.breakpoints.up('md')]: {
+    totalsHide: {
       height: 0,
       marginBottom: 0,
       opacity: 0,

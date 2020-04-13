@@ -21,7 +21,6 @@ import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import yellow from '@material-ui/core/colors/yellow';
-// import CountUp from 'react-countup';
 import { DiscreteColorLegend } from 'react-vis';
 import { Waypoint } from 'react-waypoint';
 

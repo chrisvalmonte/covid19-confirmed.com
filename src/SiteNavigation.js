@@ -32,30 +32,23 @@ const drawerBgColor = grey[900];
 const drawerWidth = '240px';
 const logoHeight = '24px';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   drawer: {
-    backgroundColor: drawerBgColor,
-    [theme.breakpoints.down('sm')]: {
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-    },
-    [theme.breakpoints.up('md')]: {
-      flexShrink: 0,
-      width: drawerWidth,
-    },
-  },
-  drawerMdUp: {
     zIndex: `${theme.zIndex.drawer + 1000} !important`,
   },
 
   drawerLogo: {
     height: logoHeight,
-    margin: '32px 0',
+    margin: '16px 0 32px 0',
   },
 
   drawerPaper: {
     backgroundColor: drawerBgColor,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    overflowY: 'hidden',
+    padding: '16px 0',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -69,8 +62,14 @@ const useStyles = makeStyles(theme => ({
     color: grey[100],
     fontSize: '12px',
     marginTop: '24px',
-    paddingBottom: '16px',
     paddingLeft: '16px',
+  },
+
+  root: {
+    [theme.breakpoints.up('md')]: {
+      flexShrink: 0,
+      width: drawerWidth,
+    },
   },
 }));
 
@@ -110,12 +109,12 @@ export default function SiteNavigation({
   );
 
   return (
-    <nav className={classes.drawer} aria-label="site navigation">
+    <nav aria-label="site navigation" className={classes.root}>
       <Hidden mdUp implementation="css">
         <SwipeableDrawer
           classes={{
             paper: classes.drawerPaper,
-            root: classes.drawerMdUp,
+            root: classes.drawer,
           }}
           ModalProps={{
             keepMounted: true, // Used for better performance on mobile
@@ -140,8 +139,8 @@ export default function SiteNavigation({
           variant="permanent"
         >
           <img alt="COVID-19" className={classes.drawerLogo} src={logo} />
-          <StatTotals totals={totals} />
           <SiteLinks />
+          <StatTotals totals={totals} />
           {lastUpdatedContent}
         </Drawer>
       </Hidden>

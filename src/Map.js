@@ -5,7 +5,6 @@ import MapGL, { FlyToInterpolator, Layer, Popup, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-// import Drawer from '@material-ui/core/Drawer';
 import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,6 +15,7 @@ import Zoom from '@material-ui/core/Zoom';
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import yellow from '@material-ui/core/colors/yellow';
 import clsx from 'clsx';
 import * as d3 from 'd3-ease';
@@ -25,6 +25,7 @@ import { useMapStyles } from './Map.styles';
 
 export default function Map({ totals }) {
   const classes = useMapStyles();
+  const isMdBreakpoint = useMediaQuery('(min-width: 960px)');
 
   const [viewport, setViewport] = useState({
     latitude: 29.5,
@@ -248,7 +249,7 @@ export default function Map({ totals }) {
         classes.clusterTypeButtonActive,
       ),
       isDisabled: currentCluster === 'active',
-      text: 'Active',
+      text: 'Active Cases',
       type: 'active',
     },
     {
@@ -364,7 +365,7 @@ export default function Map({ totals }) {
       </Zoom>
 
       <SwipeableDrawer
-        anchor="bottom"
+        anchor={isMdBreakpoint ? 'right' : 'bottom'}
         classes={{
           paper: classes.clusterListSwipeableDrawer,
         }}
@@ -460,29 +461,6 @@ export default function Map({ totals }) {
           )}
         </List>
       </SwipeableDrawer>
-
-      {/*
-      TODO: Add for medium screens and up
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="right"
-        open={isClusterListOpen}
-      >
-        <List className={classes.clusterList} dense>
-          {clusterList.map(({ active, country, deaths, recovered, state }) => (
-            <ListItem
-              dense
-              key={`${state} - ${country}, ${active}${deaths}${recovered}`}
-            >
-              <div>
-                {state} {country}
-              </div>
-              <div>{active}</div>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer> */}
     </>
   );
 }

@@ -4,7 +4,7 @@ import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import { makeStyles } from '@material-ui/core/styles';
 
-const clusterTypeBtnColors = color => ({
+const clusterTypeBtnColors = (color) => ({
   color,
   '&.Mui-disabled': {
     backgroundColor: color,
@@ -17,15 +17,23 @@ const clusterTypeBtnColors = color => ({
   },
 });
 
-export const useMapStyles = makeStyles(theme => ({
+export const useMapStyles = makeStyles((theme) => ({
   clusterList: {
     color: grey[50],
     height: '50vh',
+
+    [theme.breakpoints.up('md')]: {
+      height: 'auto',
+    },
   },
   clusterListHeader: {
     fontWeight: 'bold',
     marginBottom: 0,
     marginTop: '32px',
+
+    [theme.breakpoints.up('md')]: {
+      marginTop: '100px',
+    },
   },
   clusterListSubHeader: {
     marginBottom: '32px',
@@ -50,10 +58,9 @@ export const useMapStyles = makeStyles(theme => ({
   },
   clusterListSwipeableDrawer: {
     backgroundColor: grey[900],
-  },
-  clusterListSwipeableDrawerContainer: {
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
+
+    [theme.breakpoints.up('md')]: {
+      width: '370px',
     },
   },
 
@@ -85,19 +92,9 @@ export const useMapStyles = makeStyles(theme => ({
     '&.MuiButton-root:hover': {
       backgroundColor: '#191a1a',
     },
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
   },
   clusterTypeButtonActive: {
     ...clusterTypeBtnColors(red[500]),
-
-    [theme.breakpoints.up('sm')]: {
-      '&.MuiButtonGroup-groupedHorizontal:not(:first-child)': {
-        borderBottomLeftRadius: theme.shape.borderRadius,
-        borderTopLeftRadius: theme.shape.borderRadius,
-      },
-    },
   },
   clusterTypeButtonDeaths: {
     ...clusterTypeBtnColors(yellow[500]),
