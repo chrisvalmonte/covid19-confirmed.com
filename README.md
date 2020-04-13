@@ -20,7 +20,7 @@ The data displayed in the UI is sourced from [Johns Hopkins University CSSE](htt
 
 ## Environment Variables
 
-This app uses [Google Analytics](https://www.analytics.google.com), [MapboxGL API](https://www.mapbox.com/), and the [News API](https://newsapi.org). If you decide to fork/extend this project, you need to create a `.env` file in the root directory with the following environment variables:
+This app uses [Google Analytics](https://www.analytics.google.com), [MapboxGL API](https://www.mapbox.com/), and the [News API](https://newsapi.org). If you decide to fork/extend this project, you need to create a `.env` file in the root of the project with the following environment variables:
 
 - `REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID` - Tracking ID for Google Analytics
 - `REACT_APP_MAPBOX_GL_API_TOKEN` - API token for MapboxGL
