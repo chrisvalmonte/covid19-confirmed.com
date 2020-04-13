@@ -290,17 +290,11 @@ export default function Dashboard({ totals }) {
                               component="p"
                               variant="body2"
                             >
-                              {`${
-                                yesterdayPercent > 0
-                                  ? '+ '
-                                  : yesterdayPercent < 0
-                                  ? '- '
-                                  : ' '
-                              }${numeral(yesterdayDiff).format(
-                                '0,0',
-                              )} (${numeral(yesterdayPercent).format(
-                                '0.00',
-                              )}%)`}
+                              {`${yesterdayPercent > 0 ? '+' : ' '}${numeral(
+                                yesterdayDiff,
+                              ).format('0,0')} (${numeral(
+                                yesterdayPercent,
+                              ).format('0.00')}%)`}
                             </Typography>
                           </YesterdayDiffTooltip>
 
@@ -418,7 +412,7 @@ export default function Dashboard({ totals }) {
                   <DiscreteColorLegend
                     className={classes.pieLegend}
                     colors={USAPieColorRange}
-                    items={USAPieChartData.map(d => d.label)}
+                    items={USAPieChartData.map((d) => d.label)}
                     orientation={isXSBreakpoint ? 'horizontal' : 'vertical'}
                     width={200}
                   />
