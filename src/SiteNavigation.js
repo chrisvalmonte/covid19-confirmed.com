@@ -46,8 +46,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: drawerBgColor,
     display: 'flex',
     flexDirection: 'column',
-    height: '100vh',
-    overflowY: 'hidden',
     padding: '16px 0',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
