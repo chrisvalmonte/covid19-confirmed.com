@@ -15,7 +15,9 @@ export const getYesterdayTotals = async () =>
   await axios.get('https://corona.lmao.ninja/yesterday/all');
 
 export const getHistory = async () =>
-  await axios.get('https://corona.lmao.ninja/v2/historical/all');
+  await axios.get('https://corona.lmao.ninja/v2/historical/all', {
+    params: { lastdays: 'all' },
+  });
 
 export const getUSStates = async () =>
   await axios.get('https://corona.lmao.ninja/states');
