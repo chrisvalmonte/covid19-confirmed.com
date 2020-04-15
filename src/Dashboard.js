@@ -135,7 +135,8 @@ export default function Dashboard({ totals }) {
       // API keeps changing. Filter out first if it is USA.
       // eslint-disable-next-line
       const [USData, ...stateData] = data;
-      if (USData.state === 'USA') stateTableData = stateData;
+      if (USData.state === 'USA' || USData.state === 'USA Total')
+        stateTableData = stateData;
 
       const USATableData = stateTableData.map(
         ({ active, cases, deaths, state }) => ({
