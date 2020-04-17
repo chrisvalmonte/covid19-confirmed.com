@@ -3,16 +3,18 @@ import moment from 'moment';
 
 // https://github.com/NovelCOVID/API
 export const getCountries = async () =>
-  await axios.get('https://corona.lmao.ninja/countries');
+  await axios.get('https://corona.lmao.ninja/v2/countries');
 
 export const getGEOData = async () =>
   await axios.get('https://corona.lmao.ninja/v2/jhucsse');
 
 export const getTotals = async () =>
-  await axios.get('https://corona.lmao.ninja/all');
+  await axios.get('https://corona.lmao.ninja/v2/all');
 
 export const getYesterdayTotals = async () =>
-  await axios.get('https://corona.lmao.ninja/yesterday/all');
+  await axios.get('https://corona.lmao.ninja/v2/all', {
+    params: { yesterday: true },
+  });
 
 export const getHistory = async () =>
   await axios.get('https://corona.lmao.ninja/v2/historical/all', {
@@ -20,7 +22,7 @@ export const getHistory = async () =>
   });
 
 export const getUSStates = async () =>
-  await axios.get('https://corona.lmao.ninja/states');
+  await axios.get('https://corona.lmao.ninja/v2/states');
 
 // https://newsapi.org
 export const getNews = async ({ page = 1 }) => {
