@@ -6,6 +6,7 @@ import Dashboard from './Dashboard';
 import Map from './Map';
 import NotFound from './NotFound';
 import PageTemplate from './PageTemplate';
+import useInterval from 'useInterval';
 import { getTotals } from './services';
 
 import './App.css';
@@ -37,26 +38,28 @@ function App() {
     updated: null,
   });
 
+  const _getTotals = async () => {
+    const { data } = await getTotals();
+
+    setTotals({
+      prevActive: totals.active,
+      prevCases: totals.cases,
+      prevDeaths: totals.deaths,
+      prevRecovered: totals.recovered,
+      ...data,
+    });
+  };
+
+  // Get total data every 2 minutes
+  useInterval(_getTotals, 1000 * 60 * 2);
+
   // On mount
   useEffect(() => {
     // Initialize Google Analytics
     ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
     ReactGA.pageview(window.location.pathname + window.location.search);
 
-    // Get total counts
-    const _totalData = async () => {
-      const { data } = await getTotals();
-
-      setTotals({
-        prevActive: totals.active,
-        prevCases: totals.cases,
-        prevDeaths: totals.deaths,
-        prevRecovered: totals.recovered,
-        ...data,
-      });
-    };
-
-    _totalData();
+    _getTotals();
   }, []); // eslint-disable-line
 
   return (
@@ -66,12 +69,12 @@ function App() {
           <Route
             exact
             path={paths.dashboard.path}
-            render={_props => <Dashboard totals={totals} />}
+            render={(_props) => <Dashboard totals={totals} />}
           />
           <Route
             exact
             path={paths.map.path}
-            render={_props => <Map totals={totals} />}
+            render={(_props) => <Map totals={totals} />}
           />
           <Route component={NotFound} />
         </Switch>
