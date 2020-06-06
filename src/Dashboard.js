@@ -443,10 +443,10 @@ export default function Dashboard({ totals }) {
           </Grid>
 
           {/* News Feed */}
-          <Grid component="section" item xs={12}>
+          {/* <Grid component="section" item xs={12}>
             <DashboardHeading>News Feed</DashboardHeading>
             <News />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
 
